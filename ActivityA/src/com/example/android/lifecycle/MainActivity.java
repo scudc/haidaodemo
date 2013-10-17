@@ -16,6 +16,9 @@
 
 package com.example.android.lifecycle;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import android.app.TabActivity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -25,6 +28,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
@@ -32,6 +36,7 @@ import android.widget.TextView;
 
 import com.example.android.lifecycle.util.StatusTracker;
 import com.example.android.lifecycle.util.Utils;
+
 /**
  * Example Activity to demonstrate the lifecycle callback methods.
  */
@@ -45,6 +50,9 @@ public class MainActivity extends TabActivity {
     private TextView mStatusAllView;
     private StatusTracker mStatusTracker = StatusTracker.getInstance();
     
+	private ListView mListView;
+	private ArrayList<HashMap<String,Integer>> mList = new ArrayList<HashMap<String,Integer>>();
+	private ArrayList<HashMap<String,Integer>> mGist = new ArrayList<HashMap<String,Integer>>();
     /* (non-Javadoc)
      * @see android.app.ActivityGroup#onCreate(android.os.Bundle)
      */
@@ -53,6 +61,10 @@ public class MainActivity extends TabActivity {
     	 super.onCreate(savedInstanceState);
     	 setContentView(R.layout.activity_main);
     	 
+    	 mListView = (ListView) findViewById(R.id.tab2);
+ 		 initData();
+ 		 ListViewAdapter adapter = new ListViewAdapter(this, mList,mGist);
+ 		 mListView.setAdapter(adapter);
     	 
   		 final TabHost tabs=(TabHost)findViewById(android.R.id.tabhost); 
   		 final TabWidget tabWidget=(TabWidget) findViewById(android.R.id.tabs);
@@ -165,5 +177,23 @@ public class MainActivity extends TabActivity {
     public void finishActivityA(View v) {
         MainActivity.this.finish();
     }
+    
+	public void initData(){
+		for(int i = 0;i<5;i++){
+			
+			HashMap<String, Integer> hashmap = new HashMap<String, Integer>();
+			hashmap.put("list", R.drawable.test);
+			
+			for(int j = 0;j<2;j++){
+				
+				HashMap<String, Integer> map = new HashMap<String, Integer>();
+				map.put("grid", R.drawable.ic_launcher);
+				mGist.add(map);
+			}
+			mList.add(hashmap);
+		}
+		
+		
+	}
 
 }

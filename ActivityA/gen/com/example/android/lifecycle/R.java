@@ -30,23 +30,24 @@ public final class R {
     public static final class drawable {
         public static final int hdhlogo=0x7f020000;
         public static final int ic_launcher=0x7f020001;
+        public static final int test=0x7f020002;
     }
     public static final class id {
-        public static final int TextureView01=0x7f07000b;
-        public static final int TextureView02=0x7f07000a;
+        public static final int app_grid=0x7f07000e;
         public static final int btn_finish_dialog=0x7f070008;
         public static final int button1=0x7f070003;
         public static final int button2=0x7f070004;
         public static final int editText1=0x7f070001;
         public static final int editText2=0x7f070002;
+        public static final int gridview=0x7f07000f;
         public static final int imageView2=0x7f070000;
+        public static final int iv=0x7f07000d;
         public static final int status_view_all_b=0x7f070007;
         public static final int status_view_b=0x7f070006;
-        public static final int tab1=0x7f07000f;
+        public static final int tab1=0x7f07000c;
         public static final int tab2=0x7f070009;
-        public static final int tab3=0x7f07000d;
-        public static final int tab4=0x7f07000e;
-        public static final int textureView1=0x7f07000c;
+        public static final int tab3=0x7f07000a;
+        public static final int tab4=0x7f07000b;
         public static final int view1=0x7f070005;
     }
     public static final class layout {
@@ -55,6 +56,9 @@ public final class R {
         public static final int activity_c=0x7f030002;
         public static final int activity_dialog=0x7f030003;
         public static final int activity_main=0x7f030004;
+        public static final int dev=0x7f030005;
+        public static final int gridview_item=0x7f030006;
+        public static final int list_item=0x7f030007;
     }
     public static final class string {
         public static final int activity_a=0x7f06001c;
