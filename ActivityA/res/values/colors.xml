@@ -27,4 +27,18 @@ limitations under the License.
     <color name="dark_green">#669900</color>
     <color name="dark_red">#CC0000</color>
     <color name="dark_yellow">#FF8A00</color>
+
+    <color name="one_textcolor">#ff4c4d4e</color>
+    <color name="skyblue">#ff73dcff</color>
+
+    <color name="darkgray">#ffc3c4c6</color>
+    <color name="dimgray">#ff696969</color>
+    <color name="home_page_author">#ff838383</color>
+    <color name="home_page_date">#ffaaaaaa</color>
+    <color name="welcomeBackground">#fff4f5f7</color>
+    <color name="night_model_bg">#ff333333</color>
+    <color name="night_model_controlcolor">#ffb7b7b7</color>
+    <color name="night_title_bg">#ffdedede</color>
+    <color name="share_edit_textcolor">#fff3f3f3</color>
+    <color name="text_color_b">#ff444444</color>
 </resources>

@@ -60,4 +60,70 @@ limitations under the License.
     <string name="haidaobiaoti">海盗团队</string>
     <string name="yourID">账号</string>
     <string name="yourPasswd">密码</string>
+    
+         <string name="content_text01">October</string>
+    <string name="content_text10">October 27, 2012</string>
+    <string name="content_text02">27, 2012</string>
+    <string name="content_text03">春天的猪的故事</string>
+    <string name="content_text04">潘海天</string>
+    <string name="content_text05">潘海天，科幻小说家</string>
+    <string name="content_text06">TextView</string>
+    <string name="content_text07">飞机失事前真的会让人写遗书吗？真的会吗？？</string>
+    <string name="content_text08">萨斯大师大师被打死的表述的表述租房vuzfygayufayusgfausfgaisfgaisf的表示对巴萨的巴斯的巴斯的表述的表述的表述的便是的吧</string>
+    <string name="content_text09">飞机失事前真的会让人写遗书吗？真的会吗？？</string>
+    
+    <string name="stowID">ID</string>
+<string name="stow">收藏</string>
+<string name="stowTime">Make_Time</string>
+     <string name="homepage_text04">29</string>
+     <string name="oneImageDate">Dec,2013</string>
+     <string name="valNum">VOL.448</string>
+     <string name="oneImageName">迷鹿</string>
+     <string name="oneImageAuthor">hobo/绘图</string>
+     <string name="oneImageContent">可不可以买你的不快乐，我们一起唱歌、一起牵手、一起听音乐，把你的不快乐卖给我，然后抱一下，好不好？by 魏如萱</string>
+     
+     <string name="question_publish_time">January 01,2014</string>
+     <string name="question_title">你的新年愿望是什么？</string>
+     <string name="question_content">【海盗团队】问：你的新年愿望是什么？</string>
+     <string name="question_answer_title">海盗团队成员答：</string>
+     <string name="question_answer_content">小饭：新的一年，不以物喜，不以己悲，不以丧失，不以生活。
+		     	可不可以买你的不快乐，我们一起唱歌、一起牵手、一起听音乐，把你的不快乐卖给我，然后抱一下，好不好
+         	可不可以买你的不快乐，我们一起唱歌、一起牵手、一起听音乐，把你的不快乐卖给我，然后抱一下，好不好
+				可不可以买你的不快乐，我们一起唱歌、一起牵手、一起听音乐，把你的不快乐卖给我，然后抱一下，好不好
+				大家好，我是hobo
+
+小饭：新的一年，不以物喜，不以己悲，不以丧失，不以生活。
+		     	可不可以买你的不快乐，我们一起唱歌、一起牵手、一起听音乐，把你的不快乐卖给我，然后抱一下，好不好
+         	可不可以买你的不快乐，我们一起唱歌、一起牵手、一起听音乐，把你的不快乐卖给我，然后抱一下，好不好
+				可不可以买你的不快乐，我们一起唱歌、一起牵手、一起听音乐，把你的不快乐卖给我，然后抱一下，好不好
+				大家好，我是hobo
+
+</string>
+	 <string name="set">分享设置</string>
+     <string name="microblog">微博</string>
+	 <string name="copyright">关于一篇</string>
+	 <string name="night_model">夜间模式</string>
+	   <string name="recommend">推荐应用</string>
+	   <string name="details_text04">正在加载......</string>
+     <string name="contentLong" >
+         	可不可以买你的不快乐，我们一起唱歌、一起牵手、一起听音乐，把你的不快乐卖给我，然后抱一下，好不好
+         	可不可以买你的不快乐，我们一起唱歌、一起牵手、一起听音乐，把你的不快乐卖给我，然后抱一下，好不好
+				可不可以买你的不快乐，我们一起唱歌、一起牵手、一起听音乐，把你的不快乐卖给我，然后抱一下，好不好
+
+         </string>
+         <string name="oneselfItem">新浪微博</string>
+    <string name="oneselfItem2">腾讯微博</string>
+    <string name="oneselfItem3">人人</string>
+        <string name="about_ours">关注我们</string>
+        
+            <string name="go_grade">去评分</string>
+    <string name="about_copyright">版权</string>
+    <string name="feedback">反馈</string>
+    
+    <string name="oursMicroBlog">关注我们的微博</string>
+    <string name="han">韩寒</string>
+    <string name="another">亭林镇工作室</string>
+    <string name="another1">一个App工作室</string>
+        <string name="aboutname">关注</string>
+        <string name="qa_people_like_num">1900</string>
 </resources>

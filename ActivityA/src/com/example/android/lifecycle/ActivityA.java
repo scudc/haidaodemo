@@ -16,9 +16,14 @@
 
 package com.example.android.lifecycle;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -29,21 +34,45 @@ import com.example.android.lifecycle.util.Utils;
 /**
  * Example Activity to demonstrate the lifecycle callback methods.
  */
-public class ActivityA extends Activity {
+public class ActivityA extends BaseActivity {
 
     private String mActivityName;
     private TextView mStatusView;
     private TextView mStatusAllView;
     private StatusTracker mStatusTracker = StatusTracker.getInstance();
+    
+    
+    //app 全局的application 类
+    private OneApp oneApp;   
 
+    
+ 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_a);
+        
+     
+        setContentView(R.layout.one_welcome);
         mActivityName = getString(R.string.activity_a);
         
         mStatusTracker.setStatus(mActivityName, getString(R.string.on_create));
         Utils.printStatus(mStatusView, mStatusAllView);
+        
+        oneApp = (OneApp) getApplication();
+        oneApp.pushActivity(this);
+        
+    }
+    
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+       /* if(savedInstanceState != null)
+        {
+            View view = (View)savedInstanceState.getSerializable("view");
+            setContentView(view);
+        }*/
+        //Log.i("onSaveInstanceState","2");
     }
 
     @Override
@@ -51,6 +80,17 @@ public class ActivityA extends Activity {
         super.onStart();
         mStatusTracker.setStatus(mActivityName, getString(R.string.on_start));
         Utils.printStatus(mStatusView, mStatusAllView);
+        
+ 
+        
+        if(this.oneApp.getCurrentTabIndex()!= 0)
+        {
+        	Intent intent = new Intent(ActivityA.this, MainActivity.class);
+            //Intent intent = new Intent(ActivityA.this, ActivityC.class);
+            startActivity(intent);
+        }
+        
+
     }
 
     @Override
@@ -82,6 +122,7 @@ public class ActivityA extends Activity {
 
     @Override
     protected void onDestroy() {
+
         super.onDestroy();
         mStatusTracker.setStatus(mActivityName, getString(R.string.on_destroy));
         mStatusTracker.clear();

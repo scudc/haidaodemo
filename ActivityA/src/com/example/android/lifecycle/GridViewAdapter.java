@@ -45,7 +45,7 @@ public class GridViewAdapter extends BaseAdapter {
 		if(convertView ==null){
 			holder = new GViewHolder();
 			convertView = LayoutInflater.from(mContext).inflate(R.layout.gridview_item, null, false);
-			holder.giv = (ImageView) convertView.findViewById(R.id.iv);
+			//holder.giv = (ImageView) convertView.findViewById(R.id.iv);
 			convertView.setTag(holder);
 		}else{
 			holder = (GViewHolder) convertView.getTag();

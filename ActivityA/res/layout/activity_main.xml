@@ -16,58 +16,68 @@ limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:background="@color/dark_blue"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF"
     android:gravity="bottom|center_horizontal|fill_horizontal|fill|start|end"
-    android:onClick=" "
+
     android:orientation="vertical"
     >
 
 	
 	<TabHost android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:id="@android:id/tabhost"
+    android:scrollbars="vertical"
     >
     <RelativeLayout
 	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
+	    android:layout_height="wrap_content"
 	    android:orientation="vertical"
 
     >
 	     <FrameLayout  
             android:id="@android:id/tabcontent"  
             android:layout_width="fill_parent"  
-            android:layout_height="fill_parent"  
+            android:layout_height="wrap_content"  
            >  
             
-
+			  <ListView
+            android:id="@+id/homeTab"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
     		    <ListView
             android:id="@+id/tab2"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"/>
-	         
-            <Button  
-                android:id="@+id/tab3"  
-                android:layout_width="fill_parent"  
-                android:layout_height="fill_parent"  
-                android:text="testdemo" /> 
-            <Button  
-                android:id="@+id/tab4"  
-                android:layout_width="fill_parent"  
-                android:layout_height="fill_parent"  
-                android:text="dcc" />
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
+			
+    		  <ListView
+            android:id="@+id/QAtab"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
+                  <ListView
+            android:id="@+id/tab1"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            >
 
-            <AnalogClock
-                android:id="@+id/tab1"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" />
+            </ListView>
+             
+                        <ListView
+            android:id="@+id/tab3"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
  
         </FrameLayout>  
 
 	      <TabWidget
 	          android:id="@android:id/tabs"
 	          android:layout_width="fill_parent"
-	          android:layout_height="50dip"
+	          android:layout_height="40dip"
 	          android:layout_alignBottom="@android:id/tabcontent"
 	          android:layout_alignParentBottom="true"
 	          android:background="@color/black"
