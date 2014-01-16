@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/welcome_ad_rlayout" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android" android:background="@color/white">
+    <ImageView android:layout_gravity="center" android:id="@+id/loader_welcome_ad01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/loader_icon" android:contentDescription="@null" />
+    <ImageView android:layout_gravity="center" android:id="@+id/loader_welcome_ad02" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/loader_icon" android:contentDescription="@null" />
+    <ImageView android:id="@+id/welcome_ad_view" android:layout_width="fill_parent" android:layout_height="fill_parent" android:scaleType="fitXY" android:contentDescription="@null" />
+</FrameLayout>

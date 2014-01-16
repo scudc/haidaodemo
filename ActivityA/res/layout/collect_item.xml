@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+ <ScrollView	xmlns:android="http://schemas.android.com/apk/res/android"
+		        android:id="@+id/collectScrollview"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:background="#FFFFFF" >
+
+     <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="8.0dip">
+    <RelativeLayout android:id="@+id/stow_item_child" android:background="@drawable/one_list_selector" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <TextView android:textColor="@color/black" android:id="@+id/stow_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="28.0dip" android:text="@string/stow" android:layout_centerVertical="true" />
+        <TextView android:textColor="@color/black" android:id="@+id/stow_id" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/stowID" android:layout_toRightOf="@id/stow_title" android:layout_centerInParent="true" />
+        <TextView android:textColor="@color/black" android:id="@+id/stow_time" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="3.0dip" android:text="@string/stowTime" android:layout_toRightOf="@id/stow_id" android:layout_centerInParent="true" />
+    </RelativeLayout>
+    <ImageView android:id="@+id/stow_arrowhead_imageView" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="20.0dip" android:src="@drawable/more_arrowheads" android:layout_alignTop="@id/stow_item_child" android:layout_alignBottom="@id/stow_item_child" android:layout_alignParentRight="true" android:contentDescription="@null" />
+    <ImageView android:id="@+id/showitem_line" android:background="@color/darkgray" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginLeft="17.0dip" android:layout_marginRight="17.0dip" android:layout_below="@id/stow_item_child" android:contentDescription="@null" />
+</RelativeLayout>
+		    </ScrollView>
+		    
+		    
+		    
+
+
+	

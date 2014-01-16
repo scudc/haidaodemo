@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="NoTitleTheme">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <style name="main_tab_bottom">
+        <item name="android:textSize">@dimen/bottom_tab_font_size</item>
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@null</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_weight">2.0</item>
+    </style>
+    <style name="onehomepageImageAmplify">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/AnimAmplify</item>
+    </style>
+    <style name="AnimAmplify" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/changebig_in</item>
+    </style>
+</resources>
