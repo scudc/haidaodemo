@@ -49,9 +49,11 @@ public class ActivityA extends BaseActivity {
  
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	
+    	
         super.onCreate(savedInstanceState);
         
-     
+        
         setContentView(R.layout.one_welcome);
         mActivityName = getString(R.string.activity_a);
         
@@ -60,6 +62,7 @@ public class ActivityA extends BaseActivity {
         
         oneApp = (OneApp) getApplication();
         oneApp.pushActivity(this);
+
         
     }
     
@@ -152,6 +155,9 @@ public class ActivityA extends BaseActivity {
     	Intent intent = new Intent(ActivityA.this, MainActivity.class);
         //Intent intent = new Intent(ActivityA.this, ActivityC.class);
         startActivity(intent);
+
+	    //v1.setText("sdc");
+
     }
 
 }

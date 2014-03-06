@@ -29,7 +29,8 @@
                     android:id="@+id/imageClick_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="right|center" >
+                    android:gravity="right|center"
+                    android:onClick="shareOnClick" >
 
                     <TextView
                         android:id="@+id/moreApply"
