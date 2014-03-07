@@ -159,7 +159,7 @@ public final class R {
         public static final int down_line=0x7f070047;
         public static final int down_line1=0x7f0700c2;
         public static final int editText1=0x7f070114;
-        public static final int editText2=0x7f07011a;
+        public static final int editText2=0x7f07011c;
         public static final int emailClew_textView=0x7f07007c;
         public static final int email_editText1=0x7f07007b;
         public static final int fPageImage_iView=0x7f0700a3;
@@ -181,13 +181,14 @@ public final class R {
         public static final int home_ad_view=0x7f070095;
         public static final int home_datetime=0x7f0700aa;
         public static final int home_page_item_linearlayout=0x7f0700a1;
+        public static final int home_share_url=0x7f070118;
         public static final int homepage_img=0x7f0700a0;
         public static final int homepage_title=0x7f07009b;
         public static final int imageBelow_tView=0x7f0700a4;
         public static final int imageBelow_tView1=0x7f0700a5;
         public static final int imageClick_layout=0x7f0700d2;
         public static final int imageView1=0x7f070117;
-        public static final int imageView2=0x7f070119;
+        public static final int imageView2=0x7f07011b;
         public static final int imageset=0x7f07002c;
         public static final int laud_click_range=0x7f0700c7;
         public static final int laud_image=0x7f07004e;
@@ -198,6 +199,7 @@ public final class R {
         public static final int linearLayout01=0x7f07009e;
         public static final int linearLayout1=0x7f070029;
         public static final int linearlayout01=0x7f070051;
+        public static final int list_share_url=0x7f07011a;
         public static final int loader_welcome_ad01=0x7f07003e;
         public static final int loader_welcome_ad02=0x7f07003f;
         public static final int loadfail_textview=0x7f07009a;
@@ -278,7 +280,8 @@ public final class R {
         public static final int one_work_icon=0x7f070085;
         public static final int one_work_name=0x7f070086;
         public static final int q_datetime=0x7f0700bd;
-        public static final int qaScrollView=0x7f07011c;
+        public static final int qaScrollView=0x7f07011e;
+        public static final int qa_share_url=0x7f07011f;
         public static final int question_ViewPager=0x7f0700b9;
         public static final int question_answer_content=0x7f0700c6;
         public static final int question_answer_image=0x7f0700c4;
@@ -306,7 +309,7 @@ public final class R {
         public static final int returnmicroblog=0x7f07002b;
         public static final int scrollView1=0x7f070042;
         public static final int scrollViewClick=0x7f0700d0;
-        public static final int scrollview=0x7f070118;
+        public static final int scrollview=0x7f070119;
         public static final int set_familiar3=0x7f07008b;
         public static final int set_tag_order=0x7f07008d;
         public static final int setitem=0x7f07006b;
@@ -374,7 +377,7 @@ public final class R {
         public static final int up_line=0x7f070044;
         public static final int update_progress=0x7f0700fb;
         public static final int version_icon=0x7f070025;
-        public static final int view1=0x7f07011b;
+        public static final int view1=0x7f07011d;
         public static final int warning_textview=0x7f070039;
         public static final int weibo_webview=0x7f0700e5;
         public static final int welcome_ad_rlayout=0x7f070093;

@@ -70,7 +70,8 @@
                 <TextView android:textColor="@color/one_textcolor" android:gravity="center" android:layout_gravity="center" android:id="@+id/laud_number" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/qa_people_like_num" />
         	-->
             </LinearLayout>
-            
+            <TextView android:visibility="invisible"  android:id="@+id/list_share_url"    android:layout_width="fill_parent"
+                   android:layout_height="fill_parent"  />
             </LinearLayout>
            
 </ScrollView>

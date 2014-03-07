@@ -125,6 +125,10 @@ public class ListViewAdapter extends BaseAdapter {
 				Bitmap bitmap =getHttpBitmap(content);
 				imageView.setImageBitmap(bitmap);
 				Log.i("setDataToView", type);
+			}else if (type.equals("shareUrl"))
+			{
+				TextView textView = (TextView) targetView.findViewById(targetViewId);
+		  		textView.setText(content);
 			}
 		}
      	

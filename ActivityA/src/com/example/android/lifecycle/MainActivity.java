@@ -188,7 +188,7 @@ public class MainActivity extends BaseActivity {
 		tabs.setup();
 		tabs.addTab(tabs.newTabSpec("home tab").setIndicator("首页", null)
 				.setContent(R.id.homeTab));
-		tabs.addTab(tabs.newTabSpec("second tab").setIndicator("一篇", null)
+		tabs.addTab(tabs.newTabSpec("list tab").setIndicator("一篇", null)
 				.setContent(R.id.tab2));
 		tabs.addTab(tabs.newTabSpec("QA Tab").setIndicator("问答", null)
 				.setContent(R.id.QAtab));
@@ -366,15 +366,31 @@ public class MainActivity extends BaseActivity {
 
 	/* 分享功能 */
 	public void shareOnClick(View view) {
-
-		Log.i("share", "true");
-
+		String shareTitle ="";
+		String shareContent = "推荐海盗一篇";
+		if(tabs.getCurrentTabTag() == "home tab" )
+		{
+			shareTitle = "home tab";
+			shareContent = shareContent + ((TextView) this.findViewById(R.id.fPage_tView)).getText().toString();
+		}else if(tabs.getCurrentTabTag() == "QA Tab" )
+		{
+			shareTitle = "QA Tab";
+			shareContent = "";
+			
+		}else if(tabs.getCurrentTabTag() == "list tab")
+		{
+			shareTitle = "list tab";
+			shareContent = "";
+		}
+			
+		
 		Intent intent = new Intent(Intent.ACTION_SEND);
 		intent.setType("text/plain");
 		// intent.setPackage("com.sina.weibo");
 		intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
-		intent.putExtra(Intent.EXTRA_TEXT, "你好 ");
-		intent.putExtra(Intent.EXTRA_TITLE, "我是标题");
+		//intent.putExtra(Intent.EXTRA_TEXT, shareTitle+"推荐海盗一篇   VOL.516 车站  (来自海盗团队) http://caodan.org/516-photo.html ");
+		intent.putExtra(Intent.EXTRA_TEXT, shareContent);
+		intent.putExtra(Intent.EXTRA_TITLE, shareTitle);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(Intent.createChooser(intent, "请选择"));
 	}
@@ -426,7 +442,7 @@ public class MainActivity extends BaseActivity {
 
 					adapter = new ListViewAdapter(this.mainActivity, mList,
 							mGist, R.id.scrollview, R.layout.list_item,
-							loadData("home", nameToIdMap));
+							loadData("list"));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					Log.v("DEBUG", "you are not ok");
@@ -440,7 +456,7 @@ public class MainActivity extends BaseActivity {
 					adapter1 = new ListViewAdapter(this.mainActivity, mList,
 							mGist, R.id.collectScrollview,
 							R.layout.collect_item,
-							loadData("home", nameToIdMap));
+							loadData("collect"));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -453,7 +469,7 @@ public class MainActivity extends BaseActivity {
 					homeListViewadapter = new ListViewAdapter(
 							this.mainActivity, mList, mGist,
 							R.id.homeScrollView, R.layout.home_item, loadData(
-									"home", nameToIdMap));
+									"home"));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -465,7 +481,7 @@ public class MainActivity extends BaseActivity {
 				try {
 					qaListViewadapter = new ListViewAdapter(this.mainActivity,
 							mList, mGist, R.id.qaScrollView, R.layout.qa_item,
-							loadData("QA", nameToIdMap));
+							loadData("QA"));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -478,7 +494,7 @@ public class MainActivity extends BaseActivity {
 					detailListViewadapter = new ListViewAdapter(
 							this.mainActivity, mList, mGist,
 							R.id.detailScrollView, R.layout.detail_item,
-							loadData("home", nameToIdMap));
+							loadData("detail"));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -501,10 +517,14 @@ public class MainActivity extends BaseActivity {
 		}
 
 		//加载数据的函数
-		private ArrayList<ArrayList<String>> loadData(String viewName,
-				HashMap<String, String> nameToIdMap) throws JSONException {
+		private ArrayList<ArrayList<String>> loadData(String viewName) throws JSONException {
 			//
-			String data = "{'home':[['new_tView','xxxxxooooxxxxxoooooxxxxxxooooo','text'],['fPage_tView','VOL.284','text'],['imageView1','http://pic.yupoo.com/hanapp/DyfFOBnd/custom.jpg','image']],'QA':[['question_title','xxxxxooooxxxxxoooooxxxxxxooooo','text']]}";
+			String data = "{'home':[['new_tView','xxxxxooooxxxxxoooooxxxxxxooooo','text'],['home_share_url','http://caodan.org/516-photo.html','shareUrl']," +
+					"['fPage_tView','VOL.284','text'],['imageView1','http://pic.yupoo.com/hanapp/DyfFOBnd/custom.jpg','image']," +
+					"['imageBelow_tView','我迷路了','text'],['imageBelow_tView1','xianglong/绘图','text'],['date_tView','30','text'],['date1_tView','Dec,2013','text']]," +
+					"'QA':[['qa_share_url','http://caodan.org/516-photo.html','shareUrl'],['question_title','xxxxxooooxxxxxoooooxxxxxxooooo','text'],['question_publish_time','January 01,2014','text'],['question_content','【海盗团队】问：你有没有喜欢的人？','text'],['question_answer_title','海盗团队相龙答','text'],['question_answer_content','青城山下白素贞,洞中千年修此身.啊...啊...啊...啊...勤修苦练来得道,脱胎换骨变成人.啊...啊...啊...啊...一心向道无杂念,皈依三宝弃红尘,啊...啊...啊...啊...望求菩萨来点化,渡我素贞出凡尘,嗨呀嗨嗨哟,嗨呀嗨嗨哟','text']" +
+					"],'list':[['list_share_url','http://caodan.org/516-photo.html','shareUrl'],['content_publish_time','October 27,2012','text'],['one_content_title','春风拂醉的晚上','text'],['one_content_author','hobo','text'],['one_content_article','听说近期有些游戏公司打算上市了，后面后面还跟着优酷、遨游等。主要原因是去年基金公司们都在准备阿里的上市，结果硬是上不去。搞的基金公司没办法了，先弄几个小的吧。。','text'],['one_content_author_novel','王相龙 科幻小说家','text']]}";
+			Log.i("data",data);
 			ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
 			try {
 				JSONArray jsonArray = new JSONObject(data).getJSONArray(viewName);
@@ -512,7 +532,7 @@ public class MainActivity extends BaseActivity {
 				for (int i = 0; i < jsonArray.length(); i++) {
 					JSONArray tempJson = (JSONArray) jsonArray.opt(i);
 					ArrayList<String> tempArray = new ArrayList<String>();
-					tempArray.add(String.valueOf(nameToIdMap.get(tempJson
+					tempArray.add(String.valueOf(nameToIdMap(tempJson
 							.getString(0))));
 					tempArray.add(String.valueOf(tempJson.getString(1)));
 					tempArray.add(String.valueOf(tempJson.getString(2)));
@@ -525,6 +545,11 @@ public class MainActivity extends BaseActivity {
 
 			return tempResult;
 
+		}
+		
+		private int nameToIdMap(String name)
+		{
+			return mainActivity.getResources().getIdentifier(name, "id", mainActivity.getPackageName());
 		}
 	}
 

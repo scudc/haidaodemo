@@ -70,7 +70,8 @@
         	-->
             </LinearLayout>
 
-			
+			<TextView android:visibility="invisible"  android:id="@+id/qa_share_url"    android:layout_width="fill_parent"
+                   android:layout_height="fill_parent"  />
     </RelativeLayout>
 </ScrollView>
 
