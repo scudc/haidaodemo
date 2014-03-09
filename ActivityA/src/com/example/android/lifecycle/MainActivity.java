@@ -31,7 +31,11 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.TabActivity;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -63,7 +67,7 @@ import android.graphics.BitmapFactory;
 @SuppressWarnings("deprecation")
 public class MainActivity extends BaseActivity {
 
-	private HashMap<String, String> nameToIdMap;
+
 
 	private String mActivityName;
 	private TextView mStatusView;
@@ -84,6 +88,7 @@ public class MainActivity extends BaseActivity {
 	private View bind_item;
 	private View about_one;
 	private View microblog;
+	private View loading_item;
 
 	// app 全局的application 类
 	private OneApp oneApp;
@@ -103,9 +108,7 @@ public class MainActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// 开启异步获取数据的线程
-		GetDataTask task = new GetDataTask(this);
-		task.execute("http://csdnimg.cn/www/images/csdnindex_logo.gif");
+
 
 		// 设置这个防止网络错误
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -114,13 +117,7 @@ public class MainActivity extends BaseActivity {
 		StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
 				.detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
 				.penaltyLog().penaltyDeath().build());
-		// 初始化nameToIdMap
-		this.nameToIdMap = new HashMap<String, String>();
-		this.nameToIdMap.put("new_tView", Integer.toString(R.id.new_tView));
-		this.nameToIdMap.put("question_title",
-				Integer.toString(R.id.question_title));
-		this.nameToIdMap.put("fPage_tView", Integer.toString(R.id.fPage_tView));
-		this.nameToIdMap.put("imageView1", Integer.toString(R.id.imageView1));
+
 
 		oneApp = (OneApp) getApplication();
 		oneApp.pushActivity(this);
@@ -132,8 +129,11 @@ public class MainActivity extends BaseActivity {
 		bind_item = inflater.inflate(R.layout.one_details_page_binditem, null);
 		about_one = inflater.inflate(R.layout.about_one, null);
 		microblog = inflater.inflate(R.layout.one_details_page_microblog, null);
-
+		loading_item = inflater.inflate(R.layout.one_welcome_ad, null);
+		
 		setContentView(main_item);
+
+
 		/*
 		 * 
 		 * mListView = (ListView) findViewById(R.id.tab2); initData();
@@ -222,7 +222,10 @@ public class MainActivity extends BaseActivity {
 		// mStatusAllView = (TextView)findViewById(R.id.status_view_all_c);
 		mStatusTracker.setStatus(mActivityName, getString(R.string.on_create));
 		Utils.printStatus(mStatusView, mStatusAllView);
-
+		
+		// 开启异步获取数据的线程
+		GetDataTask task = new GetDataTask(this);
+		task.execute("http://csdnimg.cn/www/images/csdnindex_logo.gif");
 	}
 
 
@@ -396,44 +399,54 @@ public class MainActivity extends BaseActivity {
 	}
 
 	/* 异步加载数据的类 */
-	class GetDataTask extends AsyncTask<String, Integer, Bitmap> {// 继承AsyncTask
+	class GetDataTask extends AsyncTask<String, Integer, String> {// 继承AsyncTask
 
 		private MainActivity mainActivity;
-
+		
 		public GetDataTask(MainActivity mainActivity) {
 			this.mainActivity = mainActivity;
 			// TODO Auto-generated constructor stub
 		}
 
 		@Override
-		protected Bitmap doInBackground(String... params) {// 处理后台执行的任务，在后台线程执行
+		protected String doInBackground(String... params) {// 处理后台执行的任务，在后台线程执行
 			publishProgress(0);// 将会调用onProgressUpdate(Integer... progress)方法
 			HttpClient hc = new DefaultHttpClient();
 			publishProgress(30);
 			HttpGet hg = new HttpGet(params[0]);// 获取csdn的logo
-			final Bitmap bm;
+			final Bitmap bm = null ;
 			try {
 				HttpResponse hr = hc.execute(hg);
-				bm = BitmapFactory.decodeStream(hr.getEntity().getContent());
+				//bm = BitmapFactory.decodeStream(hr.getEntity().getContent());
 			} catch (Exception e) {
 
 				return null;
 			}
 			publishProgress(100);
 			// mImageView.setImageBitmap(result); 不能在后台线程操作ui
-			return bm;
+			
+			String data = "{'home':[['new_tView','xxxxxooooxxxxxoooooxxxxxxooooo','text'],['home_share_url','http://caodan.org/516-photo.html','shareUrl']," +
+					"['fPage_tView','VOL.284','text'],['imageView1','http://pic.yupoo.com/hanapp/DyfFOBnd/custom.jpg','image']," +
+					"['imageBelow_tView','我迷路了','text'],['imageBelow_tView1','xianglong/绘图','text'],['date_tView','30','text'],['date1_tView','Dec,2013','text']]," +
+					"'QA':[['qa_share_url','http://caodan.org/516-photo.html','shareUrl'],['question_title','xxxxxooooxxxxxoooooxxxxxxooooo','text'],['question_publish_time','January 01,2014','text'],['question_content','【海盗团队】问：你有没有喜欢的人？','text'],['question_answer_title','海盗团队相龙答','text'],['question_answer_content','青城山下白素贞,洞中千年修此身.啊...啊...啊...啊...勤修苦练来得道,脱胎换骨变成人.啊...啊...啊...啊...一心向道无杂念,皈依三宝弃红尘,啊...啊...啊...啊...望求菩萨来点化,渡我素贞出凡尘,嗨呀嗨嗨哟,嗨呀嗨嗨哟','text']" +
+					"],'list':[['list_share_url','http://caodan.org/516-photo.html','shareUrl'],['content_publish_time','October 27,2012','text'],['one_content_title','春风拂醉的晚上','text'],['one_content_author','hobo','text'],['one_content_article','听说近期有些游戏公司打算上市了，后面后面还跟着优酷、遨游等。主要原因是去年基金公司们都在准备阿里的上市，结果硬是上不去。搞的基金公司没办法了，先弄几个小的吧。。','text'],['one_content_author_novel','王相龙 科幻小说家','text']]}";
+	
+			
+			return data;
 		}
 
 		protected void onProgressUpdate(Integer... progress) {// 在调用publishProgress之后被调用，在ui线程执行
 			// mProgressBar.setProgress(progress[0]);//更新进度条的进度
 		}
 
-		protected void onPostExecute(Bitmap result) {// 后台任务执行完之后被调用，在ui线程执行
-			if (result != null) {
+		protected void onPostExecute(String data) {// 后台任务执行完之后被调用，在ui线程执行
+
+			if (data != null) {
+				
 				// Toast.makeText(AsyncTaskActivity.this, "成功获取图片",
 				// Toast.LENGTH_LONG).show();
 				// mImageView.setImageBitmap(result);
-
+				setContentView(main_item);
 				// 开始加载数据和生成view
 				mListView = (ListView) findViewById(R.id.tab2);
 				initData();
@@ -442,7 +455,7 @@ public class MainActivity extends BaseActivity {
 
 					adapter = new ListViewAdapter(this.mainActivity, mList,
 							mGist, R.id.scrollview, R.layout.list_item,
-							loadData("list"));
+							loadData("list",data));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					Log.v("DEBUG", "you are not ok");
@@ -456,7 +469,7 @@ public class MainActivity extends BaseActivity {
 					adapter1 = new ListViewAdapter(this.mainActivity, mList,
 							mGist, R.id.collectScrollview,
 							R.layout.collect_item,
-							loadData("collect"));
+							loadData("collect",data));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -469,7 +482,7 @@ public class MainActivity extends BaseActivity {
 					homeListViewadapter = new ListViewAdapter(
 							this.mainActivity, mList, mGist,
 							R.id.homeScrollView, R.layout.home_item, loadData(
-									"home"));
+									"home",data));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -481,7 +494,7 @@ public class MainActivity extends BaseActivity {
 				try {
 					qaListViewadapter = new ListViewAdapter(this.mainActivity,
 							mList, mGist, R.id.qaScrollView, R.layout.qa_item,
-							loadData("QA"));
+							loadData("QA",data));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -494,12 +507,14 @@ public class MainActivity extends BaseActivity {
 					detailListViewadapter = new ListViewAdapter(
 							this.mainActivity, mList, mGist,
 							R.id.detailScrollView, R.layout.detail_item,
-							loadData("detail"));
+							loadData("detail",data));
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				detailView.setAdapter(detailListViewadapter);
+	
+				
 			} else {
 				// Toast.makeText(AsyncTaskActivity.this, "获取图片失败",
 				// Toast.LENGTH_LONG).show();
@@ -510,6 +525,11 @@ public class MainActivity extends BaseActivity {
 										// doInBackground(Params...)之前被调用，在ui线程执行
 			// mImageView.setImageBitmap(null);
 			// mProgressBar.setProgress(0);//进度条复位
+			
+			
+			setContentView(loading_item);
+			
+			Log.i("onPreExecute", "doing");
 		}
 
 		protected void onCancelled() {// 在ui线程执行
@@ -517,14 +537,8 @@ public class MainActivity extends BaseActivity {
 		}
 
 		//加载数据的函数
-		private ArrayList<ArrayList<String>> loadData(String viewName) throws JSONException {
+		private ArrayList<ArrayList<String>> loadData(String viewName,String data) throws JSONException {
 			//
-			String data = "{'home':[['new_tView','xxxxxooooxxxxxoooooxxxxxxooooo','text'],['home_share_url','http://caodan.org/516-photo.html','shareUrl']," +
-					"['fPage_tView','VOL.284','text'],['imageView1','http://pic.yupoo.com/hanapp/DyfFOBnd/custom.jpg','image']," +
-					"['imageBelow_tView','我迷路了','text'],['imageBelow_tView1','xianglong/绘图','text'],['date_tView','30','text'],['date1_tView','Dec,2013','text']]," +
-					"'QA':[['qa_share_url','http://caodan.org/516-photo.html','shareUrl'],['question_title','xxxxxooooxxxxxoooooxxxxxxooooo','text'],['question_publish_time','January 01,2014','text'],['question_content','【海盗团队】问：你有没有喜欢的人？','text'],['question_answer_title','海盗团队相龙答','text'],['question_answer_content','青城山下白素贞,洞中千年修此身.啊...啊...啊...啊...勤修苦练来得道,脱胎换骨变成人.啊...啊...啊...啊...一心向道无杂念,皈依三宝弃红尘,啊...啊...啊...啊...望求菩萨来点化,渡我素贞出凡尘,嗨呀嗨嗨哟,嗨呀嗨嗨哟','text']" +
-					"],'list':[['list_share_url','http://caodan.org/516-photo.html','shareUrl'],['content_publish_time','October 27,2012','text'],['one_content_title','春风拂醉的晚上','text'],['one_content_author','hobo','text'],['one_content_article','听说近期有些游戏公司打算上市了，后面后面还跟着优酷、遨游等。主要原因是去年基金公司们都在准备阿里的上市，结果硬是上不去。搞的基金公司没办法了，先弄几个小的吧。。','text'],['one_content_author_novel','王相龙 科幻小说家','text']]}";
-			Log.i("data",data);
 			ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
 			try {
 				JSONArray jsonArray = new JSONObject(data).getJSONArray(viewName);
@@ -539,8 +553,7 @@ public class MainActivity extends BaseActivity {
 					tempResult.add(tempArray);
 				}
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
 			}
 
 			return tempResult;
