@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <style name="newProgressBar" parent="android:style/Widget.ProgressBar.Large">
+        <item name="android:indeterminateDrawable">
+            @drawable/progressbar
+            
+        </item>
+        
+        
+    </style>
+</resources>
