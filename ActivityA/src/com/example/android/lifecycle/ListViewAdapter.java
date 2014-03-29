@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import com.example.android.lifecycle.util.DataOp;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +21,7 @@ import android.widget.BaseAdapter;
 import android.widget.ScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.os.AsyncTask;
 import android.util.Log;  
 
 public class ListViewAdapter extends BaseAdapter {
@@ -111,10 +114,11 @@ public class ListViewAdapter extends BaseAdapter {
 	  		
 			}else if (type.equals("image"))
 			{
-				ImageView imageView = (ImageView) targetView.findViewById(targetViewId);
-				Bitmap bitmap =getHttpBitmap(content);
+				/*ImageView imageView = (ImageView) targetView.findViewById(targetViewId);
+				DataOp dataOp = new DataOp();
+				Bitmap bitmap =dataOp.getHttpBitmap(content);
 				imageView.setImageBitmap(bitmap);
-				Log.i("setDataToView", type);
+				Log.i("setDataToView", type);*/
 			}else if (type.equals("shareUrl"))
 			{
 				TextView textView = (TextView) targetView.findViewById(targetViewId);
@@ -129,30 +133,7 @@ public class ListViewAdapter extends BaseAdapter {
 		ScrollView gv;
 	}
 	
-		/**
-	    * 从服务器取图片
-	    * @param url
-	    * @return
-	    */
-	    public static Bitmap getHttpBitmap(String url) {
-	         URL myFileUrl = null;
-	         Bitmap bitmap = null;
-	         try {
-	              myFileUrl = new URL(url);
-	         } catch (MalformedURLException e) {
-	              e.printStackTrace();
-	         }
-	         try {
-	              HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
-	              conn.setConnectTimeout(0);
-	              conn.setDoInput(true);
-	              conn.connect();
-	              InputStream is = conn.getInputStream();
-	              bitmap = BitmapFactory.decodeStream(is);
-	              is.close();
-	         } catch (IOException e) {
-	              e.printStackTrace();
-	         }
-	         return bitmap;
-	    }
+	
+	
+		
 }
