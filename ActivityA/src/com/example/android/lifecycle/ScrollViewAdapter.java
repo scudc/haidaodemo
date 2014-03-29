@@ -1,7 +1,6 @@
 package com.example.android.lifecycle;
 
 import java.util.ArrayList;
-import android.util.Log;   
 import java.util.HashMap;
 
 import android.content.Context;

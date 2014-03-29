@@ -10,13 +10,9 @@ package com.example.android.lifecycle;
  */
 
  
-import java.util.List;
+
 import android.app.Activity;
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningAppProcessInfo;
-import android.content.Context;
-import android.view.View;
- 
+
 /**
  * Ãû³Æ£ºBaseActivity 
  * ÃèÊö£º 

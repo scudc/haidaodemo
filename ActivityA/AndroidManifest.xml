@@ -24,7 +24,7 @@ limitations under the License.
         		 android:label="@string/app_name"
                  android:icon="@drawable/ic_launcher">
 
-        <activity android:name=".ActivityA"
+        <activity android:name=".StartActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

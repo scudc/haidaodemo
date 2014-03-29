@@ -16,24 +16,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
-
 import android.util.Log;  
 
 public class ListViewAdapter extends BaseAdapter {
 
-	//列宽
-	private int cWidth = 120;
-	//水平间距
-	private int hSpacing = 10;
 	private Context mContext;
 	private ArrayList<HashMap<String, Integer>> mList;
-	private ArrayList<HashMap<String, Integer>> mGist;
-    private ArrayList<ArrayList<String>> dataList;
+	private ArrayList<ArrayList<String>> dataList;
 	//要展示view的id
 	private int viewId;
 	//要展示的layout id
@@ -44,7 +36,6 @@ public class ListViewAdapter extends BaseAdapter {
 
 		this.mContext = context;
 		this.mList = list;
-		this.mGist = gist;
 		this.viewId = viewId;
 		this.layoutId = layoutId;
 		this.dataList = dataList;
@@ -88,8 +79,7 @@ public class ListViewAdapter extends BaseAdapter {
 		}
 		//holder.iv.setImageResource(mList.get(arg0).get("list"));
 
-		ScrollViewAdapter ga = new ScrollViewAdapter(mContext, mGist);
-		int ii = ga.getCount();
+
 		
 		//LayoutParams params = new LayoutParams(ii * (48 + 10),
 		//		LayoutParams.FILL_PARENT);

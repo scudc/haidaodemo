@@ -16,15 +16,8 @@
 
 package com.example.android.lifecycle;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -34,7 +27,7 @@ import com.example.android.lifecycle.util.Utils;
 /**
  * Example Activity to demonstrate the lifecycle callback methods.
  */
-public class ActivityA extends BaseActivity {
+public class StartActivity extends BaseActivity {
 
     private String mActivityName;
     private TextView mStatusView;
@@ -88,8 +81,8 @@ public class ActivityA extends BaseActivity {
         
         if(this.oneApp.getCurrentTabIndex()!= 0)
         {
-        	Intent intent = new Intent(ActivityA.this, MainActivity.class);
-            //Intent intent = new Intent(ActivityA.this, ActivityC.class);
+        	Intent intent = new Intent(StartActivity.this, MainActivity.class);
+            //Intent intent = new Intent(StartActivity.this, ActivityC.class);
             startActivity(intent);
         }
         
@@ -131,33 +124,21 @@ public class ActivityA extends BaseActivity {
         mStatusTracker.clear();
     }
 
-    public void startDialog(View v) {
-        Intent intent = new Intent(ActivityA.this, DialogActivity.class);
-        startActivity(intent);
-    }
 
-    public void startActivityB(View v) {
-        Intent intent = new Intent(ActivityA.this, ActivityB.class);
-        startActivity(intent);
-    }
 
-    public void startActivityC(View v) {
-        Intent intent = new Intent(ActivityA.this, ActivityC.class);
-        startActivity(intent);
-    }
 
     public void finishActivityA(View v) {
-        ActivityA.this.finish();
+        StartActivity.this.finish();
     }
     
     public void startMainActivity(View v)
     {
-    	Intent intent = new Intent(ActivityA.this, MainActivity.class);
-        //Intent intent = new Intent(ActivityA.this, ActivityC.class);
+    	Intent intent = new Intent(StartActivity.this, MainActivity.class);
+        //Intent intent = new Intent(StartActivity.this, ActivityC.class);
         startActivity(intent);
 
 	    //v1.setText("sdc");
 
     }
-
+ 
 }

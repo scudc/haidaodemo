@@ -2,7 +2,7 @@ package com.example.android.lifecycle;
 import java.util.Stack;
 
 import android.app.Application;  
-import android.view.View;
+
 import android.app.Activity;
   
 public class OneApp extends Application{  
