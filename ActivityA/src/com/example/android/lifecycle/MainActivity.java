@@ -46,6 +46,7 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
+import com.example.android.lifecycle.util.AsynImageLoader;
 import com.example.android.lifecycle.util.DataOp;
 import com.example.android.lifecycle.util.StatusTracker;
 import com.example.android.lifecycle.util.Utils;
@@ -91,6 +92,10 @@ public class MainActivity extends BaseActivity {
 
 	private TabHost tabs;
 	private TabWidget tabWidget;
+	
+	
+	//图片异步加载的全局对象
+	private AsynImageLoader asynImageLoader = null;
 
 	/*
 	 * (non-Javadoc)
@@ -101,7 +106,9 @@ public class MainActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-
+		
+		//初始化图片异步加载的类
+		asynImageLoader = new AsynImageLoader(); 
 
 		// 设置这个防止网络错误
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -137,7 +144,7 @@ public class MainActivity extends BaseActivity {
 
 			adapter = new ListViewAdapter(this, mList,
 					mGist, R.id.scrollview, R.layout.list_item,
-					loadData("list",data));
+					loadData("list",data),asynImageLoader);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			Log.v("DEBUG", "you are not ok");
@@ -151,7 +158,7 @@ public class MainActivity extends BaseActivity {
 			adapter1 = new ListViewAdapter(this, mList,
 					mGist, R.id.collectScrollview,
 					R.layout.collect_item,
-					loadData("collect",data));
+					loadData("collect",data),asynImageLoader);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -164,7 +171,7 @@ public class MainActivity extends BaseActivity {
 			homeListViewadapter = new ListViewAdapter(
 					this, mList, mGist,
 					R.id.homeScrollView, R.layout.home_item, loadData(
-							"home",data));
+							"home",data),asynImageLoader);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -176,7 +183,7 @@ public class MainActivity extends BaseActivity {
 		try {
 			qaListViewadapter = new ListViewAdapter(this,
 					mList, mGist, R.id.qaScrollView, R.layout.qa_item,
-					loadData("QA",data));
+					loadData("QA",data),asynImageLoader);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -189,7 +196,7 @@ public class MainActivity extends BaseActivity {
 			detailListViewadapter = new ListViewAdapter(
 					this, mList, mGist,
 					R.id.detailScrollView, R.layout.detail_item,
-					loadData("detail",data));
+					loadData("detail",data),asynImageLoader);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

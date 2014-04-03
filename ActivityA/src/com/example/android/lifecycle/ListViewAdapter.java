@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import com.example.android.lifecycle.util.AsynImageLoader;
 import com.example.android.lifecycle.util.DataOp;
 
 import android.content.Context;
@@ -33,15 +34,19 @@ public class ListViewAdapter extends BaseAdapter {
 	private int viewId;
 	//要展示的layout id
 	private int layoutId;
+	
+	private AsynImageLoader asynImageLoader;
+	
 	public ListViewAdapter(Context context,
 			ArrayList<HashMap<String, Integer>> list,
-			ArrayList<HashMap<String, Integer>> gist,int viewId,int layoutId,ArrayList<ArrayList<String>> dataList) {
+			ArrayList<HashMap<String, Integer>> gist,int viewId,int layoutId,ArrayList<ArrayList<String>> dataList,AsynImageLoader asynImageLoader) {
 
 		this.mContext = context;
 		this.mList = list;
 		this.viewId = viewId;
 		this.layoutId = layoutId;
 		this.dataList = dataList;
+		this.asynImageLoader = asynImageLoader;
 	}
 	
 	
@@ -114,18 +119,19 @@ public class ListViewAdapter extends BaseAdapter {
 	  		
 			}else if (type.equals("image"))
 			{
-				/*ImageView imageView = (ImageView) targetView.findViewById(targetViewId);
-				DataOp dataOp = new DataOp();
-				Bitmap bitmap =dataOp.getHttpBitmap(content);
-				imageView.setImageBitmap(bitmap);
-				Log.i("setDataToView", type);*/
+				ImageView imageView = (ImageView) targetView.findViewById(targetViewId);
+				 
+				asynImageLoader.showImageAsyn(imageView, content, R.drawable.one_image);  
+				
 			}else if (type.equals("shareUrl"))
 			{
 				TextView textView = (TextView) targetView.findViewById(targetViewId);
 		  		textView.setText(content);
 			}
+			
+			Log.i("setDataToView", content+"_"+type);
 		}
-     	
+		Log.i("setDataToViewEnd", targetView.toString());
 	}
 	public static class ViewHolder {
 
