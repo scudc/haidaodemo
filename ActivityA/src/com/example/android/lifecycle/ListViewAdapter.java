@@ -1,20 +1,15 @@
 package com.example.android.lifecycle;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import com.example.android.lifecycle.util.AsynImageLoader;
-import com.example.android.lifecycle.util.DataOp;
+
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +17,7 @@ import android.widget.BaseAdapter;
 import android.widget.ScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.os.AsyncTask;
+
 import android.util.Log;  
 
 public class ListViewAdapter extends BaseAdapter {
@@ -47,6 +42,7 @@ public class ListViewAdapter extends BaseAdapter {
 		this.layoutId = layoutId;
 		this.dataList = dataList;
 		this.asynImageLoader = asynImageLoader;
+		Log.i("ListViewAdapter","ListViewAdapter");
 	}
 	
 	
@@ -97,17 +93,19 @@ public class ListViewAdapter extends BaseAdapter {
 		//holder.gv.setStretchMode(GridView.NO_STRETCH);
 		//holder.gv.setNumColumns(ii);
 		//holder.gv.setAdapter(ga);
+		Log.i("getView","getView");
+		Log.i("loadData",dataList.toString());
 		setDataToView(convertView);
 		return convertView;
 	}
 
 	private void setDataToView(View targetView)
 	{
-		Iterator<ArrayList<String>> it = this.dataList.iterator();
+		Iterator<ArrayList<String>> it = dataList.iterator();
+		
 		while(it.hasNext())
 		{
 			ArrayList<String > tempArray = (ArrayList<String >)it.next();
-			
 			int targetViewId = Integer.parseInt(tempArray.get(0));
 			String content = tempArray.get(1);
 			String type = tempArray.get(2);
@@ -129,9 +127,9 @@ public class ListViewAdapter extends BaseAdapter {
 		  		textView.setText(content);
 			}
 			
-			Log.i("setDataToView", content+"_"+type);
+			//Log.i("setDataToView", content+"_"+type);
 		}
-		Log.i("setDataToViewEnd", targetView.toString());
+		//Log.i("setDataToViewEnd", targetView.toString());
 	}
 	public static class ViewHolder {
 

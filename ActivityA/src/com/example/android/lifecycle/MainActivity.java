@@ -141,10 +141,10 @@ public class MainActivity extends BaseActivity {
 		initData();
 		ListViewAdapter adapter = null;
 		try {
-
+			ArrayList<ArrayList<String>> list_data = loadData("list",data);
 			adapter = new ListViewAdapter(this, mList,
 					mGist, R.id.scrollview, R.layout.list_item,
-					loadData("list",data),asynImageLoader);
+					list_data,asynImageLoader);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			Log.v("DEBUG", "you are not ok");
@@ -155,10 +155,11 @@ public class MainActivity extends BaseActivity {
 		mListView1 = (ListView) findViewById(R.id.tab1);
 		ListViewAdapter adapter1 = null;
 		try {
+			ArrayList<ArrayList<String>> collect_data = loadData("collect",data);
 			adapter1 = new ListViewAdapter(this, mList,
 					mGist, R.id.collectScrollview,
 					R.layout.collect_item,
-					loadData("collect",data),asynImageLoader);
+					collect_data,asynImageLoader);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -168,10 +169,10 @@ public class MainActivity extends BaseActivity {
 		homeListView = (ListView) findViewById(R.id.homeTab);
 		ListViewAdapter homeListViewadapter = null;
 		try {
+			ArrayList<ArrayList<String>> home_data = loadData("home",data);
 			homeListViewadapter = new ListViewAdapter(
 					this, mList, mGist,
-					R.id.homeScrollView, R.layout.home_item, loadData(
-							"home",data),asynImageLoader);
+					R.id.homeScrollView, R.layout.home_item, home_data,asynImageLoader);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -181,9 +182,10 @@ public class MainActivity extends BaseActivity {
 		qaListView = (ListView) findViewById(R.id.QAtab);
 		ListViewAdapter qaListViewadapter = null;
 		try {
+			ArrayList<ArrayList<String>> QA_data = loadData("QA",data);
 			qaListViewadapter = new ListViewAdapter(this,
 					mList, mGist, R.id.qaScrollView, R.layout.qa_item,
-					loadData("QA",data),asynImageLoader);
+					QA_data,asynImageLoader);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -193,10 +195,11 @@ public class MainActivity extends BaseActivity {
 		detailView = (ListView) findViewById(R.id.tab3);
 		ListViewAdapter detailListViewadapter = null;
 		try {
+			ArrayList<ArrayList<String>> detail_data = loadData("detail",data);
 			detailListViewadapter = new ListViewAdapter(
 					this, mList, mGist,
 					R.id.detailScrollView, R.layout.detail_item,
-					loadData("detail",data),asynImageLoader);
+					detail_data,asynImageLoader);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -421,6 +424,7 @@ public class MainActivity extends BaseActivity {
 				ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
 				try {
 					JSONArray jsonArray = new JSONObject(data).getJSONArray(viewName);
+					
 
 					for (int i = 0; i < jsonArray.length(); i++) {
 						JSONArray tempJson = (JSONArray) jsonArray.opt(i);
@@ -434,7 +438,7 @@ public class MainActivity extends BaseActivity {
 				} catch (JSONException e) {
 
 				}
-
+				
 				return tempResult;
 
 			}
