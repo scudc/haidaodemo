@@ -15,22 +15,20 @@ public class FileUtil {
 
 	public static File getCacheFile(String imageUri){
 		File cacheFile = null;
-		try {
-			if (Environment.getExternalStorageState().equals(
-					Environment.MEDIA_MOUNTED)) {
-				File sdCardDir = Environment.getExternalStorageDirectory();
-				String fileName = getFileName(imageUri);
-				File dir = new File(sdCardDir.getCanonicalPath()
-						+ AsynImageLoader.CACHE_DIR);
-				if (!dir.exists()) {
-					dir.mkdirs();
-				}
-				cacheFile = new File(dir, fileName);
-				Log.i(TAG, "exists:" + cacheFile.exists() + ",dir:" + dir + ",file:" + fileName);
-			}  
-		} catch (IOException e) {
-			e.printStackTrace();
-			Log.e(TAG, "getCacheFileError:" + e.getMessage());
+		if (Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED)) {
+			//File sdCardDir = Environment.getExternalStorageDirectory();
+			String fileName = getFileName(imageUri);
+			/*File dir = new File(sdCardDir.getCanonicalPath()+"/"
+					+ AsynImageLoader.CACHE_DIR);*/
+			File dir = new File("mnt/sdcard"+"/"
+					+ AsynImageLoader.CACHE_DIR);
+			if (!dir.exists()) {
+				Log.i("getCacheFile",String.valueOf(dir.mkdirs()));
+			}
+			
+			cacheFile = new File(dir, fileName);
+			Log.i(TAG, "exists:" + cacheFile.exists() + ",dir:" + dir + ",file:" + fileName);
 		}
 		
 		return cacheFile;

@@ -17,30 +17,32 @@
 package com.example.android.lifecycle;
 
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
+
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
@@ -57,7 +59,7 @@ import com.example.android.lifecycle.util.Utils;
  * Example Activity to demonstrate the lifecycle callback methods.
  */
 @SuppressLint("NewApi")
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity   {
 
 
 
@@ -97,6 +99,7 @@ public class MainActivity extends BaseActivity {
 	//图片异步加载的全局对象
 	private AsynImageLoader asynImageLoader = null;
 
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -106,7 +109,6 @@ public class MainActivity extends BaseActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		
 		//初始化图片异步加载的类
 		asynImageLoader = new AsynImageLoader(); 
 
@@ -135,7 +137,13 @@ public class MainActivity extends BaseActivity {
 
 
 		DataOp dataOp = new DataOp();
-		String data =  dataOp.getData("xxxxx");
+		String data = "";
+		try {
+			data = dataOp.getData("xxxxx");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		// 开始加载数据和生成view
 		mListView = (ListView) findViewById(R.id.tab2);
 		initData();
@@ -151,7 +159,6 @@ public class MainActivity extends BaseActivity {
 			e.printStackTrace();
 		}
 		mListView.setAdapter(adapter);
-
 		mListView1 = (ListView) findViewById(R.id.tab1);
 		ListViewAdapter adapter1 = null;
 		try {
@@ -162,7 +169,6 @@ public class MainActivity extends BaseActivity {
 					collect_data,asynImageLoader);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		mListView1.setAdapter(adapter1);
 
@@ -170,6 +176,7 @@ public class MainActivity extends BaseActivity {
 		ListViewAdapter homeListViewadapter = null;
 		try {
 			ArrayList<ArrayList<String>> home_data = loadData("home",data);
+
 			homeListViewadapter = new ListViewAdapter(
 					this, mList, mGist,
 					R.id.homeScrollView, R.layout.home_item, home_data,asynImageLoader);
@@ -252,10 +259,11 @@ public class MainActivity extends BaseActivity {
 		// mStatusAllView = (TextView)findViewById(R.id.status_view_all_c);
 		mStatusTracker.setStatus(mActivityName, getString(R.string.on_create));
 		Utils.printStatus(mStatusView, mStatusAllView);
-		
+
 		// 开启异步获取数据的线程
 		//GetDataTask task = new GetDataTask(this);
 		//task.execute("http://csdnimg.cn/www/images/csdnindex_logo.gif");
+		  
 	}
 
 
@@ -420,7 +428,8 @@ public class MainActivity extends BaseActivity {
 
 	//加载数据的函数
 	private ArrayList<ArrayList<String>> loadData(String viewName,String data) throws JSONException {
-				//
+				
+				
 				ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
 				try {
 					JSONArray jsonArray = new JSONObject(data).getJSONArray(viewName);
@@ -436,16 +445,17 @@ public class MainActivity extends BaseActivity {
 						tempResult.add(tempArray);
 					}
 				} catch (JSONException e) {
-
+					e.printStackTrace();
 				}
 				
 				return tempResult;
 
-			}
+		}
 		
 		private int nameToIdMap(String name)
 		{
 				return this.getResources().getIdentifier(name, "id", this.getPackageName());
 		}
 
+		
 }

@@ -5,8 +5,10 @@ package com.example.android.lifecycle.util;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import android.graphics.Bitmap;
 import android.os.Handler;
@@ -25,9 +27,13 @@ public class AsynImageLoader {
 	private boolean isRunning = false;
 	public static String CACHE_DIR = "haidaoteam";
 	
+	//保存正在下载队列中的url
+	private Set<String> urlSet;
+	
 	public AsynImageLoader(){
 		// 初始化变量
 		caches = new HashMap<String, SoftReference<Bitmap>>();
+		urlSet = new HashSet<String>();
 		taskQueue = new ArrayList<AsynImageLoader.Task>();
 		// 启动图片下载线程
 		isRunning = true;
@@ -67,6 +73,10 @@ public class AsynImageLoader {
 				return bitmap;
 			}
 		}else{
+			if(urlSet.contains(path))
+				return null;
+			else
+				urlSet.add(path);
 			// 如果缓存中不常在该图片，则创建图片下载任务
 			Task task = new Task();
 			task.path = path;
@@ -127,8 +137,16 @@ public class AsynImageLoader {
 					// 获取第一个任务，并将之从任务队列中删除
 					Task task = taskQueue.remove(0);
 					// 将下载的图片添加到缓存
-					task.bitmap = PicUtil.getbitmap(task.path);
+					//task.bitmap = PicUtil.getbitmap(task.path);
+					try {
+						task.bitmap = PicUtil.getbitmapAndwrite(task.path);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 					caches.put(task.path, new SoftReference<Bitmap>(task.bitmap));
+					
 					if(handler != null){
 						// 创建消息对象，并将完成的任务添加到消息对象中
 						Message msg = handler.obtainMessage();

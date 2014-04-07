@@ -140,16 +140,22 @@ public class PicUtil {
 	 */
 	public static Bitmap getbitmapAndwrite(String imageUri) throws Exception {
 		Bitmap bitmap = null;
+		
 		try {
-			// 显示网络上的图片
-			URL myFileUrl = new URL(imageUri);
-			HttpURLConnection conn = (HttpURLConnection) myFileUrl
-					.openConnection();
-			conn.setDoInput(true);
-			conn.connect();
-
-			InputStream is = conn.getInputStream();
 			File cacheFile = FileUtil.getCacheFile(imageUri);
+			if(!cacheFile.exists())
+			{
+				// 显示网络上的图片
+				URL myFileUrl = new URL(imageUri);
+				HttpURLConnection conn = (HttpURLConnection) myFileUrl
+					.openConnection();
+				conn.setDoInput(true);
+				conn.connect();
+
+			
+				InputStream is = conn.getInputStream();
+			
+			
 			BufferedOutputStream bos = null;
 			bos = new BufferedOutputStream(new FileOutputStream(cacheFile));
 			Log.i(TAG, "write file to " + cacheFile.getCanonicalPath());
@@ -163,7 +169,7 @@ public class PicUtil {
 
 			is.close();
 			bos.close();
-
+			}
 			// 从本地加载图片
 			bitmap = BitmapFactory.decodeFile(cacheFile.getCanonicalPath());
 			String name = MD5Util.getMD5(imageUri);

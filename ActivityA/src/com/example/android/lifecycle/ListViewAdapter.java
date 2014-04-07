@@ -10,13 +10,17 @@ import com.example.android.lifecycle.util.AsynImageLoader;
 
 import android.content.Context;
 
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import android.util.Log;  
 
@@ -32,6 +36,10 @@ public class ListViewAdapter extends BaseAdapter {
 	
 	private AsynImageLoader asynImageLoader;
 	
+	//监听listview中的手势事件
+	private GestureDetector detector;
+	FlingListeber listener;
+	
 	public ListViewAdapter(Context context,
 			ArrayList<HashMap<String, Integer>> list,
 			ArrayList<HashMap<String, Integer>> gist,int viewId,int layoutId,ArrayList<ArrayList<String>> dataList,AsynImageLoader asynImageLoader) {
@@ -42,6 +50,8 @@ public class ListViewAdapter extends BaseAdapter {
 		this.layoutId = layoutId;
 		this.dataList = dataList;
 		this.asynImageLoader = asynImageLoader;
+        listener = new FlingListeber();
+        detector = new GestureDetector(listener);
 		Log.i("ListViewAdapter","ListViewAdapter");
 	}
 	
@@ -68,7 +78,6 @@ public class ListViewAdapter extends BaseAdapter {
 	@Override
 	public View getView(int arg0, View convertView, ViewGroup arg2) {
 		// TODO Auto-generated method stub
-		
 		ViewHolder holder = null;
 		if (convertView == null) {
 			holder = new ViewHolder();
@@ -77,13 +86,13 @@ public class ListViewAdapter extends BaseAdapter {
 			//holder.iv = (ImageView) convertView.findViewById(R.id.iv);
 			holder.gv = (ScrollView) convertView.findViewById(viewId);
 			convertView.setTag(holder);
-
+			setDataToView(convertView);
+			Log.i("dc","xxxxxxcccccc");
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		//holder.iv.setImageResource(mList.get(arg0).get("list"));
-
-
+		
+    
 		
 		//LayoutParams params = new LayoutParams(ii * (48 + 10),
 		//		LayoutParams.FILL_PARENT);
@@ -93,9 +102,8 @@ public class ListViewAdapter extends BaseAdapter {
 		//holder.gv.setStretchMode(GridView.NO_STRETCH);
 		//holder.gv.setNumColumns(ii);
 		//holder.gv.setAdapter(ga);
-		Log.i("getView","getView");
-		Log.i("loadData",dataList.toString());
-		setDataToView(convertView);
+
+		
 		return convertView;
 	}
 
@@ -137,6 +145,81 @@ public class ListViewAdapter extends BaseAdapter {
 		ScrollView gv;
 	}
 	
+	class FlingListeber implements GestureDetector.OnGestureListener{
+
+		View item;
+        ViewHolder holder;
+        
+        public View getItem() {
+            return item;
+        }
+
+        public void setItem(View convertView) {
+            this.item = convertView;
+        }
+
+        
+        
+        public ViewHolder getHolder() {
+            return holder;
+        }
+
+        public void setHolder(ViewHolder holder) {
+            this.holder = holder;
+        }
+
+
+    
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                float velocityY) {
+        	Log.i("onFling",String.valueOf(e1.getX())+"-"+String.valueOf(e1.getY())+","+String.valueOf(e2.getX())+"-"+String.valueOf(e2.getY()));
+            // TODO Auto-generated method stub
+            if(e2.getX()-e1.getX()>5){
+                Log.i("onFling","1");
+            }else if(e1.getX()-e2.getX()>5){
+            	Log.i("onFling","2");
+                
+            }
+            return false;
+        }
+
+   
+
+		@Override
+		public boolean onDown(MotionEvent arg0) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+	
+		@Override
+		public void onLongPress(MotionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public boolean onScroll(MotionEvent arg0, MotionEvent arg1, float arg2,
+				float arg3) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public void onShowPress(MotionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public boolean onSingleTapUp(MotionEvent arg0) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+        
+    }
 	
 	
 		

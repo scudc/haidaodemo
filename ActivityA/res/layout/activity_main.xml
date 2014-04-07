@@ -19,7 +19,7 @@ limitations under the License.
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
     android:gravity="bottom|center_horizontal|fill_horizontal|fill|start|end"
-
+	android:id="@+android:id/mainLayout"
     android:orientation="vertical"
     >
 

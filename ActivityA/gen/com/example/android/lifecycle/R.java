@@ -210,6 +210,7 @@ public final class R {
         public static final int login_day_text=0x7f0700e9;
         public static final int login_name=0x7f070006;
         public static final int login_password=0x7f070008;
+        public static final int mainLayout=0x01010000;
         public static final int main_item_cmt_btn=0x7f070012;
         public static final int main_item_cmtcount_tv=0x7f070013;
         public static final int main_item_img=0x7f07000c;
