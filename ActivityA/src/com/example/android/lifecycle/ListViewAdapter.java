@@ -6,8 +6,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import com.example.android.lifecycle.util.AsynImageLoader;
+import com.example.android.lifecycle.util.DataOp;
 
 
+import android.app.Activity;
 import android.content.Context;
 
 import android.view.GestureDetector;
@@ -28,6 +30,8 @@ public class ListViewAdapter extends BaseAdapter {
 
 	private Context mContext;
 	private ArrayList<HashMap<String, Integer>> mList;
+	private DataOp dataOp;
+	
 	private ArrayList<ArrayList<String>> dataList;
 	//要展示view的id
 	private int viewId;
@@ -40,19 +44,27 @@ public class ListViewAdapter extends BaseAdapter {
 	private GestureDetector detector;
 	FlingListeber listener;
 	
-	public ListViewAdapter(Context context,
+	private String viewName;
+	//显示的view对象
+	private View dispalyView; 
+	
+	public ListViewAdapter(Activity ac,Context context,
 			ArrayList<HashMap<String, Integer>> list,
-			ArrayList<HashMap<String, Integer>> gist,int viewId,int layoutId,ArrayList<ArrayList<String>> dataList,AsynImageLoader asynImageLoader) {
+			ArrayList<HashMap<String, Integer>> gist,int viewId,int layoutId,DataOp dataOp,AsynImageLoader asynImageLoader, String string) {
 
 		this.mContext = context;
 		this.mList = list;
 		this.viewId = viewId;
 		this.layoutId = layoutId;
-		this.dataList = dataList;
+
 		this.asynImageLoader = asynImageLoader;
         listener = new FlingListeber();
         detector = new GestureDetector(listener);
-		Log.i("ListViewAdapter","ListViewAdapter");
+        this.viewName = string;
+		
+		this.dispalyView = null;
+		//初始化数据
+		
 	}
 	
 	
@@ -84,10 +96,17 @@ public class ListViewAdapter extends BaseAdapter {
 			convertView = LayoutInflater.from(mContext).inflate(
 					layoutId, arg2, false);
 			//holder.iv = (ImageView) convertView.findViewById(R.id.iv);
-			holder.gv = (ScrollView) convertView.findViewById(viewId);
+			holder.gv =  (ScrollView) convertView.findViewById(viewId);
+			
+			//holder.gv =  new ScrollView(this.mContext);
+			//holder.gv.add
+			//holder.gv.addView(convertView.findViewById(viewId));
 			convertView.setTag(holder);
-			setDataToView(convertView);
-			Log.i("dc","xxxxxxcccccc");
+			//setDataToView(convertView);
+			
+			this.dispalyView = convertView;
+			Log.i("dc",this.dispalyView.toString());
+			return convertView;
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
@@ -103,8 +122,16 @@ public class ListViewAdapter extends BaseAdapter {
 		//holder.gv.setNumColumns(ii);
 		//holder.gv.setAdapter(ga);
 
-		
+		//convertView.setTag(viewName)
+
+
 		return convertView;
+	}
+
+
+	public View getDisplayView()
+	{
+		return this.dispalyView;
 	}
 
 	private void setDataToView(View targetView)

@@ -20,6 +20,8 @@ package com.example.android.lifecycle;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Stack;
 
 
@@ -29,9 +31,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -42,11 +48,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.example.android.lifecycle.util.AsynImageLoader;
 import com.example.android.lifecycle.util.DataOp;
@@ -59,7 +67,7 @@ import com.example.android.lifecycle.util.Utils;
  * Example Activity to demonstrate the lifecycle callback methods.
  */
 @SuppressLint("NewApi")
-public class MainActivity extends BaseActivity   {
+public class MainActivity extends BaseActivity implements OnGestureListener   {
 
 
 
@@ -84,8 +92,7 @@ public class MainActivity extends BaseActivity   {
 	private View microblog;
 	private View loading_item;
 
-
-
+	private Map<String,ListViewAdapter> viewMap;
 	// app 全局的application 类
 	private OneApp oneApp;
 
@@ -98,7 +105,20 @@ public class MainActivity extends BaseActivity   {
 	
 	//图片异步加载的全局对象
 	private AsynImageLoader asynImageLoader = null;
-
+	private DataOp dataOp = null;
+	
+	private GestureDetector detector;  
+	
+	
+	/*list view adapter*/
+	private ListViewAdapter listAdapter = null;
+	private ListViewAdapter homeAdapter = null;
+	private ListViewAdapter QAAdapter = null;
+	private ListViewAdapter collectAdapter = null;
+	private ListViewAdapter detailAdapter = null;
+	
+	
+	
 	
 	/*
 	 * (non-Javadoc)
@@ -109,8 +129,13 @@ public class MainActivity extends BaseActivity   {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		
+		//初始化保存listview中view对象得数据结构
+		this.viewMap = new HashMap<String,ListViewAdapter>();
 		//初始化图片异步加载的类
-		asynImageLoader = new AsynImageLoader(); 
+		this.asynImageLoader = new AsynImageLoader(); 
+		this.dataOp = new DataOp(asynImageLoader);
+	
 
 		// 设置这个防止网络错误
 		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -136,84 +161,54 @@ public class MainActivity extends BaseActivity   {
 		setContentView(main_item);
 
 
-		DataOp dataOp = new DataOp();
-		String data = "";
-		try {
-			data = dataOp.getData("xxxxx");
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		
 		// 开始加载数据和生成view
 		mListView = (ListView) findViewById(R.id.tab2);
 		initData();
-		ListViewAdapter adapter = null;
-		try {
-			ArrayList<ArrayList<String>> list_data = loadData("list",data);
-			adapter = new ListViewAdapter(this, mList,
-					mGist, R.id.scrollview, R.layout.list_item,
-					list_data,asynImageLoader);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			Log.v("DEBUG", "you are not ok");
-			e.printStackTrace();
-		}
-		mListView.setAdapter(adapter);
+		
+		//ArrayList<ArrayList<String>> list_data = loadData("list",data);
+		listAdapter = new ListViewAdapter(this,this, mList,
+				mGist, R.id.scrollview, R.layout.list_item,
+				dataOp,asynImageLoader,"list");
+		
+		mListView.setAdapter(listAdapter);
 		mListView1 = (ListView) findViewById(R.id.tab1);
-		ListViewAdapter adapter1 = null;
-		try {
-			ArrayList<ArrayList<String>> collect_data = loadData("collect",data);
-			adapter1 = new ListViewAdapter(this, mList,
-					mGist, R.id.collectScrollview,
-					R.layout.collect_item,
-					collect_data,asynImageLoader);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-		}
-		mListView1.setAdapter(adapter1);
+
+		//ArrayList<ArrayList<String>> collect_data = loadData("collect",data);
+		collectAdapter = new ListViewAdapter(this,this, mList,
+				mGist, R.id.collectScrollview,
+				R.layout.collect_item,
+				dataOp,asynImageLoader,"collect");
+
+		mListView1.setAdapter(collectAdapter);
 
 		homeListView = (ListView) findViewById(R.id.homeTab);
-		ListViewAdapter homeListViewadapter = null;
-		try {
-			ArrayList<ArrayList<String>> home_data = loadData("home",data);
+		homeAdapter = new ListViewAdapter(this,
+				this, mList, mGist,
+				R.id.homeScrollView, R.layout.home_item, dataOp,asynImageLoader,"home");
 
-			homeListViewadapter = new ListViewAdapter(
-					this, mList, mGist,
-					R.id.homeScrollView, R.layout.home_item, home_data,asynImageLoader);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		homeListView.setAdapter(homeListViewadapter);
+		homeListView.setAdapter(homeAdapter);
 
 		qaListView = (ListView) findViewById(R.id.QAtab);
-		ListViewAdapter qaListViewadapter = null;
-		try {
-			ArrayList<ArrayList<String>> QA_data = loadData("QA",data);
-			qaListViewadapter = new ListViewAdapter(this,
-					mList, mGist, R.id.qaScrollView, R.layout.qa_item,
-					QA_data,asynImageLoader);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		qaListView.setAdapter(qaListViewadapter);
+
+		//ArrayList<ArrayList<String>> QA_data = loadData("QA",data);
+		QAAdapter = new ListViewAdapter(this,this,
+				mList, mGist, R.id.qaScrollView, R.layout.qa_item,
+				dataOp,asynImageLoader,"QA");
+
+		qaListView.setAdapter(QAAdapter);
 
 		detailView = (ListView) findViewById(R.id.tab3);
-		ListViewAdapter detailListViewadapter = null;
-		try {
-			ArrayList<ArrayList<String>> detail_data = loadData("detail",data);
-			detailListViewadapter = new ListViewAdapter(
-					this, mList, mGist,
-					R.id.detailScrollView, R.layout.detail_item,
-					detail_data,asynImageLoader);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		detailView.setAdapter(detailListViewadapter);
 
-		 
+		//ArrayList<ArrayList<String>> detail_data = loadData("detail",data);
+		detailAdapter = new ListViewAdapter(this,
+				this, mList, mGist,
+				R.id.detailScrollView, R.layout.detail_item,
+				dataOp,asynImageLoader,"detail");
+
+		detailView.setAdapter(detailAdapter);
+
+		
 		
 		tabs = (TabHost) findViewById(android.R.id.tabhost);
 		tabWidget = (TabWidget) findViewById(android.R.id.tabs);
@@ -263,11 +258,150 @@ public class MainActivity extends BaseActivity   {
 		// 开启异步获取数据的线程
 		//GetDataTask task = new GetDataTask(this);
 		//task.execute("http://csdnimg.cn/www/images/csdnindex_logo.gif");
-		  
+		detector = new GestureDetector(this);  
+
+		viewMap.put("home", this.homeAdapter);
+		Log.i("getDataAsyn",String.valueOf(homeAdapter.hashCode()));
+		//viewMap.put("QA", this.QAAdapter);
+		//viewList.add(detailListViewadapter.getDisplayView());
+		//viewList.add(adapter1.getDisplayView());
+	
+		
+		
+	
+		/**
+		 * Handler示例，用于刷新时间
+		 * DateHelper是我自己写的日期格式化工具哦
+		 * @author Dreamworker
+		 *
+		 */
+		class ViewHandler extends Handler {
+			
+		
+
+			public ViewHandler() {
+				super();
+
+			}
+
+			@Override
+			public void handleMessage(Message msg) {
+			
+				super.handleMessage(msg);
+				try {
+					//setContentView(bind_item);
+					String data = dataOp.getDataAsyn("http://haidaoteam.sinaapp.com/?datatype=json", about_one, main_item,homeListView);
+                	System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+                	if(main_item.findViewById(R.id.QAtab) != null)
+                		setDataToView(main_item.findViewById(R.id.QAtab),loadData("QA",data));
+                	if(main_item.findViewById(R.id.homeTab) != null)
+                		setDataToView(main_item.findViewById(R.id.homeTab),loadData("home",data));
+                	if(main_item.findViewById(R.id.tab2) != null)
+                		setDataToView(main_item.findViewById(R.id.tab2),loadData("list",data));
+                	//setDataToView(main_item.findViewById(R.id.QAtab),loadData("QA",data));
+                	//setDataToView(main_item.findViewById(R.id.tab2),loadData("list",data));
+                	
+                	//Thread.sleep(10000);
+                	//setContentView(main_item);
+                	
+                	//TextView tx = (TextView) .findViewById(R.id.new_tView);
+                	//tx.setText("xxxxxx");
+                	//main_item.setBackgroundColor(TRIM_MEMORY_BACKGROUND);
+                	//main_item.invalidate();
+
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		}
+		
+		final ViewHandler viewHandler = new ViewHandler();
+		/**
+		 * 要在Activity中开启一个用于更新的线程
+		 * timeViewHandler 继承自Handler，用于处理和发送消息
+		 * MSG_UPDATE 是自定义的一个int常量，用于区分消息类型，可自由取值。
+		 */
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+					
+					//viewHandler.sendMessage(Message.obtain()); 
+					
+				
+			}
+		}).start();
 	}
 
+	//加载数据的函数
+	private ArrayList<ArrayList<String>> loadData(String viewName,String data) throws JSONException {
+				
+				
+				ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+				try {
+					String viewData =  new JSONObject(data).getString(viewName);
+					JSONArray jsonArray = new JSONArray(viewData);
+					
 
+					for (int i = 0; i < jsonArray.length(); i++) {
+						JSONArray tempJson = (JSONArray) jsonArray.opt(i);
+						ArrayList<String> tempArray = new ArrayList<String>();
+						tempArray.add(String.valueOf(nameToIdMap(tempJson
+								.getString(0))));
+						tempArray.add(String.valueOf(tempJson.getString(1)));
+						tempArray.add(String.valueOf(tempJson.getString(2)));
+						tempResult.add(tempArray);
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+				return tempResult;
 
+		}
+		
+		private int nameToIdMap(String name)
+		{
+				return this.getResources().getIdentifier(name, "id", this.getPackageName());
+		}
+
+		
+		private void setDataToView(View targetView,ArrayList<ArrayList<String>> dataList)
+		{
+			Iterator<ArrayList<String>> it = dataList.iterator();
+			Log.i("setDataToView",dataList.toString());
+			Log.i("setDataToView",targetView.toString());
+			while(it.hasNext())
+			{
+				ArrayList<String > tempArray = it.next();
+				int targetViewId = Integer.parseInt(tempArray.get(0));
+				String content = tempArray.get(1);
+				String type = tempArray.get(2);
+				
+				if(type.equals("text"))
+				{
+				TextView textView = (TextView) targetView.findViewById(targetViewId);
+		  		textView.setText(content);
+		  		
+				}else if (type.equals("image"))
+				{
+					ImageView imageView = (ImageView) targetView.findViewById(targetViewId);
+					 
+					asynImageLoader.showImageAsyn(imageView, content, R.drawable.one_image);  
+					
+				}else if (type.equals("shareUrl"))
+				{
+					TextView textView = (TextView) targetView.findViewById(targetViewId);
+			  		textView.setText(content);
+				}
+				
+				//Log.i("setDataToView", content+"_"+type);
+			}
+		}
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -298,6 +432,9 @@ public class MainActivity extends BaseActivity   {
 		}
 		mStatusTracker.setStatus(mActivityName, getString(R.string.on_start));
 		Utils.printStatus(mStatusView, mStatusAllView);
+		
+		//viewMap.put("list", this.listAdapter);
+	
 
 	}
 
@@ -426,36 +563,91 @@ public class MainActivity extends BaseActivity   {
 	}
 
 
-	//加载数据的函数
-	private ArrayList<ArrayList<String>> loadData(String viewName,String data) throws JSONException {
-				
-				
-				ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
-				try {
-					JSONArray jsonArray = new JSONObject(data).getJSONArray(viewName);
-					
 
-					for (int i = 0; i < jsonArray.length(); i++) {
-						JSONArray tempJson = (JSONArray) jsonArray.opt(i);
-						ArrayList<String> tempArray = new ArrayList<String>();
-						tempArray.add(String.valueOf(nameToIdMap(tempJson
-								.getString(0))));
-						tempArray.add(String.valueOf(tempJson.getString(1)));
-						tempArray.add(String.valueOf(tempJson.getString(2)));
-						tempResult.add(tempArray);
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				
-				return tempResult;
 
-		}
 		
-		private int nameToIdMap(String name)
-		{
-				return this.getResources().getIdentifier(name, "id", this.getPackageName());
+
+
+		@Override
+		public boolean onDown(MotionEvent arg0) {
+			// TODO Auto-generated method stub
+			return false;
 		}
 
+
+
+
+
+
+
+		@Override
+		public void onLongPress(MotionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+
+		@Override
+		public boolean onScroll(MotionEvent arg0, MotionEvent arg1, float arg2,
+				float arg3) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+
+
+		@Override
+		public void onShowPress(MotionEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+
+		@Override
+		public boolean onSingleTapUp(MotionEvent arg0) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		/* 以下是监听左右滑动事件 ；需要继承OnGestureListener*/
+		
+	    @Override  
+	    public boolean onTouchEvent(MotionEvent event) {
+	        return this.detector.onTouchEvent(event);  
+	    }
+	    /**
+	     * 解决ScrollView后不执行左右移动监听事件OnGestureListener
+	     * 在Activity中添加ScrollView实现滚动activity的效果后，activity的滑动效果却无法生效了
+	     * 原因是因为activity没有处理滑动效果，重写以下方法即可解决。
+	     */
+	    @Override 
+	    public boolean dispatchTouchEvent(MotionEvent ev) { 
+	        detector.onTouchEvent(ev); 
+	        return super.dispatchTouchEvent(ev); 
+	    } 
+	    /** 
+	     * 监听滑动 
+	     */  
+	    @Override  
+	    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,  
+	            float velocityY) {
+	    	System.out.println(this.tabs.getCurrentView().getLayoutDirection());
+	    	System.out.println(R.layout.home_item);
+	    	System.out.println(this.tabs.getCurrentView().getId());
+	    	System.out.println(R.id.homeScrollView);
+	    	System.out.println(this.tabs.getCurrentTab());
+	    	System.out.println(this.homeListView.getId());
+	    	int currentViewId = this.tabs.getCurrentView().getId();
+	    	
+	        if (e1.getX() - e2.getX() < -120) {
+	        	System.out.println("=======================================");
+	        }  
+	        else if (e1.getX() - e2.getX() > 120) {
+	        	System.out.println("+++++++++++++++++++++++++++++++++++++++");
+	        }
+	        return true;  
+	    }
 		
 }

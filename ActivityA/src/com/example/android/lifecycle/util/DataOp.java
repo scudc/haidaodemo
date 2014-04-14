@@ -6,22 +6,45 @@ package com.example.android.lifecycle.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.ref.SoftReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import com.example.android.lifecycle.ListViewAdapter;
 import com.example.android.lifecycle.MainActivity;
+import com.example.android.lifecycle.R;
+import com.example.android.lifecycle.util.AsynImageLoader.ImageCallback;
+import com.example.android.lifecycle.util.AsynImageLoader.Task;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * @author hobodong
@@ -30,8 +53,168 @@ import android.util.Log;
 public class DataOp {
 	
 	private String getDataUrl = "http://haidaoteam.sinaapp.com/?datatype=json";
-	public DataOp()
+	
+	private static final String TAG = "DataOp";
+	// 缓存下载过的图片的Map
+	private Map<String, String> caches;
+	// 任务队列
+	private List<Task> taskQueue;
+	private boolean isRunning = false;
+	public static String CACHE_DIR = "haidaoteam";
+	
+	//保存正在下载队列中的url
+	private Set<String> urlSet;
+	
+	
+	private AsynImageLoader asynImageLoader;
+	
+	public DataOp(AsynImageLoader asynImageLoader){
+		
+		this.asynImageLoader = asynImageLoader;
+		// 初始化变量
+		caches = new HashMap<String,String>();
+		urlSet = new HashSet<String>();
+		taskQueue = new ArrayList<DataOp.Task>();
+		// 启动图片下载线程
+		isRunning = true;
+		new Thread(runnable).start();
+		
+	}
+	
+	/**
+	 * 
+	 * @param imageView 需要延迟加载图片的对象
+	 * @param url 图片的URL地址
+	 * @param resId 图片加载过程中显示的图片资源
+	 * @throws JSONException 
+	 * @throws InterruptedException 
+	 */
+	public String getDataAsyn(String url,View loadingView,final View targetView,final ListView homeListView) throws JSONException, InterruptedException{
+		
+		//ac.setContentView(loadingView);
+		
+		/*Thread mThread = new Thread(new Runnable() {
+	        @Override
+	        public void run() {
+
+	                try {
+	                	
+	                	
+	                	String data = "{'home':[['new_tView','xxxxxooooxxxxxoooooxxxxxxooooo','text'],['home_share_url','http://caodan.org/516-photo.html','shareUrl']," +
+	            				"['fPage_tView','VOL.284','text'],['imageView1','http://photo.yupoo.com/lbhou/Dolq721U/medish.jpg','image']," +
+	            				"['imageBelow_tView','我迷路了','text'],['imageBelow_tView1','xianglong/绘图','text'],['date_tView','30','text'],['date1_tView','Dec,2013','text']]," +
+	            				"'QA':[['qa_share_url','http://caodan.org/516-photo.html','shareUrl'],['question_title','xxxxxooooxxxxxoooooxxxxxxooooo','text'],['question_publish_time','January 01,2014','text'],['question_content','【海盗团队】问：你有没有喜欢的人？','text'],['question_answer_title','海盗团队相龙答','text'],['question_answer_content','青城山下白素贞,洞中千年修此身.啊...啊...啊...啊...勤修苦练来得道,脱胎换骨变成人.啊...啊...啊...啊...一心向道无杂念,皈依三宝弃红尘,啊...啊...啊...啊...望求菩萨来点化,渡我素贞出凡尘,嗨呀嗨嗨哟,嗨呀嗨嗨哟','text']" +
+	            				"],'list':[['list_share_url','http://caodan.org/516-photo.html','shareUrl'],['content_publish_time','October 27,2012','text'],['one_content_title','春风拂醉的晚上','text'],['one_content_author','hobo','text'],['one_content_article','听说近期有些游戏公司打算上市了，后面后面还跟着优酷、遨游等。主要原因是去年基金公司们都在准备阿里的上市，结果硬是上不去。搞的基金公司没办法了，先弄几个小的吧。。','text'],['one_content_author_novel','王相龙 科幻小说家','text']]}";
+
+	            		data = handleGet(getDataUrl);
+	            		//Log.i("getData",new String(data.getBytes("utf-8")));
+	            		//data = new String(data.getBytes("utf-8"),"GBK");
+	            		//Log.i("getData",data);
+	                	Thread.sleep(1000);
+	                	ListViewAdapter list = (ListViewAdapter) homeListView.getAdapter();
+	                	
+	                	setDataToView(list.getDisplayView(),loadData("home",data,ac));
+	                	targetView.invalidate();  
+
+	                	
+
+	                } catch (Exception e) {
+	                    e.printStackTrace();
+	                }
+	            
+	        }
+	    });
+	    mThread.start();   */
+		String data = "{'home':[['new_tView','xxxxxooooxxxxxoooooxxxxxxooooo','text'],['home_share_url','http://caodan.org/516-photo.html','shareUrl']," +
+				"['fPage_tView','VOL.284','text'],['imageView1','http://photo.yupoo.com/lbhou/Dolq721U/medish.jpg','image']," +
+				"['imageBelow_tView','我迷路了','text'],['imageBelow_tView1','xianglong/绘图','text'],['date_tView','30','text'],['date1_tView','Dec,2013','text']]," +
+				"'QA':[['qa_share_url','http://caodan.org/516-photo.html','shareUrl'],['question_title','xxxxxooooxxxxxoooooxxxxxxooooo','text'],['question_publish_time','January 01,2014','text'],['question_content','【海盗团队】问：你有没有喜欢的人？','text'],['question_answer_title','海盗团队相龙答','text'],['question_answer_content','青城山下白素贞,洞中千年修此身.啊...啊...啊...啊...勤修苦练来得道,脱胎换骨变成人.啊...啊...啊...啊...一心向道无杂念,皈依三宝弃红尘,啊...啊...啊...啊...望求菩萨来点化,渡我素贞出凡尘,嗨呀嗨嗨哟,嗨呀嗨嗨哟','text']" +
+				"],'list':[['list_share_url','http://caodan.org/516-photo.html','shareUrl'],['content_publish_time','October 27,2012','text'],['one_content_title','春风拂醉的晚上','text'],['one_content_author','hobo','text'],['one_content_article','听说近期有些游戏公司打算上市了，后面后面还跟着优酷、遨游等。主要原因是去年基金公司们都在准备阿里的上市，结果硬是上不去。搞的基金公司没办法了，先弄几个小的吧。。','text'],['one_content_author_novel','王相龙 科幻小说家','text']]}";
+
+		data = handleGet(getDataUrl);
+	    //ac.setContentView(targetView);
+		return data;
+		
+		//String data = loadDataAsyn(url,getImageCallback(ac,targetView));
+		
+	
+		
+		
+
+	}
+	
+	private void setDataToView(View targetView,ArrayList<ArrayList<String>> dataList)
 	{
+		Iterator<ArrayList<String>> it = dataList.iterator();
+		Log.i("setDataToView",dataList.toString());
+		Log.i("setDataToView",targetView.toString());
+		while(it.hasNext())
+		{
+			ArrayList<String > tempArray = it.next();
+			int targetViewId = Integer.parseInt(tempArray.get(0));
+			String content = tempArray.get(1);
+			String type = tempArray.get(2);
+			
+			if(type.equals("text"))
+			{
+			TextView textView = (TextView) targetView.findViewById(targetViewId);
+	  		textView.setText(content);
+	  		
+			}else if (type.equals("image"))
+			{
+				ImageView imageView = (ImageView) targetView.findViewById(targetViewId);
+				 
+				asynImageLoader.showImageAsyn(imageView, content, R.drawable.one_image);  
+				
+			}else if (type.equals("shareUrl"))
+			{
+				TextView textView = (TextView) targetView.findViewById(targetViewId);
+		  		textView.setText(content);
+			}
+			
+			//Log.i("setDataToView", content+"_"+type);
+		}
+		//Log.i("setDataToViewEnd", targetView.toString());
+	}
+	public String loadDataAsyn(String path,ImageCallback callback){
+		
+		
+		
+		// 判断缓存中是否已经存在该图片
+		if(caches.containsKey(path)){
+			// 取出软引用
+			String data = caches.get(path);
+			// 通过软引用，获取图片
+			// 如果该图片已经被释放，则将该path对应的键从Map中移除掉
+			if(data == null){
+				caches.remove(path);
+			}else{
+				// 如果图片未被释放，直接返回该图片
+				//Log.i(TAG, "return image in cache" + path);
+				return data;
+			}
+		}else{
+			if(urlSet.contains(path))
+				return null;
+			else
+				urlSet.add(path);
+			// 如果缓存中不常在该图片，则创建图片下载任务
+			Task task = new Task();
+			task.path = path;
+			task.callback = callback;
+			//Log.i(TAG, "new Task ," + path);
+			if(!taskQueue.contains(task)){
+				taskQueue.add(task);
+				// 唤醒任务下载队列
+				synchronized (runnable) {
+					runnable.notify();
+				}
+			}
+		}
+		
+		// 缓存中没有图片则返回null
+		return null;
+		
 		
 	}
 	
@@ -48,47 +231,47 @@ public class DataOp {
 				"'QA':[['qa_share_url','http://caodan.org/516-photo.html','shareUrl'],['question_title','xxxxxooooxxxxxoooooxxxxxxooooo','text'],['question_publish_time','January 01,2014','text'],['question_content','【海盗团队】问：你有没有喜欢的人？','text'],['question_answer_title','海盗团队相龙答','text'],['question_answer_content','青城山下白素贞,洞中千年修此身.啊...啊...啊...啊...勤修苦练来得道,脱胎换骨变成人.啊...啊...啊...啊...一心向道无杂念,皈依三宝弃红尘,啊...啊...啊...啊...望求菩萨来点化,渡我素贞出凡尘,嗨呀嗨嗨哟,嗨呀嗨嗨哟','text']" +
 				"],'list':[['list_share_url','http://caodan.org/516-photo.html','shareUrl'],['content_publish_time','October 27,2012','text'],['one_content_title','春风拂醉的晚上','text'],['one_content_author','hobo','text'],['one_content_article','听说近期有些游戏公司打算上市了，后面后面还跟着优酷、遨游等。主要原因是去年基金公司们都在准备阿里的上市，结果硬是上不去。搞的基金公司没办法了，先弄几个小的吧。。','text'],['one_content_author_novel','王相龙 科幻小说家','text']]}";
 		/*return data;*/
-		//data = handleGet(this.getDataUrl);
+		data = handleGet(this.getDataUrl);
 		//Log.i("getData",new String(data.getBytes("utf-8")));
-		//data = new String(data.getBytes("utf-8"));
+		//data = new String(data.getBytes("utf-8"),"GBK");
 		Log.i("getData",data);
+
 		return data;
 	}
 	
-	/**
-	   * 从服务器取图片
-	   * @param url
-	   * @return
-	*/
-	 public static Bitmap getHttpBitmap(String url) {
-		 	//使用这个试试
-		 	//to do  
-		 	/*在第一次获取图片的时候，你应该进行步骤
-		 	 * 1.先判断图片是否在本地缓存中
-		 	 * 2.如果在的话，就读取本地缓存中的图片
-		 	 * 3.如果不在的话，在通过url去获取图片，然后写入本地缓存，在返回图片的Bitmap内容
-		 	 */
-	         URL myFileUrl = null;
-	         Bitmap bitmap = null;
-	         try {
-	              myFileUrl = new URL(url);
-	         } catch (MalformedURLException e) {
-	              e.printStackTrace();
-	         }
-	         try {
-	              HttpURLConnection conn = (HttpURLConnection) myFileUrl.openConnection();
-	              conn.setConnectTimeout(0);
-	              conn.setDoInput(true);
-	              conn.connect();
-	              InputStream is = conn.getInputStream();
-	              bitmap = BitmapFactory.decodeStream(is);
-	              is.close();
-	         } catch (IOException e) {
-	              e.printStackTrace();
-	         }
-	         return bitmap;
-	  }
-	 
+	
+	//加载数据的函数
+	private ArrayList<ArrayList<String>> loadData(String viewName,String data,Activity ac) throws JSONException {
+				
+				
+				ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
+				try {
+					String viewData =  new JSONObject(data).getString(viewName);
+					JSONArray jsonArray = new JSONArray(viewData);
+					
+
+					for (int i = 0; i < jsonArray.length(); i++) {
+						JSONArray tempJson = (JSONArray) jsonArray.opt(i);
+						ArrayList<String> tempArray = new ArrayList<String>();
+						tempArray.add(String.valueOf(nameToIdMap(ac,tempJson
+								.getString(0))));
+						tempArray.add(String.valueOf(tempJson.getString(1)));
+						tempArray.add(String.valueOf(tempJson.getString(2)));
+						tempResult.add(tempArray);
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+				return tempResult;
+
+		}
+		
+		private int nameToIdMap(Activity ac,String name)
+		{
+				return ac.getResources().getIdentifier(name, "id", ac.getPackageName());
+		}
+		
 	 public String handleGet(String strUrl) {
 			StringBuffer buffer = null;
 			HttpGet request = new HttpGet(strUrl);//实例化一个HttpGet请求(指定URL)
@@ -105,5 +288,99 @@ public class DataOp {
 			} catch (Exception e) { }
 			return result;
 		}
-	   
-}
+	 
+	 
+	 /**
+		 * 
+		 * @param imageView 
+		 * @param resId 图片加载完成前显示的图片资源ID
+		 * @return
+		 */
+		private ImageCallback getImageCallback( Activity ac,View v){
+			return new ImageCallback() {
+				
+				@Override
+				public void loadImage(String path, Bitmap bitmap) {
+				/*	if(path.equals(imageView.getTag().toString())){
+						imageView.setImageBitmap(bitmap);
+					}else{
+						imageView.setImageResource(resId);
+					}*/
+				}
+			};
+		}
+		
+		private Handler handler = new Handler(){
+
+			@Override
+			public void handleMessage(Message msg) {
+				// 子线程中返回的下载完成的任务
+				Task task = (Task)msg.obj;
+				// 调用callback对象的loadImage方法，并将图片路径和图片回传给adapter
+				task.callback.loadImage(task.path, task.bitmap);
+			}
+			
+		};
+		
+		private Runnable runnable = new Runnable() {
+			
+			@Override
+			public void run() {
+				while(isRunning){
+					// 当队列中还有未处理的任务时，执行下载任务
+					while(taskQueue.size() > 0){
+						// 获取第一个任务，并将之从任务队列中删除
+						Task task = taskQueue.remove(0);
+						// 将下载的图片添加到缓存
+						//task.bitmap = PicUtil.getbitmap(task.path);
+						try {
+							task.bitmap = PicUtil.getbitmapAndwrite(task.path);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						//caches.put(task.path, new SoftReference<Bitmap>(task.bitmap));
+						
+						if(handler != null){
+							// 创建消息对象，并将完成的任务添加到消息对象中
+							Message msg = handler.obtainMessage();
+							msg.obj = task;
+							// 发送消息回主线程
+							handler.sendMessage(msg);
+						}
+					}
+					
+					//如果队列为空,则令线程等待
+					synchronized (this) {
+						try {
+							this.wait();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		};
+		
+		//回调接口
+		public interface ImageCallback{
+			void loadImage(String path, Bitmap bitmap);
+		}
+		
+		class Task{
+			// 下载任务的下载路径
+			String path;
+			// 下载的图片
+			Bitmap bitmap;
+			// 回调对象
+			ImageCallback callback;
+			
+			@Override
+			public boolean equals(Object o) {
+				Task task = (Task)o;
+				return task.path.equals(path);
+			}
+		}
+	}
+
