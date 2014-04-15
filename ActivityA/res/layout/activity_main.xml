@@ -28,6 +28,7 @@ limitations under the License.
     android:layout_height="wrap_content"
     android:id="@android:id/tabhost"
     android:scrollbars="vertical"
+    
     >
     <RelativeLayout
 	    android:layout_width="fill_parent"

@@ -94,8 +94,14 @@
             </LinearLayout>
         <TextView android:visibility="invisible"  android:id="@+id/home_share_url"   android:layout_width="fill_parent"
                    android:layout_height="fill_parent"  />
-       
+       	 <TextView
+                   android:id="@+id/itemId"
+                   android:layout_width="fill_parent"
+                   android:layout_height="fill_parent"
+                   android:visibility="invisible"  
+		 />
         </LinearLayout>
+       
 </ScrollView>
 
  	

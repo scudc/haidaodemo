@@ -117,7 +117,8 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	private ListViewAdapter collectAdapter = null;
 	private ListViewAdapter detailAdapter = null;
 	
-	
+	//是否需要更新ui
+	private boolean isUpdate = false;
 	
 	
 	/*
@@ -289,20 +290,31 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 			
 				super.handleMessage(msg);
 				try {
-					//setContentView(bind_item);
+					setContentView(bind_item);
 					String data = dataOp.getDataAsyn("http://haidaoteam.sinaapp.com/?datatype=json", about_one, main_item,homeListView);
-                	System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
-                	if(main_item.findViewById(R.id.QAtab) != null)
-                		setDataToView(main_item.findViewById(R.id.QAtab),loadData("QA",data));
-                	if(main_item.findViewById(R.id.homeTab) != null)
-                		setDataToView(main_item.findViewById(R.id.homeTab),loadData("home",data));
-                	if(main_item.findViewById(R.id.tab2) != null)
-                		setDataToView(main_item.findViewById(R.id.tab2),loadData("list",data));
+
+                	//if(main_item.findViewById(R.id.QAtab) != null)
+                	//	setDataToView(main_item.findViewById(R.id.QAtab),loadData("QA",data));
+                	switch(msg.what)
+                	{
+                	case 0:
+                		setDataToView((View)msg.obj,loadData("home",data));
+                		break;
+                	case 1:
+                		setDataToView((View)msg.obj,loadData("list",data));
+                		break;
+                	case 2:
+                		setDataToView((View)msg.obj,loadData("QA",data));
+                		break;
+                	}
+                		
+                	//if(main_item.findViewById(R.id.tab2) != null)
+                	//	setDataToView(main_item.findViewById(R.id.tab2),loadData("list",data));
                 	//setDataToView(main_item.findViewById(R.id.QAtab),loadData("QA",data));
                 	//setDataToView(main_item.findViewById(R.id.tab2),loadData("list",data));
                 	
-                	//Thread.sleep(10000);
-                	//setContentView(main_item);
+                	Thread.sleep(10000);
+                	setContentView(main_item);
                 	
                 	//TextView tx = (TextView) .findViewById(R.id.new_tView);
                 	//tx.setText("xxxxxx");
@@ -330,7 +342,54 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 			@Override
 			public void run() {
 					
-					//viewHandler.sendMessage(Message.obtain()); 
+				    isUpdate = true;
+				    int currentTab = 0;
+					do
+					{
+					if(currentTab != tabs.getCurrentTab())
+						isUpdate = true;
+					if(isUpdate)
+					{
+					currentTab = tabs.getCurrentTab();
+					switch(currentTab)
+					{
+						//home 页面
+						case  0:
+							if(main_item.findViewById(R.id.homeTab).findViewById(R.id.itemId) != null)
+							{
+								viewHandler.sendMessage(Message.obtain(viewHandler, currentTab,main_item.findViewById(R.id.homeTab) ));
+								isUpdate = false;
+							}
+							break;
+						//一篇文章
+						case  1:
+							if(main_item.findViewById(R.id.tab2).findViewById(R.id.listId) != null)
+							{
+								viewHandler.sendMessage(Message.obtain(viewHandler, currentTab,main_item.findViewById(R.id.tab2) )); 
+								isUpdate = false;
+							}
+							break;
+						//一篇问答
+						case 2:
+							if(main_item.findViewById(R.id.QAtab).findViewById(R.id.QAId) != null)
+							{
+								viewHandler.sendMessage(Message.obtain(viewHandler, currentTab,main_item.findViewById(R.id.QAtab) ));
+								isUpdate = false;
+							}
+							break;
+					
+					
+					}
+					}
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					}while(true);
+							
+					
 					
 				
 			}
