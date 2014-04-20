@@ -13,7 +13,7 @@ import android.util.Log;
 public class FileUtil {
 	private static final String TAG = "FileUtil";
 
-	public static File getCacheFile(String imageUri){
+	public static File getCacheFile(String imageUri) throws Exception{
 		File cacheFile = null;
 		if (Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
@@ -34,8 +34,10 @@ public class FileUtil {
 		return cacheFile;
 	}
 	
-	public static String getFileName(String path) {
-		int index = path.lastIndexOf("/");
-		return path.substring(index + 1);
+	public static String getFileName(String path) throws Exception {
+		//int index = path.lastIndexOf("/");
+		
+		//return path.substring(index + 1);
+		return MD5Util.getMD5(path);
 	}
 }

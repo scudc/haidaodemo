@@ -74,7 +74,7 @@
                    android:layout_height="fill_parent"  />
             
              <TextView
-                   android:id="@+id/listId"
+                   android:id="@+id/list_id"
                    android:layout_width="fill_parent"
                    android:layout_height="fill_parent"
                    android:visibility="invisible"  

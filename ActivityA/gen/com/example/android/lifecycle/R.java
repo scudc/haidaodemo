@@ -98,7 +98,7 @@ public final class R {
     }
     public static final class id {
         public static final int ImageView01=0x7f070021;
-        public static final int QAId=0x7f070121;
+        public static final int QA_id=0x7f070121;
         public static final int QAtab=0x7f07010d;
         public static final int aboutList_layout=0x7f07002d;
         public static final int about_one_layout=0x7f070016;
@@ -182,6 +182,7 @@ public final class R {
         public static final int home_ViewPager=0x7f07009c;
         public static final int home_ad_view=0x7f070095;
         public static final int home_datetime=0x7f0700aa;
+        public static final int home_id=0x7f070117;
         public static final int home_page_item_linearlayout=0x7f0700a1;
         public static final int home_share_url=0x7f070116;
         public static final int homepage_img=0x7f0700a0;
@@ -192,7 +193,6 @@ public final class R {
         public static final int imageView1=0x7f070115;
         public static final int imageView2=0x7f07011b;
         public static final int imageset=0x7f07002c;
-        public static final int itemId=0x7f070117;
         public static final int laud_click_range=0x7f0700c7;
         public static final int laud_image=0x7f07004e;
         public static final int laud_layout=0x7f07004d;
@@ -202,7 +202,7 @@ public final class R {
         public static final int linearLayout01=0x7f07009e;
         public static final int linearLayout1=0x7f070029;
         public static final int linearlayout01=0x7f070051;
-        public static final int listId=0x7f07011a;
+        public static final int list_id=0x7f07011a;
         public static final int list_share_url=0x7f070119;
         public static final int loader_welcome_ad01=0x7f07003e;
         public static final int loader_welcome_ad02=0x7f07003f;

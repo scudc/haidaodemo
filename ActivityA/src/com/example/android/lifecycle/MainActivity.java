@@ -17,7 +17,7 @@
 package com.example.android.lifecycle;
 
 
-import java.io.UnsupportedEncodingException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,8 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
+
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -47,14 +46,14 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
+
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
+
 
 import com.example.android.lifecycle.util.AsynImageLoader;
 import com.example.android.lifecycle.util.DataOp;
@@ -120,12 +119,22 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	//是否需要更新ui
 	private boolean isUpdate = false;
 	
+	//判断是否id增加还是减小的字段  1为左 2 为右 0为不变化
+	private int leftOrRight = 0;
+	
+	//当前最大的id
+	private int maxId = 1;
+
+	
+	final ViewHandler viewHandler = new ViewHandler();
+	
 	
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see android.app.ActivityGroup#onCreate(android.os.Bundle)
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -269,81 +278,25 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	
 		
 		
-	
-		/**
-		 * Handler示例，用于刷新时间
-		 * DateHelper是我自己写的日期格式化工具哦
-		 * @author Dreamworker
-		 *
-		 */
-		class ViewHandler extends Handler {
-			
 		
-
-			public ViewHandler() {
-				super();
-
-			}
-
-			@Override
-			public void handleMessage(Message msg) {
-			
-				super.handleMessage(msg);
-				try {
-					setContentView(bind_item);
-					String data = dataOp.getDataAsyn("http://haidaoteam.sinaapp.com/?datatype=json", about_one, main_item,homeListView);
-
-                	//if(main_item.findViewById(R.id.QAtab) != null)
-                	//	setDataToView(main_item.findViewById(R.id.QAtab),loadData("QA",data));
-                	switch(msg.what)
-                	{
-                	case 0:
-                		setDataToView((View)msg.obj,loadData("home",data));
-                		break;
-                	case 1:
-                		setDataToView((View)msg.obj,loadData("list",data));
-                		break;
-                	case 2:
-                		setDataToView((View)msg.obj,loadData("QA",data));
-                		break;
-                	}
-                		
-                	//if(main_item.findViewById(R.id.tab2) != null)
-                	//	setDataToView(main_item.findViewById(R.id.tab2),loadData("list",data));
-                	//setDataToView(main_item.findViewById(R.id.QAtab),loadData("QA",data));
-                	//setDataToView(main_item.findViewById(R.id.tab2),loadData("list",data));
-                	
-                	Thread.sleep(10000);
-                	setContentView(main_item);
-                	
-                	//TextView tx = (TextView) .findViewById(R.id.new_tView);
-                	//tx.setText("xxxxxx");
-                	//main_item.setBackgroundColor(TRIM_MEMORY_BACKGROUND);
-                	//main_item.invalidate();
-
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-		}
 		
-		final ViewHandler viewHandler = new ViewHandler();
+		
+		
 		/**
 		 * 要在Activity中开启一个用于更新的线程
 		 * timeViewHandler 继承自Handler，用于处理和发送消息
 		 * MSG_UPDATE 是自定义的一个int常量，用于区分消息类型，可自由取值。
 		 */
+		
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 					
 				    isUpdate = true;
 				    int currentTab = 0;
+				    String id = "";
+					TextView idView ;
+					View targetView ;
 					do
 					{
 					if(currentTab != tabs.getCurrentTab())
@@ -351,29 +304,78 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 					if(isUpdate)
 					{
 					currentTab = tabs.getCurrentTab();
+					
 					switch(currentTab)
 					{
 						//home 页面
 						case  0:
-							if(main_item.findViewById(R.id.homeTab).findViewById(R.id.itemId) != null)
+							if(main_item.findViewById(R.id.homeTab).findViewById(R.id.home_id) != null)
 							{
-								viewHandler.sendMessage(Message.obtain(viewHandler, currentTab,main_item.findViewById(R.id.homeTab) ));
+								targetView = main_item.findViewById(R.id.homeTab);
+								idView = (TextView) targetView.findViewById(R.id.home_id);
+		                		id = (String) idView.getText();
+		                		if(id == "")
+		                			id = "0";
+		                		int currentId = Integer.parseInt(id);
+		                		Log.i("thread",String.valueOf(leftOrRight));
+		                		if(currentId != 0)
+		                		{
+		                		if(leftOrRight == 1)
+		                		{
+		                			currentId = currentId -1 ;
+		                			leftOrRight = 0;
+		                			if(currentId<=0)
+		                				break;
+		                		}
+		                		else if(leftOrRight == 2)
+		                		{
+		                			currentId = currentId+ 1;
+		                			leftOrRight = 0;
+		                			if(currentId > maxId)
+		                				break;
+		                		}
+		                		}
+		                		
+		                		if(currentId > -1 && currentId <=maxId)
+		                		{
+		                			Log.i("currentId",String.valueOf(currentId));
+		                			
+		                			Log.i("maxId",String.valueOf(maxId));
+		                			viewHandler.sendMessage(Message.obtain(viewHandler, currentTab, currentId, 1, targetView));
+		                		}
+								
+								/*synchronized (this){
+								Thread.yield();}
+								System.out.println("wait.................");*/
 								isUpdate = false;
 							}
 							break;
 						//一篇文章
 						case  1:
-							if(main_item.findViewById(R.id.tab2).findViewById(R.id.listId) != null)
+							if(main_item.findViewById(R.id.tab2).findViewById(R.id.list_id) != null)
 							{
-								viewHandler.sendMessage(Message.obtain(viewHandler, currentTab,main_item.findViewById(R.id.tab2) )); 
+								targetView = main_item.findViewById(R.id.tab2);
+								idView = (TextView) targetView.findViewById(R.id.list_id);
+		                		id = (String) idView.getText();
+		                		if(id == "")
+		                			id = "0";
+
+		                
+		                		viewHandler.sendMessage(Message.obtain(viewHandler, currentTab, Integer.parseInt(id), 1, targetView));
 								isUpdate = false;
 							}
 							break;
 						//一篇问答
 						case 2:
-							if(main_item.findViewById(R.id.QAtab).findViewById(R.id.QAId) != null)
+							if(main_item.findViewById(R.id.QAtab).findViewById(R.id.QA_id) != null)
 							{
-								viewHandler.sendMessage(Message.obtain(viewHandler, currentTab,main_item.findViewById(R.id.QAtab) ));
+								targetView = main_item.findViewById(R.id.QAtab);
+								idView = (TextView) targetView.findViewById(R.id.QA_id);
+		                		id = (String) idView.getText();
+		                		if(id == "")
+		                			id = "0";
+
+		                	viewHandler.sendMessage(Message.obtain(viewHandler, currentTab, Integer.parseInt(id), 1, targetView));
 								isUpdate = false;
 							}
 							break;
@@ -394,15 +396,105 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 				
 			}
 		}).start();
+		setContentView(main_item);
 	}
 
+	/**
+	 * Handler示例，用于刷新时间
+	 * DateHelper是我自己写的日期格式化工具哦
+	 * @author Dreamworker
+	 *
+	 */
+	class ViewHandler extends Handler {
+		
+	
+
+		public ViewHandler() {
+			super();
+
+		}
+
+		@SuppressLint("HandlerLeak")
+		@Override
+		public void handleMessage(Message msg) {
+		
+			super.handleMessage(msg);
+			try {
+				
+
+				String id = String.valueOf(msg.arg1);
+				String url = "http://haidaoteam.sinaapp.com/?datatype=json&type=";
+				boolean isNew = false;
+				//main_item.findViewById(R.id.homeScrollView).setVisibility(1);
+            	//if(main_item.findViewById(R.id.QAtab) != null)
+            	//	setDataToView(main_item.findViewById(R.id.QAtab),loadData("QA",data));
+            	switch(msg.what)
+            	{
+            	case 0:
+            		if(id.equals( "0" ))
+            		{
+            			url = url + "home";
+            			isNew = true;
+            		}
+            		else
+            			url = url + "home&id="+id;
+            		break;
+            	case 1:
+            		if(id.equals( "0" ))
+            		{
+            			url = url + "list";
+            			isNew = true;
+            		}
+            		else
+            			url = url + "list&id="+id;	
+            		break;
+            	case 2:
+            		if(id.equals( "0" ))
+            		{
+            			url = url + "QA";
+            			isNew = true;
+            		}
+            		else
+            			url = url + "QA&id="+id;
+            			
+            		break;
+            	}
+
+            	String data = dataOp.getDataAsyn(url, about_one, main_item,homeListView);
+            	if(isNew)
+            		maxId= getDataId(data);
+        		setDataToView((View)msg.obj,loadData("data",data));
+            	//if(main_item.findViewById(R.id.tab2) != null)
+            	//	setDataToView(main_item.findViewById(R.id.tab2),loadData("list",data));
+            	//setDataToView(main_item.findViewById(R.id.QAtab),loadData("QA",data));
+            	//setDataToView(main_item.findViewById(R.id.tab2),loadData("list",data));
+            	//Thread.sleep(3000);
+            	//System.out.println("continue ................");
+            	//setContentView(main_item);
+            	//System.out.println("end ................");
+            	//TextView tx = (TextView) .findViewById(R.id.new_tView);
+            	//tx.setText("xxxxxx");
+            	//main_item.setBackgroundColor(TRIM_MEMORY_BACKGROUND);
+            	//main_item.invalidate();
+            	
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
 	//加载数据的函数
 	private ArrayList<ArrayList<String>> loadData(String viewName,String data) throws JSONException {
 				
-				
+				viewName = "data";
+				JSONObject jsonOb = new JSONObject(data);
 				ArrayList<ArrayList<String>> tempResult = new ArrayList<ArrayList<String>>();
 				try {
-					String viewData =  new JSONObject(data).getString(viewName);
+					String viewData =  jsonOb.getString(viewName);
 					JSONArray jsonArray = new JSONArray(viewData);
 					
 
@@ -419,8 +511,23 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 					e.printStackTrace();
 				}
 				
+				String id =  jsonOb.getString("id");
+				ArrayList<String> tempArray = new ArrayList<String>();
+				tempArray.add(String.valueOf(nameToIdMap(jsonOb.getString("type")+"_id")));
+				tempArray.add(id);
+				tempArray.add("text");
+				tempResult.add(tempArray);
+				
 				return tempResult;
 
+		}
+	
+		//从返回的数据获取id
+		private int getDataId(String data) throws JSONException
+		{
+			JSONObject jsonOb = new JSONObject(data);
+			String id =  jsonOb.getString("id");
+			return Integer.parseInt(id);
 		}
 		
 		private int nameToIdMap(String name)
@@ -432,8 +539,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		private void setDataToView(View targetView,ArrayList<ArrayList<String>> dataList)
 		{
 			Iterator<ArrayList<String>> it = dataList.iterator();
-			Log.i("setDataToView",dataList.toString());
-			Log.i("setDataToView",targetView.toString());
+
 			while(it.hasNext())
 			{
 				ArrayList<String > tempArray = it.next();
@@ -485,7 +591,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		Log.i("onStart", "3");
+
 		if (this.oneApp.getCurrentTabIndex() != 0) {
 			tabs.setCurrentTab(this.oneApp.getCurrentTabIndex());
 		}
@@ -692,18 +798,23 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	    @Override  
 	    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,  
 	            float velocityY) {
-	    	System.out.println(this.tabs.getCurrentView().getLayoutDirection());
+	    	
+	    	/*System.out.println(this.tabs.getCurrentView().getLayoutDirection());
 	    	System.out.println(R.layout.home_item);
 	    	System.out.println(this.tabs.getCurrentView().getId());
 	    	System.out.println(R.id.homeScrollView);
 	    	System.out.println(this.tabs.getCurrentTab());
 	    	System.out.println(this.homeListView.getId());
 	    	int currentViewId = this.tabs.getCurrentView().getId();
-	    	
+	    	*/
 	        if (e1.getX() - e2.getX() < -120) {
+	        	this.leftOrRight = 1;
+	        	this.isUpdate = true;
 	        	System.out.println("=======================================");
 	        }  
 	        else if (e1.getX() - e2.getX() > 120) {
+	        	this.leftOrRight = 2;
+	        	this.isUpdate = true;
 	        	System.out.println("+++++++++++++++++++++++++++++++++++++++");
 	        }
 	        return true;  
