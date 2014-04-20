@@ -338,9 +338,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		                		
 		                		if(currentId > -1 && currentId <=maxId)
 		                		{
-		                			Log.i("currentId",String.valueOf(currentId));
-		                			
-		                			Log.i("maxId",String.valueOf(maxId));
+		
 		                			viewHandler.sendMessage(Message.obtain(viewHandler, currentTab, currentId, 1, targetView));
 		                		}
 								
@@ -360,8 +358,33 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		                		if(id == "")
 		                			id = "0";
 
-		                
-		                		viewHandler.sendMessage(Message.obtain(viewHandler, currentTab, Integer.parseInt(id), 1, targetView));
+		                		int currentId = Integer.parseInt(id);
+		                		Log.i("thread",String.valueOf(leftOrRight));
+		                		if(currentId != 0)
+		                		{
+		                		if(leftOrRight == 1)
+		                		{
+		                			currentId = currentId -1 ;
+		                			leftOrRight = 0;
+		                			if(currentId<=0)
+		                				break;
+		                		}
+		                		else if(leftOrRight == 2)
+		                		{
+		                			currentId = currentId+ 1;
+		                			leftOrRight = 0;
+		                			if(currentId > maxId)
+		                				break;
+		                		}
+		                		}
+		                		
+		                		if(currentId > -1 && currentId <=maxId)
+		                		{
+		                			Log.i("currentId",String.valueOf(currentId));
+		                			
+		                			Log.i("maxId",String.valueOf(maxId));
+		                		viewHandler.sendMessage(Message.obtain(viewHandler, currentTab, currentId, 1, targetView));
+		                		}
 								isUpdate = false;
 							}
 							break;
@@ -374,8 +397,33 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		                		id = (String) idView.getText();
 		                		if(id == "")
 		                			id = "0";
-
-		                	viewHandler.sendMessage(Message.obtain(viewHandler, currentTab, Integer.parseInt(id), 1, targetView));
+		                		int currentId = Integer.parseInt(id);
+		                		Log.i("thread",String.valueOf(leftOrRight));
+		                		if(currentId != 0)
+		                		{
+		                		if(leftOrRight == 1)
+		                		{
+		                			currentId = currentId -1 ;
+		                			leftOrRight = 0;
+		                			if(currentId<=0)
+		                				break;
+		                		}
+		                		else if(leftOrRight == 2)
+		                		{
+		                			currentId = currentId+ 1;
+		                			leftOrRight = 0;
+		                			if(currentId > maxId)
+		                				break;
+		                		}
+		                		}
+		                		
+		                		if(currentId > -1 && currentId <=maxId)
+		                		{
+		                			Log.i("currentId",String.valueOf(currentId));
+		                			
+		                			Log.i("maxId",String.valueOf(maxId));
+		                			viewHandler.sendMessage(Message.obtain(viewHandler, currentTab, currentId, 1, targetView));
+		                		}
 								isUpdate = false;
 							}
 							break;
