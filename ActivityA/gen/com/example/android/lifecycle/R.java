@@ -98,8 +98,8 @@ public final class R {
     }
     public static final class id {
         public static final int ImageView01=0x7f070021;
-        public static final int QA_id=0x7f070121;
-        public static final int QAtab=0x7f07010d;
+        public static final int QA_id=0x7f07011b;
+        public static final int QAtab=0x7f07010c;
         public static final int aboutList_layout=0x7f07002d;
         public static final int about_one_layout=0x7f070016;
         public static final int about_one_layout_title=0x7f070017;
@@ -119,9 +119,7 @@ public final class R {
         public static final int blank_textview=0x7f07003c;
         public static final int blank_textview01=0x7f07003a;
         public static final int blank_textview02=0x7f07003b;
-        public static final int btn_finish_dialog=0x7f07010a;
         public static final int button1=0x7f070036;
-        public static final int button2=0x7f070113;
         public static final int cacheImage=0x7f070032;
         public static final int cacheImage_View=0x7f070083;
         public static final int checkBox1=0x7f070034;
@@ -134,7 +132,7 @@ public final class R {
         public static final int clear_tencent_bind=0x7f070092;
         public static final int closeGuide=0x7f070052;
         public static final int close_share_dialog=0x7f0700fa;
-        public static final int collectScrollview=0x7f070110;
+        public static final int collectScrollview=0x7f07010f;
         public static final int content_Relativelayout=0x7f0700c0;
         public static final int content_page_article=0x7f07004a;
         public static final int content_page_author=0x7f070049;
@@ -153,15 +151,13 @@ public final class R {
         public static final int copyright_textview=0x7f070022;
         public static final int date1_tView=0x7f0700a8;
         public static final int date_tView=0x7f0700a7;
-        public static final int detailScrollView=0x7f070111;
+        public static final int detailScrollView=0x7f070110;
         public static final int details_page_layout=0x7f070054;
         public static final int detailspage_applylayout=0x7f07005f;
         public static final int dialog_waiting=0x7f070000;
         public static final int dialog_wireless_setting=0x7f070005;
         public static final int down_line=0x7f070047;
         public static final int down_line1=0x7f0700c2;
-        public static final int editText1=0x7f070112;
-        public static final int editText2=0x7f07011c;
         public static final int emailClew_textView=0x7f07007c;
         public static final int email_editText1=0x7f07007b;
         public static final int fPageImage_iView=0x7f0700a3;
@@ -177,21 +173,20 @@ public final class R {
         public static final int han_textView=0x7f07002e;
         public static final int hidden_ad_image_url=0x7f070097;
         public static final int hidden_ad_url=0x7f070096;
-        public static final int homeScrollView=0x7f070114;
-        public static final int homeTab=0x7f07010b;
+        public static final int homeScrollView=0x7f070111;
+        public static final int homeTab=0x7f07010a;
         public static final int home_ViewPager=0x7f07009c;
         public static final int home_ad_view=0x7f070095;
         public static final int home_datetime=0x7f0700aa;
-        public static final int home_id=0x7f070117;
+        public static final int home_id=0x7f070114;
         public static final int home_page_item_linearlayout=0x7f0700a1;
-        public static final int home_share_url=0x7f070116;
+        public static final int home_share_url=0x7f070113;
         public static final int homepage_img=0x7f0700a0;
         public static final int homepage_title=0x7f07009b;
         public static final int imageBelow_tView=0x7f0700a4;
         public static final int imageBelow_tView1=0x7f0700a5;
         public static final int imageClick_layout=0x7f0700d2;
-        public static final int imageView1=0x7f070115;
-        public static final int imageView2=0x7f07011b;
+        public static final int imageView1=0x7f070112;
         public static final int imageset=0x7f07002c;
         public static final int laud_click_range=0x7f0700c7;
         public static final int laud_image=0x7f07004e;
@@ -202,8 +197,8 @@ public final class R {
         public static final int linearLayout01=0x7f07009e;
         public static final int linearLayout1=0x7f070029;
         public static final int linearlayout01=0x7f070051;
-        public static final int list_id=0x7f07011a;
-        public static final int list_share_url=0x7f070119;
+        public static final int list_id=0x7f070117;
+        public static final int list_share_url=0x7f070116;
         public static final int loader_welcome_ad01=0x7f07003e;
         public static final int loader_welcome_ad02=0x7f07003f;
         public static final int loadfail_textview=0x7f07009a;
@@ -284,10 +279,10 @@ public final class R {
         public static final int one_title_image=0x7f0700e4;
         public static final int one_work_icon=0x7f070085;
         public static final int one_work_name=0x7f070086;
-        public static final int progressBar=0x7f07011e;
+        public static final int progressBar=0x7f070118;
         public static final int q_datetime=0x7f0700bd;
-        public static final int qaScrollView=0x7f07011f;
-        public static final int qa_share_url=0x7f070120;
+        public static final int qaScrollView=0x7f070119;
+        public static final int qa_share_url=0x7f07011a;
         public static final int question_ViewPager=0x7f0700b9;
         public static final int question_answer_content=0x7f0700c6;
         public static final int question_answer_image=0x7f0700c4;
@@ -315,7 +310,7 @@ public final class R {
         public static final int returnmicroblog=0x7f07002b;
         public static final int scrollView1=0x7f070042;
         public static final int scrollViewClick=0x7f0700d0;
-        public static final int scrollview=0x7f070118;
+        public static final int scrollview=0x7f070115;
         public static final int set_familiar3=0x7f07008b;
         public static final int set_tag_order=0x7f07008d;
         public static final int setitem=0x7f07006b;
@@ -347,9 +342,9 @@ public final class R {
         public static final int stow_time=0x7f0700dd;
         public static final int stow_title=0x7f0700db;
         public static final int submitFeedBack=0x7f070082;
-        public static final int tab1=0x7f07010e;
-        public static final int tab2=0x7f07010c;
-        public static final int tab3=0x7f07010f;
+        public static final int tab1=0x7f07010d;
+        public static final int tab2=0x7f07010b;
+        public static final int tab3=0x7f07010e;
         public static final int teams_textView=0x7f070030;
         public static final int tencent_microblog=0x7f07008f;
         public static final int textView1=0x7f070078;
@@ -381,7 +376,6 @@ public final class R {
         public static final int up_line=0x7f070044;
         public static final int update_progress=0x7f0700fb;
         public static final int version_icon=0x7f070025;
-        public static final int view1=0x7f07011d;
         public static final int warning_textview=0x7f070039;
         public static final int weibo_webview=0x7f0700e5;
         public static final int welcome_ad_rlayout=0x7f070093;
@@ -391,22 +385,18 @@ public final class R {
     }
     public static final class layout {
         public static final int about_one=0x7f030000;
-        public static final int activity_dialog=0x7f030001;
-        public static final int activity_main=0x7f030002;
-        public static final int collect_item=0x7f030003;
-        public static final int detail_item=0x7f030004;
-        public static final int dev=0x7f030005;
-        public static final int gridview_item=0x7f030006;
-        public static final int home_item=0x7f030007;
-        public static final int list_item=0x7f030008;
-        public static final int login=0x7f030009;
-        public static final int one_details_page_binditem=0x7f03000a;
-        public static final int one_details_page_microblog=0x7f03000b;
-        public static final int one_details_page_setitem=0x7f03000c;
-        public static final int one_welcome=0x7f03000d;
-        public static final int one_welcome_ad=0x7f03000e;
-        public static final int qa_item=0x7f03000f;
-        public static final int scrollview_item=0x7f030010;
+        public static final int activity_main=0x7f030001;
+        public static final int collect_item=0x7f030002;
+        public static final int detail_item=0x7f030003;
+        public static final int home_item=0x7f030004;
+        public static final int list_item=0x7f030005;
+        public static final int one_details_page_binditem=0x7f030006;
+        public static final int one_details_page_microblog=0x7f030007;
+        public static final int one_details_page_setitem=0x7f030008;
+        public static final int one_welcome=0x7f030009;
+        public static final int one_welcome_ad=0x7f03000a;
+        public static final int qa_item=0x7f03000b;
+        public static final int scrollview_item=0x7f03000c;
     }
     public static final class string {
         public static final int about_copyright=0x7f090049;
