@@ -26,19 +26,22 @@ import java.util.Stack;
 
 
 
+
+
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.Gravity;
@@ -46,14 +49,14 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-
+import android.view.View.OnCreateContextMenuListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.ImageView;
-
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
-
+import android.widget.EditText;
 
 import com.example.android.lifecycle.util.AsynImageLoader;
 import com.example.android.lifecycle.util.DataOp;
@@ -90,6 +93,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	private View about_one;
 	private View microblog;
 	private View loading_item;
+	private View feedback;
 
 	private Map<String,ListViewAdapter> viewMap;
 	// app 全局的application 类
@@ -128,7 +132,9 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	
 	final ViewHandler viewHandler = new ViewHandler();
 	
-	
+	private EditText feedback_email_et = null;
+	private EditText feedback_phone_et = null;
+	private EditText feedback_text_et = null;
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -167,10 +173,73 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		about_one = inflater.inflate(R.layout.about_one, null);
 		microblog = inflater.inflate(R.layout.one_details_page_microblog, null);
 		loading_item = inflater.inflate(R.layout.one_welcome_ad, null);
-		
+		feedback = inflater.inflate(R.layout.feedback, null);
+    	
 		setContentView(main_item);
 
+		feedback.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener(){
 
+			@Override
+			public void onViewAttachedToWindow(View v) {
+				// TODO Auto-generated method stub
+				System.out.println("here!!!");
+				feedback_email_et = (EditText)findViewById(R.id.feedback_email_content);
+				feedback_email_et.setOnFocusChangeListener(new OnFocusChangeListener(){
+		
+					@Override
+					public void onFocusChange(View arg0, boolean hasfocus) {
+						// TODO Auto-generated method stub
+						if (hasfocus)
+						{
+							if (feedback_email_et.getText().toString().equalsIgnoreCase("input"))
+							{
+								feedback_email_et.setText("");
+								feedback_email_et.setTextColor(0x333333);
+							}
+						}
+					}
+				});
+		    	feedback_phone_et = (EditText)findViewById(R.id.feedback_phone_content);
+		    	feedback_phone_et.setOnFocusChangeListener(new OnFocusChangeListener(){
+
+					@Override
+					public void onFocusChange(View arg0, boolean hasfocus) {
+						// TODO Auto-generated method stub
+						if (hasfocus)
+						{
+							if (feedback_phone_et.getText().toString().equalsIgnoreCase("input"))
+							{
+								feedback_phone_et.setText("");
+								feedback_phone_et.setTextColor(0x333333);
+							}
+						}
+					}
+				});
+		    	feedback_text_et = (EditText)findViewById(R.id.feedback_text_content);
+		    	feedback_text_et.setOnFocusChangeListener(new OnFocusChangeListener()
+		    	{
+
+					@Override
+					public void onFocusChange(View arg0, boolean hasfocus) {
+						// TODO Auto-generated method stub
+						if (hasfocus)
+						{
+							if (feedback_text_et.getText().toString().equalsIgnoreCase("input"))
+							{
+								feedback_text_et.setText("");
+								feedback_text_et.setTextColor(0x333333);
+							}
+						}
+					}
+				});
+			}
+
+			@Override
+			public void onViewDetachedFromWindow(View v) {
+				// TODO Auto-generated method stub
+			}
+		});
+		
 		
 		// 开始加载数据和生成view
 		mListView = (ListView) findViewById(R.id.tab2);
@@ -741,6 +810,18 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 
 	/* return 事件监听 */
 	public void returnOnClick(View view) {
+		if (null != feedback_email_et)
+		{
+			feedback_email_et = (EditText)findViewById(R.id.feedback_email_content);
+			feedback_phone_et = (EditText)findViewById(R.id.feedback_phone_content);
+			feedback_text_et = (EditText)findViewById(R.id.feedback_text_content);
+			feedback_email_et.setText(R.string.feedback_null);
+			feedback_phone_et.setText(R.string.feedback_null);
+			feedback_text_et.setText(R.string.feedback_null);
+			feedback_email_et.setTextColor(R.color.darkgray);
+			feedback_phone_et.setTextColor(R.color.darkgray);
+			feedback_text_et.setTextColor(R.color.darkgray);
+		}
 		setContentView(context.pop());
 	}
 
@@ -775,9 +856,24 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		startActivity(Intent.createChooser(intent, "请选择"));
 	}
 
+	public void feedbackOnClick(View view) {
+		context.push(about_one);
 
+		setContentView(feedback);
+	}	
 
-
+    public void feedbackSubmitOnClick(View view)
+    {
+    	feedback_email_et = (EditText)findViewById(R.id.feedback_email_content);
+    	feedback_phone_et = (EditText)findViewById(R.id.feedback_phone_content);
+    	feedback_text_et = (EditText)findViewById(R.id.feedback_text_content);
+    	String email = feedback_email_et.getText().toString();
+    	String phone = feedback_phone_et.getText().toString();
+    	String text = feedback_text_et.getText().toString();
+    	String result = dataOp.postData(email, phone, text);
+    	System.out.println(result);
+    	setContentView(context.pop());
+    }
 		
 
 
