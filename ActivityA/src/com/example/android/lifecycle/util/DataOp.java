@@ -21,8 +21,14 @@ import java.util.Set;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -291,6 +297,58 @@ public class DataOp {
 			return result;
 		}
 	 
+	 /*
+
+      * post data to remote host
+
+      */
+
+	 public String postData(String email, String phone, String text){
+
+         String destUrl="http://haidaoteam.sinaapp.com/?feedback=true";
+
+         //instantiate HttpPost object from the url address
+
+         HttpEntityEnclosingRequestBase httpRequest =new HttpPost(destUrl);
+
+         //the post name and value must be used as NameValuePair
+
+         List <NameValuePair> params=new ArrayList<NameValuePair>();
+
+         params.add(new BasicNameValuePair("email",email));
+         params.add(new BasicNameValuePair("phone",phone));
+         params.add(new BasicNameValuePair("text",text));
+
+         try{
+		
+			httpRequest.setEntity(new UrlEncodedFormEntity(params,HTTP.UTF_8));
+			
+			//execute the post and get the response from servers
+			
+			HttpResponse httpResponse=new DefaultHttpClient().execute(httpRequest);
+			  
+			if(httpResponse.getStatusLine().getStatusCode()==200){
+			
+				//get the result
+				
+				String strResult=EntityUtils.toString(httpResponse.getEntity());
+				
+				return strResult;
+			
+			}else{
+			
+				return httpResponse.getStatusLine().toString();
+			
+			}
+		
+		 }catch(Exception e){
+			 System.out.println("error occurs");
+		 }
+         
+         return "ERROR";
+
+     }
+
 	 
 	 /**
 		 * 

@@ -118,7 +118,7 @@ limitations under the License.
         
             <string name="go_grade">去评分</string>
     <string name="about_copyright">版权</string>
-    <string name="feedback">反馈</string>
+    <string name="feedback">用户反馈</string>
     
     <string name="oursMicroBlog">关注我们的微博</string>
     <string name="han">韩寒</string>
@@ -126,4 +126,11 @@ limitations under the License.
     <string name="another1">一个App工作室</string>
         <string name="aboutname">关注</string>
         <string name="qa_people_like_num">1900</string>
+        <string name="contactus">联系我们</string>
+        <string name="feedback_content">感谢你使用ONE·一个，你可以在此反馈应用改进的意见和建议</string>
+        <string name="feedback_email">Email:</string>
+        <string name="feedback_phone">电话:</string>
+        <string name="feedback_text">反馈内容:</string>
+        <string name="feedback_null">input</string>
+        <string name="feedback_submit">提交</string>
 </resources>
