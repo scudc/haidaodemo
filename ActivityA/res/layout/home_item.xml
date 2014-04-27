@@ -55,13 +55,32 @@
 	         android:layout_width="fill_parent"
 	         android:layout_height="fill_parent" >
 
+	      <FrameLayout
+	          android:id="@+id/imageLoading"
+	          android:layout_width="fill_parent"
+	          android:layout_height="200dp"
+	          android:background="@color/welcomeBackground"
+	           android:visibility="gone" >
+
+	          <ProgressBar
+	              android:id="@+id/progressBar"
+	              style="@style/newProgressBar"
+	              android:layout_width="40dp"
+	              android:layout_height="40dp"
+	              android:layout_gravity="center" />
+
+	      </FrameLayout>
 	         <ImageView
 	             android:id="@+id/imageView1"
 	             android:layout_width="wrap_content"
 	             android:layout_height="wrap_content"
 	             android:adjustViewBounds="true"
 	             android:contentDescription="@null"
-	             android:src="@drawable/one_image" />
+	             android:src="@drawable/one_image"
+	            
+	             />
+
+	     
 
 	        </FrameLayout>
         <TextView android:textSize="14.0sp" android:textColor="@color/home_page_author" android:gravity="right|center" android:id="@+id/imageBelow_tView" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginTop="15.0dip" android:text="@string/oneImageName"/>

@@ -51,6 +51,7 @@ import android.widget.ImageView;
 
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 import android.widget.TabWidget;
 import android.widget.TextView;
 
@@ -65,7 +66,7 @@ import com.example.android.lifecycle.util.Utils;
 /**
  * Example Activity to demonstrate the lifecycle callback methods.
  */
-@SuppressLint("NewApi")
+@SuppressLint({ "NewApi", "HandlerLeak" })
 public class MainActivity extends BaseActivity implements OnGestureListener   {
 
 
@@ -80,6 +81,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	private ListView homeListView;
 	private ListView qaListView;
 	private ListView detailView;
+	private ListView loadingView;
 	private ArrayList<HashMap<String, Integer>> mList = new ArrayList<HashMap<String, Integer>>();
 	private ArrayList<HashMap<String, Integer>> mGist = new ArrayList<HashMap<String, Integer>>();
 
@@ -115,9 +117,13 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	private ListViewAdapter QAAdapter = null;
 	private ListViewAdapter collectAdapter = null;
 	private ListViewAdapter detailAdapter = null;
+	private ListViewAdapter loadingAdapter = null;
 	
 	//是否需要更新ui
 	private boolean isUpdate = false;
+	
+	//是否需要set main_item 	切换回主界面
+	private boolean isNeedSetToMain = false;
 	
 	//判断是否id增加还是减小的字段  1为左 2 为右 0为不变化
 	private int leftOrRight = 0;
@@ -129,6 +135,11 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	final ViewHandler viewHandler = new ViewHandler();
 	
 	
+	//当前view的数据
+	private String data = "";
+	
+	//获取数据的url
+	private String url = "http://haidaoteam.sinaapp.com/?datatype=json&type=";
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -170,41 +181,37 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		
 		setContentView(main_item);
 
-
+		initData();
 		
 		// 开始加载数据和生成view
 		mListView = (ListView) findViewById(R.id.tab2);
-		initData();
+		
 		
 		//ArrayList<ArrayList<String>> list_data = loadData("list",data);
-		listAdapter = new ListViewAdapter(this,this, mList,
-				mGist, R.id.scrollview, R.layout.list_item,
-				dataOp,asynImageLoader,"list");
+		listAdapter = new ListViewAdapter(this,mList,
+				mGist, R.id.scrollview, R.layout.list_item);
 		
 		mListView.setAdapter(listAdapter);
 		mListView1 = (ListView) findViewById(R.id.tab1);
 
 		//ArrayList<ArrayList<String>> collect_data = loadData("collect",data);
-		collectAdapter = new ListViewAdapter(this,this, mList,
+		collectAdapter = new ListViewAdapter(this,mList,
 				mGist, R.id.collectScrollview,
-				R.layout.collect_item,
-				dataOp,asynImageLoader,"collect");
+				R.layout.collect_item);
 
 		mListView1.setAdapter(collectAdapter);
 
 		homeListView = (ListView) findViewById(R.id.homeTab);
 		homeAdapter = new ListViewAdapter(this,
-				this, mList, mGist,
-				R.id.homeScrollView, R.layout.home_item, dataOp,asynImageLoader,"home");
+				mList, mGist,
+				R.id.homeScrollView, R.layout.home_item);
 
 		homeListView.setAdapter(homeAdapter);
 
 		qaListView = (ListView) findViewById(R.id.QAtab);
 
 		//ArrayList<ArrayList<String>> QA_data = loadData("QA",data);
-		QAAdapter = new ListViewAdapter(this,this,
-				mList, mGist, R.id.qaScrollView, R.layout.qa_item,
-				dataOp,asynImageLoader,"QA");
+		QAAdapter = new ListViewAdapter(this,mList, mGist, R.id.qaScrollView, R.layout.qa_item);
 
 		qaListView.setAdapter(QAAdapter);
 
@@ -212,19 +219,26 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 
 		//ArrayList<ArrayList<String>> detail_data = loadData("detail",data);
 		detailAdapter = new ListViewAdapter(this,
-				this, mList, mGist,
-				R.id.detailScrollView, R.layout.detail_item,
-				dataOp,asynImageLoader,"detail");
+				mList, mGist,
+				R.id.detailScrollView, R.layout.detail_item);
 
 		detailView.setAdapter(detailAdapter);
+		
+		
+		/*//设这loading 界面的list view 适配器
+		loadingView = (ListView) findViewById(R.id.loading_view);
 
+		//ArrayList<ArrayList<String>> detail_data = loadData("detail",data);
+		loadingAdapter = new ListViewAdapter(this,
+				mList, mGist,
+				R.id.loadingScrollView, R.layout.one_welcome_ad);
+
+		loadingView.setAdapter(loadingAdapter);
+
+		*/
 		
-		
-		tabs = (TabHost) findViewById(android.R.id.tabhost);
+		tabs = (TabHost) findViewById(R.id.tabhost);
 		tabWidget = (TabWidget) findViewById(android.R.id.tabs);
-
-		// tabWidget.setBackgroundColor(Color.BLACK);
-
 		int width = 60;
 		int height = 60;
 		tabs.setup();
@@ -238,9 +252,8 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 				.setContent(R.id.tab1));
 		tabs.addTab(tabs.newTabSpec("second tab").setIndicator("更多", null)
 				.setContent(R.id.tab3));
-
+	
 		tabs.setCurrentTab(0);
-
 		for (int i = 0; i < tabWidget.getChildCount(); i++) {
 			/**
 			 * 设置高度、宽度，不过宽度由于设置为fill_parent，在此对它没效果
@@ -258,193 +271,15 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 			tv.setTextSize(15);
 			tv.setGravity(Gravity.TOP);
 		}
-		// setContentView(R.layout.activity_main);
 		mActivityName = getString(R.string.activity_c_label);
-		// mStatusView = (TextView)findViewById(R.id.status_view_c);
-		// mStatusAllView = (TextView)findViewById(R.id.status_view_all_c);
 		mStatusTracker.setStatus(mActivityName, getString(R.string.on_create));
 		Utils.printStatus(mStatusView, mStatusAllView);
-
-		// 开启异步获取数据的线程
-		//GetDataTask task = new GetDataTask(this);
-		//task.execute("http://csdnimg.cn/www/images/csdnindex_logo.gif");
 		detector = new GestureDetector(this);  
-
 		viewMap.put("home", this.homeAdapter);
-		Log.i("getDataAsyn",String.valueOf(homeAdapter.hashCode()));
-		//viewMap.put("QA", this.QAAdapter);
-		//viewList.add(detailListViewadapter.getDisplayView());
-		//viewList.add(adapter1.getDisplayView());
-	
 		
 		
 		
-		
-		
-		
-		/**
-		 * 要在Activity中开启一个用于更新的线程
-		 * timeViewHandler 继承自Handler，用于处理和发送消息
-		 * MSG_UPDATE 是自定义的一个int常量，用于区分消息类型，可自由取值。
-		 */
-		
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-					
-				    isUpdate = true;
-				    int currentTab = 0;
-				    String id = "";
-					TextView idView ;
-					View targetView ;
-					do
-					{
-					if(currentTab != tabs.getCurrentTab())
-						isUpdate = true;
-					if(isUpdate)
-					{
-					currentTab = tabs.getCurrentTab();
-					
-					switch(currentTab)
-					{
-						//home 页面
-						case  0:
-							if(main_item.findViewById(R.id.homeTab).findViewById(R.id.home_id) != null)
-							{
-								targetView = main_item.findViewById(R.id.homeTab);
-								idView = (TextView) targetView.findViewById(R.id.home_id);
-		                		id = (String) idView.getText();
-		                		if(id == "")
-		                			id = "0";
-		                		int currentId = Integer.parseInt(id);
-		                		Log.i("thread",String.valueOf(leftOrRight));
-		                		if(currentId != 0)
-		                		{
-		                		if(leftOrRight == 1)
-		                		{
-		                			currentId = currentId -1 ;
-		                			leftOrRight = 0;
-		                			if(currentId<=0)
-		                				break;
-		                		}
-		                		else if(leftOrRight == 2)
-		                		{
-		                			currentId = currentId+ 1;
-		                			leftOrRight = 0;
-		                			if(currentId > maxId)
-		                				break;
-		                		}
-		                		}
-		                		
-		                		if(currentId > -1 && currentId <=maxId)
-		                		{
-		
-		                			viewHandler.sendMessage(Message.obtain(viewHandler, currentTab, currentId, 1, targetView));
-		                		}
-								
-								/*synchronized (this){
-								Thread.yield();}
-								System.out.println("wait.................");*/
-								isUpdate = false;
-							}
-							break;
-						//一篇文章
-						case  1:
-							if(main_item.findViewById(R.id.tab2).findViewById(R.id.list_id) != null)
-							{
-								targetView = main_item.findViewById(R.id.tab2);
-								idView = (TextView) targetView.findViewById(R.id.list_id);
-		                		id = (String) idView.getText();
-		                		if(id == "")
-		                			id = "0";
-
-		                		int currentId = Integer.parseInt(id);
-		                		Log.i("thread",String.valueOf(leftOrRight));
-		                		if(currentId != 0)
-		                		{
-		                		if(leftOrRight == 1)
-		                		{
-		                			currentId = currentId -1 ;
-		                			leftOrRight = 0;
-		                			if(currentId<=0)
-		                				break;
-		                		}
-		                		else if(leftOrRight == 2)
-		                		{
-		                			currentId = currentId+ 1;
-		                			leftOrRight = 0;
-		                			if(currentId > maxId)
-		                				break;
-		                		}
-		                		}
-		                		
-		                		if(currentId > -1 && currentId <=maxId)
-		                		{
-		                			Log.i("currentId",String.valueOf(currentId));
-		                			
-		                			Log.i("maxId",String.valueOf(maxId));
-		                		viewHandler.sendMessage(Message.obtain(viewHandler, currentTab, currentId, 1, targetView));
-		                		}
-								isUpdate = false;
-							}
-							break;
-						//一篇问答
-						case 2:
-							if(main_item.findViewById(R.id.QAtab).findViewById(R.id.QA_id) != null)
-							{
-								targetView = main_item.findViewById(R.id.QAtab);
-								idView = (TextView) targetView.findViewById(R.id.QA_id);
-		                		id = (String) idView.getText();
-		                		if(id == "")
-		                			id = "0";
-		                		int currentId = Integer.parseInt(id);
-		                		Log.i("thread",String.valueOf(leftOrRight));
-		                		if(currentId != 0)
-		                		{
-		                		if(leftOrRight == 1)
-		                		{
-		                			currentId = currentId -1 ;
-		                			leftOrRight = 0;
-		                			if(currentId<=0)
-		                				break;
-		                		}
-		                		else if(leftOrRight == 2)
-		                		{
-		                			currentId = currentId+ 1;
-		                			leftOrRight = 0;
-		                			if(currentId > maxId)
-		                				break;
-		                		}
-		                		}
-		                		
-		                		if(currentId > -1 && currentId <=maxId)
-		                		{
-		                			Log.i("currentId",String.valueOf(currentId));
-		                			
-		                			Log.i("maxId",String.valueOf(maxId));
-		                			viewHandler.sendMessage(Message.obtain(viewHandler, currentTab, currentId, 1, targetView));
-		                		}
-								isUpdate = false;
-							}
-							break;
-					
-					
-					}
-					}
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					}while(true);
-							
-					
-					
-				
-			}
-		}).start();
-		setContentView(main_item);
+		//setLoadingView(1);
 	}
 
 	/**
@@ -466,72 +301,27 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		@Override
 		public void handleMessage(Message msg) {
 		
+			
 			super.handleMessage(msg);
-			try {
+			
+
+			switch(msg.what)
+			{
+			case 0:
+				setLoadingView(0);
+				break;
+			case 1:
 				
-
-				String id = String.valueOf(msg.arg1);
-				String url = "http://haidaoteam.sinaapp.com/?datatype=json&type=";
-				boolean isNew = false;
-				//main_item.findViewById(R.id.homeScrollView).setVisibility(1);
-            	//if(main_item.findViewById(R.id.QAtab) != null)
-            	//	setDataToView(main_item.findViewById(R.id.QAtab),loadData("QA",data));
-            	switch(msg.what)
-            	{
-            	case 0:
-            		if(id.equals( "0" ))
-            		{
-            			url = url + "home";
-            			isNew = true;
-            		}
-            		else
-            			url = url + "home&id="+id;
-            		break;
-            	case 1:
-            		if(id.equals( "0" ))
-            		{
-            			url = url + "list";
-            			isNew = true;
-            		}
-            		else
-            			url = url + "list&id="+id;	
-            		break;
-            	case 2:
-            		if(id.equals( "0" ))
-            		{
-            			url = url + "QA";
-            			isNew = true;
-            		}
-            		else
-            			url = url + "QA&id="+id;
-            			
-            		break;
-            	}
-
-            	String data = dataOp.getDataAsyn(url, about_one, main_item,homeListView);
-            	if(isNew)
-            		maxId= getDataId(data);
-        		setDataToView((View)msg.obj,loadData("data",data));
-            	//if(main_item.findViewById(R.id.tab2) != null)
-            	//	setDataToView(main_item.findViewById(R.id.tab2),loadData("list",data));
-            	//setDataToView(main_item.findViewById(R.id.QAtab),loadData("QA",data));
-            	//setDataToView(main_item.findViewById(R.id.tab2),loadData("list",data));
-            	//Thread.sleep(3000);
-            	//System.out.println("continue ................");
-            	//setContentView(main_item);
-            	//System.out.println("end ................");
-            	//TextView tx = (TextView) .findViewById(R.id.new_tView);
-            	//tx.setText("xxxxxx");
-            	//main_item.setBackgroundColor(TRIM_MEMORY_BACKGROUND);
-            	//main_item.invalidate();
-            	
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				try {
+					setDataToView((View)msg.obj,loadData("data",data));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				setLoadingView(1);
+				break;
 			}
+
 		}
 		
 	}
@@ -646,6 +436,230 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		mStatusTracker.setStatus(mActivityName, getString(R.string.on_start));
 		Utils.printStatus(mStatusView, mStatusAllView);
 		
+		/**
+		 * 要在Activity中开启一个用于更新的线程
+		 * timeViewHandler 继承自Handler，用于处理和发送消息
+		 * MSG_UPDATE 是自定义的一个int常量，用于区分消息类型，可自由取值。
+		 */
+		
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				
+				
+				
+				
+				    isUpdate = true;
+				    int currentTab = 0;
+				    String id = "";
+					TextView idView ;
+					View targetView  = null;
+					boolean isNew = false;
+					String currentUrl = "";
+					do
+					{
+					if(currentTab != tabs.getCurrentTab())
+						isUpdate = true;
+					if(isUpdate && main_item!=null)
+					{
+					currentTab = tabs.getCurrentTab();
+					int currentId = 0;
+					switch(currentTab)
+					{
+						//home 页面
+						case  0:
+							
+							if(main_item.findViewById(R.id.homeTab).findViewById(R.id.home_id) != null)
+							{
+								
+								targetView = main_item.findViewById(R.id.homeTab);
+								idView = (TextView) targetView.findViewById(R.id.home_id);
+		                		id = (String) idView.getText();
+		                		if(id == "")
+		                			id = "0";
+		                		currentId = Integer.parseInt(id);
+	
+		                		if(currentId != 0)
+		                		{
+		                		if(leftOrRight == 1)
+		                		{
+		                			currentId = currentId -1 ;
+		                			leftOrRight = 0;
+		                			if(currentId<=0)
+		                				break;
+		                		}
+		                		else if(leftOrRight == 2)
+		                		{
+		                			currentId = currentId+ 1;
+		                			leftOrRight = 0;
+		                			if(currentId > maxId)
+		                				break;
+		                		}
+		                		}
+
+		                		if(currentId > -1 && currentId <=maxId)
+		                		{
+		                			isUpdate = false;
+		                		}
+		                		if(currentId == 0)
+		                		{
+		                			currentUrl = url + "home";
+		                			isNew = true;
+		                		}
+		                		else
+		                			currentUrl = url + "home&id="+currentId;
+
+								/*synchronized (this){
+								Thread.yield();}
+								System.out.println("wait.................");*/
+								
+							}
+							break;
+						//一篇文章
+						case  1:
+							if(main_item.findViewById(R.id.tab2).findViewById(R.id.list_id) != null)
+							{
+								targetView = main_item.findViewById(R.id.tab2);
+								idView = (TextView) targetView.findViewById(R.id.list_id);
+		                		id = (String) idView.getText();
+		                		if(id == "")
+		                			id = "0";
+
+		                		currentId = Integer.parseInt(id);
+		 
+		                		if(currentId != 0)
+		                		{
+		                		if(leftOrRight == 1)
+		                		{
+		                			currentId = currentId -1 ;
+		                			leftOrRight = 0;
+		                			if(currentId<=0)
+		                				break;
+		                		}
+		                		else if(leftOrRight == 2)
+		                		{
+		                			currentId = currentId+ 1;
+		                			leftOrRight = 0;
+		                			if(currentId > maxId)
+		                				break;
+		                		}
+		                		}
+		                		
+		                		if(currentId > -1 && currentId <=maxId)
+		                		{
+
+		                		isUpdate = false;
+		                		}
+		                		
+		                		if(currentId == 0)
+		                		{
+		                			currentUrl = url + "list";
+		                			isNew = true;
+		                		}
+		                		else
+		                			currentUrl = url + "list&id="+currentId;	
+								
+							}
+							break;
+						//一篇问答
+						case 2:
+							
+							if(main_item.findViewById(R.id.QAtab).findViewById(R.id.QA_id) != null)
+							{
+								targetView = main_item.findViewById(R.id.QAtab);
+								idView = (TextView) targetView.findViewById(R.id.QA_id);
+		                		id = (String) idView.getText();
+		                		if(id == "")
+		                			id = "0";
+		                		currentId = Integer.parseInt(id);
+		                	
+		                		if(currentId != 0)
+		                		{
+		                		if(leftOrRight == 1)
+		                		{
+		                			currentId = currentId -1 ;
+		                			leftOrRight = 0;
+		                			if(currentId<=0)
+		                				break;
+		                		}
+		                		else if(leftOrRight == 2)
+		                		{
+		                			currentId = currentId+ 1;
+		                			leftOrRight = 0;
+		                			if(currentId > maxId)
+		                				break;
+		                		}
+		                		}
+		                		
+		                		if(currentId > -1 && currentId <=maxId)
+		                		{
+
+		                			isUpdate = false;
+		                			
+		                		}
+		                		
+		                		if(currentId == 0)
+		                		{
+		                			currentUrl = url + "QA";
+		                			isNew = true;
+		                		}
+		                		else
+		                			currentUrl = url + "QA&id="+currentId;
+		                			
+								
+							}
+							break;
+						
+					}
+					
+				
+					
+					if(isUpdate == false)
+					{
+					try {
+						viewHandler.sendMessage(Message.obtain(viewHandler, 0, currentId, 1, targetView));
+						
+						data = dataOp.getDataAsyn(currentUrl, about_one, main_item,homeListView);
+						
+						if(isNew)
+						{
+							try {
+								maxId= getDataId(data);
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							isNew = false;
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+        			
+					viewHandler.sendMessage(Message.obtain(viewHandler, 1, currentId, 1, targetView));
+					
+					}
+					}
+				
+					
+					}while(true);
+							
+					
+					
+				
+			}
+		}).start();
+		
 		//viewMap.put("list", this.listAdapter);
 	
 
@@ -689,7 +703,27 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	}
 
 
-
+	//设置loading状态  和取消loading状态   0为设置 1为取消
+	private void setLoadingView(int flag)
+	{
+		if(flag==1)
+		{
+			this.main_item.findViewById(R.id.loadingLayout).setVisibility(View.GONE);
+			this.main_item.findViewById(android.R.id.tabcontent).setVisibility(View.VISIBLE);
+		}else
+		{
+			this.main_item.findViewById(R.id.loadingLayout).setVisibility(View.VISIBLE);
+			this.main_item.findViewById(android.R.id.tabcontent).setVisibility(View.GONE);
+		}
+		
+		this.main_item.invalidate();
+	}
+	
+	
+	
+	
+	
+	
 
 
 	public void finishActivityA(View v) {
@@ -747,20 +781,22 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	/* 分享功能 */
 	public void shareOnClick(View view) {
 		String shareTitle ="";
-		String shareContent = "推荐海盗一篇";
+		String shareContent = "推荐海盗一篇    ";
 		if(tabs.getCurrentTabTag() == "home tab" )
 		{
 			shareTitle = "home tab";
-			shareContent = shareContent + ((TextView) this.findViewById(R.id.fPage_tView)).getText().toString();
+			shareContent = shareContent + ((TextView) this.findViewById(R.id.fPage_tView)).getText().toString()+  ((TextView) this.findViewById(R.id.imageBelow_tView)).getText().toString() +  "(来自海盗团队)  " + ((TextView) this.findViewById(R.id.home_share_url)).getText().toString();
 		}else if(tabs.getCurrentTabTag() == "QA Tab" )
 		{
 			shareTitle = "QA Tab";
-			shareContent = "";
+			shareContent = shareContent + ((TextView) this.findViewById(R.id.question_content)).getText().toString()+ " - 阅读全文 (来自海盗团队)  " + ((TextView) this.findViewById(R.id.qa_share_url)).getText().toString();
+			
 			
 		}else if(tabs.getCurrentTabTag() == "list tab")
 		{
 			shareTitle = "list tab";
-			shareContent = "";
+			shareContent = shareContent + "《" + ((TextView) this.findViewById(R.id.one_content_title)).getText().toString()+ "》 by "+ ((TextView) this.findViewById(R.id.one_content_author)).getText().toString() +  "- 阅读全文(来自海盗团队)  " + ((TextView) this.findViewById(R.id.list_share_url)).getText().toString();
+			
 		}
 			
 		
