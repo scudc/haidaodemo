@@ -41,4 +41,8 @@ limitations under the License.
     <color name="night_title_bg">#ffdedede</color>
     <color name="share_edit_textcolor">#fff3f3f3</color>
     <color name="text_color_b">#ff444444</color>
+    <drawable name="home_tab_ui">@drawable/home_tab_ui</drawable>
+    <drawable name="one_tab_ui">@drawable/one_tab_ui</drawable>
+    <drawable name="qa_tab_ui">@drawable/qa_tab_ui</drawable>
+    <drawable name="more_tab_ui">@drawable/more_tab_ui</drawable>
 </resources>

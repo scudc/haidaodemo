@@ -2,15 +2,33 @@
 
 		  
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/qaScrollView" android:background="#FFFFFF"  android:layout_width="fill_parent" android:layout_height="fill_parent">
+     <LinearLayout
+		          
+		          android:layout_width="fill_parent"
+		          android:layout_height="wrap_content"
+		          android:layout_gravity="center_horizontal"
 
+		          android:orientation="vertical" >
+			  <include
+
+  
+        layout="@layout/one_title" />
+   
     <RelativeLayout
         android:id="@+id/question_page_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+         android:layout_marginTop="20.0dip" >
+		   
+        <LinearLayout
+            android:id="@+id/make_date_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20.0dip"
+            android:layout_marginRight="20.0dip"
+            android:orientation="horizontal" >
 
-        <ImageView android:id="@id/up_line" android:background="@color/darkgray" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginLeft="20.0dip" android:layout_marginTop="15.0dip" android:layout_marginRight="20.0dip" android:layout_alignParentTop="true" android:contentDescription="@null" />
-        <LinearLayout android:orientation="horizontal" android:id="@+id/make_date_layout" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginRight="20.0dip" android:layout_below="@id/up_line">
             <TextView android:textColor="@color/one_textcolor" android:gravity="left|center" android:id="@+id/question_publish_time" android:layout_width="wrap_content" android:layout_height="fill_parent" android:text="@string/question_publish_time"/>
             <TextView android:id="@+id/q_datetime" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" />
         	      <RelativeLayout
@@ -22,21 +40,20 @@
                     android:onClick="shareOnClick">
 
                     <TextView
-                        android:id="@+id/moreApply"
+                        android:id="@+id/QA_id"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
                         android:layout_marginLeft="30.0dip"
-                        android:background="@drawable/one_more_apply"
                         android:contentDescription="@null" />
 
                 </RelativeLayout>
         </LinearLayout>
         <ImageView android:id="@id/down_line" android:background="@color/darkgray" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginLeft="20.0dip" android:layout_marginRight="20.0dip" android:layout_marginBottom="20.0dip" android:layout_below="@id/make_date_layout" android:contentDescription="@null" />
         <LinearLayout android:orientation="horizontal" android:id="@+id/question_layout" android:background="@android:color/transparent" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginRight="20.0dip" android:layout_below="@id/down_line">
-            <ImageView android:id="@+id/question_image" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_marginTop="4.0dip" android:layout_marginRight="20.0dip" android:layout_marginBottom="20.0dip" android:src="@drawable/one_question_page_question_image" android:contentDescription="@null" />
+            <ImageView android:id="@+id/question_image" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_marginTop="4.0dip" android:layout_marginRight="20.0dip" android:layout_marginBottom="20.0dip" android:src="@drawable/one_question_page_question_image_ui" android:contentDescription="@null" />
             <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/one_textcolor" android:id="@+id/question_title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="10.0dip" android:lineSpacingMultiplier="1.3" />
         </LinearLayout>
         <RelativeLayout android:id="@+id/content_Relativelayout" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_below="@id/question_layout">
@@ -44,7 +61,7 @@
             <ImageView android:id="@+id/down_line1" android:background="@color/darkgray" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginLeft="20.0dip" android:layout_marginTop="15.0dip" android:layout_marginRight="20.0dip" android:layout_below="@id/question_content" android:contentDescription="@null" />
         </RelativeLayout>
         <LinearLayout android:orientation="horizontal" android:id="@+id/answer_layout" android:background="@android:color/transparent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20.0dip" android:layout_marginTop="20.0dip" android:layout_marginRight="20.0dip" android:layout_below="@id/content_Relativelayout">
-            <ImageView android:id="@+id/question_answer_image" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_marginTop="4.0dip" android:layout_marginRight="20.0dip" android:layout_marginBottom="20.0dip" android:src="@drawable/one_question_page_answer" android:contentDescription="@null" />
+            <ImageView android:id="@+id/question_answer_image" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5.0dip" android:layout_marginTop="4.0dip" android:layout_marginRight="20.0dip" android:layout_marginBottom="20.0dip" android:src="@drawable/one_question_page_answer_ui" android:contentDescription="@null" />
             <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/one_textcolor" android:id="@+id/question_answer_title" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginRight="10.0dip" android:lineSpacingMultiplier="1.3" android:text="@string/question_answer_title"  />
         </LinearLayout>
         <TextView android:textSize="16.0sp" android:textColor="@color/one_textcolor" android:id="@+id/question_answer_content" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="25.0dip" android:layout_marginRight="25.0dip" android:layout_below="@id/answer_layout" android:lineSpacingExtra="3.0dip" android:lineSpacingMultiplier="1.3" android:text="@string/question_answer_content" />
@@ -70,15 +87,11 @@
         	-->
             </LinearLayout>
 
-			<TextView android:visibility="invisible"  android:id="@+id/qa_share_url"    android:layout_width="fill_parent"
+			<TextView android:visibility="gone"  android:id="@+id/qa_share_url"    android:layout_width="fill_parent"
                    android:layout_height="fill_parent"  />
-			 <TextView
-                   android:id="@+id/QA_id"
-                   android:layout_width="fill_parent"
-                   android:layout_height="fill_parent"
-                   android:visibility="invisible"  
-		 />
+	
     </RelativeLayout>
+    </LinearLayout>
 </ScrollView>
 
 	
