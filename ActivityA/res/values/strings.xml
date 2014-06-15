@@ -146,5 +146,5 @@ limitations under the License.
         <string name="feedback_text">反馈内容:</string>
         <string name="feedback_null">input</string>
         <string name="feedback_submit">提交</string>
-        <string name="share">Just One (发现有趣的互联网资讯)</string>
+        <string name="share">Just One (互联网日记)</string>
 </resources>

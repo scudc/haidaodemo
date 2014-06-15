@@ -41,8 +41,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
+
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.Gravity;
@@ -50,12 +49,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnCreateContextMenuListener;
+
 import android.view.View.OnFocusChangeListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
-import android.widget.TabHost.TabSpec;
+
 import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.EditText;
@@ -63,6 +62,7 @@ import android.widget.EditText;
 
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+
 
 import com.justone.android.util.AsynImageLoader;
 import com.justone.android.util.DataOp;
@@ -478,8 +478,9 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 				}else if (type.equals("image"))
 				{
 					ImageView imageView = (ImageView) targetView.findViewById(targetViewId);
-					 
-					asynImageLoader.showImageAsyn(imageView, content, R.drawable.one_image);  
+					
+					asynImageLoader.showImageAsyn(imageView, content, R.drawable.one_image_dev);  
+					
 					
 				}else if (type.equals("shareUrl"))
 				{
@@ -818,7 +819,6 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		for (int i = 0; i < 1; i++) {
 
 			HashMap<String, Integer> hashmap = new HashMap<String, Integer>();
-			hashmap.put("list", R.drawable.test);
 
 			for (int j = 0; j < 1; j++) {
 
@@ -909,44 +909,133 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 
 	/* 一键分享 事件监听*/
     public void showOnekeyshare(View view) {
+    	
+    	String imageUrl = "http://pic.yupoo.com/hanapp/DGhs5c5g/custom.jpg";
+    	
+    	/*
+    	 OnekeyShare oks = new OnekeyShare();
+         
+         // 分享时Notification的图标和文字
+         oks.setNotification(R.drawable.ic_launcher, 
+         this.getString(R.string.app_name));
+         // address是接收人地址，仅在信息和邮件使用
+         oks.setAddress("12345678901");
+         // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+         oks.setTitle(this.getString(R.string.share));
+         // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+         oks.setTitleUrl("http://sharesdk.cn");
+         // text是分享文本，所有平台都需要这个字段
+         oks.setText("tests");
+         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+         //oks.setImagePath(MainActivity.TEST_IMAGE);
+         // imageUrl是图片的网络路径，新浪微博、人人网、QQ空间、
+         // 微信的两个平台、Linked-In支持此字段
+         oks.setImageUrl("http://pic.yupoo.com/hanapp/DGhs5c5g/custom.jpg");
+         // url仅在微信（包括好友和朋友圈）中使用
+         oks.setUrl("http://sharesdk.cn");
+         // appPath是待分享应用程序的本地路劲，仅在微信中使用
+         //oks.setAppPath("test");
+         // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+         oks.setComment(this.getString(R.string.share));
+         // site是分享此内容的网站名称，仅在QQ空间使用
+         oks.setSite(this.getString(R.string.app_name));
+         // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+         oks.setSiteUrl("http://sharesdk.cn");
+         // venueName是分享社区名称，仅在Foursquare使用
+        oks.setVenueName("Southeast in China");
+         // venueDescription是分享社区描述，仅在Foursquare使用
+         oks.setVenueDescription("This is a beautiful place!");
+         // latitude是维度数据，仅在新浪微博、腾讯微博和Foursquare使用
+        oks.setLatitude(23.122619f);
+         // longitude是经度数据，仅在新浪微博、腾讯微博和Foursquare使用
+        oks.setLongitude(113.372338f);
+         // 是否直接分享（true则直接分享）
+         
+         // 指定分享平台，和slient一起使用可以直接分享到指定的平台
+       
+         // 去除注释可通过OneKeyShareCallback来捕获快捷分享的处理结果
+         // oks.setCallback(new OneKeyShareCallback());
+         //通过OneKeyShareCallback来修改不同平台分享的内容
+       
+         
+         oks.show(this);
+         
+    	*/
+  
+    	
+    
+      	String shareText = "";
+      	String shareUrl = "";
+      	String titleText = "";
     	ShareSDK.initSDK(this,"1b1cba59b108");
         OnekeyShare oks = new OnekeyShare();
-        
-      
-        // 分享时Notification的图标和文字
         oks.setNotification(R.drawable.ic_launcher, 
         this.getString(R.string.app_name));
+    	if(tabs.getCurrentTabTag() == "home tab" )
+		{
+    		imageUrl =   (String)(this.findViewById(R.id.imageView1)).getTag();
+    		titleText = (String) ((TextView)this.findViewById(R.id.imageBelow_tView)).getText();
+    		oks.setImageUrl(imageUrl);
+    		shareUrl = (String) ((TextView)this.findViewById(R.id.home_share_url)).getText();
+    		shareText = (String) ((TextView)this.findViewById(R.id.imageBelow_tView)).getText() + " " + (String) ((TextView)this.findViewById(R.id.imageBelow_tView1)).getText() + "  "+shareUrl;
+
+		}else if(tabs.getCurrentTabTag() == "QA Tab" )
+		{
+			oks.setImageUrl(imageUrl);
+			shareUrl = (String) ((TextView)this.findViewById(R.id.qa_share_url)).getText();
+			shareText = (String) ((TextView)this.findViewById(R.id.question_content)).getText() + "  " + shareUrl;
+			titleText = (String) ((TextView)this.findViewById(R.id.question_content)).getText();
+			
+		}else if(tabs.getCurrentTabTag() == "list tab")
+		{
+		
+			oks.setImageUrl(imageUrl);
+			shareUrl = (String) ((TextView)this.findViewById(R.id.list_share_url)).getText();
+			shareText = (String) ((TextView)this.findViewById(R.id.one_content_title)).getText() + "  "+ shareUrl;
+			titleText =  (String) ((TextView)this.findViewById(R.id.one_content_title)).getText() ;
+		}
+    	
+    	
+    
+    	
+    	
+  	oks.setComment(this.getString(R.string.share));
+      
+        // 分享时Notification的图标和文字
+        
         // address是接收人地址，仅在信息和邮件使用
-        oks.setAddress("12345678901");
+        //oks.setAddress("12345678901");
         // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-        oks.setTitle(this.getString(R.string.share));
+        oks.setTitle(titleText + " - " + this.getString(R.string.share));
+ 
         // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-        //oks.setTitleUrl("http://sharesdk.cn");
+        oks.setTitleUrl(shareUrl);
         // text是分享文本，所有平台都需要这个字段
-        oks.setText("这个是分享的文本");
+        oks.setText(shareText);
         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
         //oks.setImagePath(MainActivity.TEST_IMAGE);
         // imageUrl是图片的网络路径，新浪微博、人人网、QQ空间、
         // 微信的两个平台、Linked-In支持此字段
-        oks.setImageUrl("http://img.appgo.cn/imgs/sharesdk/content/2013/07/25/1374723172663.jpg");
+        
         // url仅在微信（包括好友和朋友圈）中使用
-        oks.setUrl("http://sharesdk.cn");
+        oks.setUrl(shareUrl);
+        
         // appPath是待分享应用程序的本地路劲，仅在微信中使用
         //oks.setAppPath(MainActivity.TEST_IMAGE);
         // comment是我对这条分享的评论，仅在人人网和QQ空间使用
         //oks.setComment(getContext().getString(R.string.share));
         // site是分享此内容的网站名称，仅在QQ空间使用
-        //oks.setSite(context.getString(R.string.app_name));
+        oks.setSite(titleText + " - " + this.getString(R.string.app_name));
         // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-       // oks.setSiteUrl("http://sharesdk.cn");
+        oks.setSiteUrl(shareUrl);
         // venueName是分享社区名称，仅在Foursquare使用
        // oks.setVenueName("Southeast in China");
         // venueDescription是分享社区描述，仅在Foursquare使用
         //oks.setVenueDescription("This is a beautiful place!");
         // latitude是维度数据，仅在新浪微博、腾讯微博和Foursquare使用
-        oks.setLatitude(23.122619f);
+        //oks.setLatitude(23.122619f);
         // longitude是经度数据，仅在新浪微博、腾讯微博和Foursquare使用
-        oks.setLongitude(113.372338f);
+       // oks.setLongitude(113.372338f);
         // 是否直接分享（true则直接分享）
         oks.setSilent(false);
         // 指定分享平台，和slient一起使用可以直接分享到指定的平台
@@ -960,6 +1049,10 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
       //  new ShareContentCustomizeDemo());
         
         oks.show(this);
+        
+        
+        
+        
     }
 	public void feedbackOnClick(View view) {
 		context.push(about_one);
@@ -1051,12 +1144,12 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	    	int currentViewId = this.tabs.getCurrentView().getId();
 	    	*/
 	        if (e1.getX() - e2.getX() < -300) {
-	        	this.leftOrRight = 1;
+	        	this.leftOrRight = 2;
 	        	this.isUpdate = true;
 	        	
 	        }  
 	        else if (e1.getX() - e2.getX() > 300) {
-	        	this.leftOrRight = 2;
+	        	this.leftOrRight = 1;
 	        	this.isUpdate = true;
 	        	
 	        }

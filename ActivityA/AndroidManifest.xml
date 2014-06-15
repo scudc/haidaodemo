@@ -29,10 +29,12 @@ limitations under the License.
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
 	<uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+	
+
     <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="18" />
     <application android:theme="@style/NoTitleTheme" android:name="com.justone.android.main.JustOne"
         		 android:label="@string/app_name"
-                 android:icon="@drawable/ic_launcher">
+                 android:icon="@drawable/ic_launcher_ui">
 
         <activity android:name="com.justone.android.main.StartActivity"
             android:launchMode="singleTask">
@@ -41,15 +43,21 @@ limitations under the License.
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        
+<activity
+   android:name="cn.sharesdk.framework.ShareSDKUIShell"
+   android:theme="@android:style/Theme.Translucent.NoTitleBar"
+   android:configChanges="keyboardHidden|orientation|screenSize"
+   android:screenOrientation="portrait"
+   android:windowSoftInputMode="stateHidden|adjustResize" />
+        <!--微信分享回调 -->
+	<activity
+  android:name=".wxapi.WXEntryActivity"
+  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+  android:configChanges="keyboardHidden|orientation|screenSize"
+  android:exported="true"
+  android:screenOrientation="portrait" />
         <activity android:name="com.justone.android.main.MainActivity" />
-        <activity
-   			android:name="cn.sharesdk.framework.ShareSDKUIShell"
-   			android:theme="@android:style/Theme.Translucent.NoTitleBar"
-   			android:configChanges="keyboardHidden|orientation|screenSize"
-   			android:screenOrientation="portrait"
-   			android:windowSoftInputMode="stateHidden|adjustResize" />
+  
 
     </application>
 </manifest> 

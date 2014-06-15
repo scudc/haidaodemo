@@ -173,7 +173,7 @@ public class DataOp {
 			{
 				ImageView imageView = (ImageView) targetView.findViewById(targetViewId);
 				 
-				asynImageLoader.showImageAsyn(imageView, content, R.drawable.one_image);  
+				asynImageLoader.showImageAsyn(imageView, content, R.drawable.one_image_dev);  
 				
 			}else if (type.equals("shareUrl"))
 			{
