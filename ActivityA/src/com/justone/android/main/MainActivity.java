@@ -220,7 +220,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 							if (feedback_email_et.getText().toString().equalsIgnoreCase("input"))
 							{
 								feedback_email_et.setText("");
-								feedback_email_et.setTextColor(0x333333);
+								//feedback_email_et.setTextColor(0x333333);
 							}
 						}
 					}
@@ -236,7 +236,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 							if (feedback_phone_et.getText().toString().equalsIgnoreCase("input"))
 							{
 								feedback_phone_et.setText("");
-								feedback_phone_et.setTextColor(0x333333);
+								//feedback_phone_et.setTextColor(0x333333);
 							}
 						}
 					}
@@ -253,7 +253,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 							if (feedback_text_et.getText().toString().equalsIgnoreCase("input"))
 							{
 								feedback_text_et.setText("");
-								feedback_text_et.setTextColor(0x333333);
+								//feedback_text_et.setTextColor(0x333333);
 							}
 						}
 					}
@@ -859,19 +859,11 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 
 	/* return 事件监听 */
 	public void returnOnClick(View view) {
-		if (null != feedback_email_et)
-		{
-			feedback_email_et = (EditText)findViewById(R.id.feedback_email_content);
-			feedback_phone_et = (EditText)findViewById(R.id.feedback_phone_content);
-			feedback_text_et = (EditText)findViewById(R.id.feedback_text_content);
-			feedback_email_et.setText(R.string.feedback_null);
-			feedback_phone_et.setText(R.string.feedback_null);
-			feedback_text_et.setText(R.string.feedback_null);
-			feedback_email_et.setTextColor(R.color.darkgray);
-			feedback_phone_et.setTextColor(R.color.darkgray);
-			feedback_text_et.setTextColor(R.color.darkgray);
-		}
-		setContentView(context.pop());
+		
+
+		View view1 = context.pop();
+		Log.i("xxxxxx",view1.toString());
+		setContentView(view1);
 	}
 
 	/* 分享功能 */
@@ -1070,6 +1062,18 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
     	String text = feedback_text_et.getText().toString();
     	String result = dataOp.postData(email, phone, text);
     	System.out.println(result);
+    	
+    	feedback_email_et = (EditText)findViewById(R.id.feedback_email_content);
+		feedback_phone_et = (EditText)findViewById(R.id.feedback_phone_content);
+		feedback_text_et = (EditText)findViewById(R.id.feedback_text_content);
+		feedback_email_et.setText(R.string.feedback_null);
+		feedback_phone_et.setText(R.string.feedback_null);
+		feedback_text_et.setText(R.string.feedback_null);
+		//feedback_email_et.setTextColor(R.color.darkgray);
+		//feedback_phone_et.setTextColor(R.color.darkgray);
+		//feedback_text_et.setTextColor(R.color.darkgray);
+		
+		
     	setContentView(context.pop());
     }
 		

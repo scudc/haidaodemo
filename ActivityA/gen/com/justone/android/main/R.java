@@ -484,14 +484,12 @@ public final class R {
     public static final class string {
         public static final int about_copyright=0x7f050087;
         public static final int about_ours=0x7f050084;
-        public static final int aboutname=0x7f05008d;
+        public static final int aboutname=0x7f050089;
         public static final int activity_a=0x7f050059;
         public static final int activity_a_label=0x7f050048;
         public static final int activity_b_label=0x7f050049;
         public static final int activity_c_label=0x7f05004a;
         public static final int activity_status=0x7f05003f;
-        public static final int another=0x7f05008b;
-        public static final int another1=0x7f05008c;
         public static final int app_downloading=0x7f05002c;
         public static final int app_name=0x7f05003d;
         public static final int btn_finish_a_label=0x7f05004f;
@@ -504,7 +502,7 @@ public final class R {
         public static final int btn_start_dialog_label=0x7f05004e;
         public static final int cancel=0x7f05002f;
         public static final int close=0x7f05005d;
-        public static final int contactus=0x7f05008f;
+        public static final int contactus=0x7f05008b;
         public static final int contentLong=0x7f050080;
         public static final int content_text01=0x7f050062;
         public static final int content_text02=0x7f050064;
@@ -528,12 +526,12 @@ public final class R {
         public static final int facebook=0x7f05000f;
         public static final int failed_to_start_incentive_page=0x7f05002a;
         public static final int feedback=0x7f050088;
-        public static final int feedback_content=0x7f050090;
-        public static final int feedback_email=0x7f050091;
-        public static final int feedback_null=0x7f050094;
-        public static final int feedback_phone=0x7f050092;
-        public static final int feedback_submit=0x7f050095;
-        public static final int feedback_text=0x7f050093;
+        public static final int feedback_content=0x7f05008c;
+        public static final int feedback_email=0x7f05008d;
+        public static final int feedback_null=0x7f050090;
+        public static final int feedback_phone=0x7f05008e;
+        public static final int feedback_submit=0x7f050091;
+        public static final int feedback_text=0x7f05008f;
         public static final int finish=0x7f050030;
         public static final int flickr=0x7f050020;
         public static final int foursquare=0x7f05001d;
@@ -541,7 +539,6 @@ public final class R {
         public static final int google_plus_client_inavailable=0x7f050004;
         public static final int googleplus=0x7f05001c;
         public static final int haidaobiaoti=0x7f05005f;
-        public static final int han=0x7f05008a;
         public static final int homepage_text04=0x7f05006f;
         public static final int incentive_title=0x7f050029;
         public static final int instagram=0x7f050024;
@@ -577,11 +574,10 @@ public final class R {
         public static final int oneselfItem=0x7f050081;
         public static final int oneselfItem2=0x7f050082;
         public static final int oneselfItem3=0x7f050083;
-        public static final int oursMicroBlog=0x7f050089;
         public static final int pinterest=0x7f05001f;
         public static final int pinterest_client_inavailable=0x7f050006;
         public static final int pull_to_refresh=0x7f05003a;
-        public static final int qa_people_like_num=0x7f05008e;
+        public static final int qa_people_like_num=0x7f05008a;
         public static final int qq=0x7f05001e;
         public static final int qq_client_inavailable=0x7f050005;
         public static final int question_answer_content=0x7f050079;
