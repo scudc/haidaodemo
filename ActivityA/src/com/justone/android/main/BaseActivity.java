@@ -25,6 +25,7 @@ public class BaseActivity extends Activity {
        private int currentView = 0 ;
 
 	public int getCurrentView() {
+		
 		return currentView;
 	}
 

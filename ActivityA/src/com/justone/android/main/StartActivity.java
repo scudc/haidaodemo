@@ -19,6 +19,8 @@ package com.justone.android.main;
 import org.json.JSONException;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +30,7 @@ import android.widget.TextView;
 
 
 import com.justone.android.main.MainActivity.ViewHandler;
+import com.justone.android.service.UpdateService;
 import com.justone.android.util.StatusTracker;
 import com.justone.android.util.Utils;
 
@@ -63,11 +66,13 @@ public class StartActivity extends BaseActivity {
         justOne = (JustOne) getApplication();
         justOne.pushActivity(this);
         
-
+         
 
         
     }
     
+    
+   
 	/**
 	 * Handler示例，用于刷新时间
 	 * DateHelper是我自己写的日期格式化工具哦

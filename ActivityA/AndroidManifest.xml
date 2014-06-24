@@ -43,6 +43,8 @@ limitations under the License.
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name="com.justone.android.service.UpdateService" >
+        </service>
 <activity
    android:name="cn.sharesdk.framework.ShareSDKUIShell"
    android:theme="@android:style/Theme.Translucent.NoTitleBar"

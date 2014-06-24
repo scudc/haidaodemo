@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 
@@ -34,6 +36,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -54,6 +58,7 @@ import android.view.View.OnFocusChangeListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -64,6 +69,7 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
 
+import com.justone.android.service.UpdateService;
 import com.justone.android.util.AsynImageLoader;
 import com.justone.android.util.DataOp;
 import com.justone.android.util.StatusTracker;
@@ -154,6 +160,12 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	private EditText feedback_email_et = null;
 	private EditText feedback_phone_et = null;
 	private EditText feedback_text_et = null;
+	
+	
+	/** 
+	 * 双击退出函数 
+	 */  
+	private static Boolean isExit = false;  
 
 	//数据资源对象
 	private Resources res = null;
@@ -167,7 +179,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		
+		checkVersion(); 
 		//初始化保存listview中view对象得数据结构
 		this.viewMap = new HashMap<String,ListViewAdapter>();
 		//初始化图片异步加载的类
@@ -365,6 +377,40 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		viewMap.put("home", this.homeAdapter);
 
 	}
+	
+	 /***
+		 * 检查是否更新版本
+		 */
+		public void checkVersion() {
+			if (this.justOne.localVersion < this.justOne.serverVersion) {
+				// 发现新版本，提示用户更新
+				AlertDialog.Builder alert = new AlertDialog.Builder(this);
+				alert.setTitle("软件升级")
+						.setMessage("发现新版本,建议立即更新使用.")
+						.setPositiveButton("更新",new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int which) {
+										Intent updateIntent = new Intent(
+												MainActivity.this,
+												UpdateService.class);
+										updateIntent.putExtra(
+												"app_name",
+												getResources().getString(
+														R.string.app_name));
+										startService(updateIntent);
+									}
+								})
+						.setNegativeButton("取消",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int which) {
+										dialog.dismiss();
+									}
+								});
+				alert.create().show();
+
+			}
+		}
 
 	/**
 	 * Handler示例，用于刷新时间
@@ -507,9 +553,31 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-		this.justOne.exit();
+		// TODO Auto-generated method stub  
+	    if(keyCode == KeyEvent.KEYCODE_BACK)  
+	       {    
+	           exitBy2Click();      //调用双击退出函数  
+	       }  
+	    return false; 
+	}
+	
+	private void exitBy2Click() {
+		Timer tExit = null;
+		if (isExit == false) {
+			isExit = true; // 准备退出
+			Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+			tExit = new Timer();
+			tExit.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					isExit = false; // 取消退出
+				}
+			}, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
 
-		return true;
+		} else {
+			finish();
+			System.exit(0);
+		}
 	}
 
 	@Override
@@ -561,8 +629,12 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 					{
 						//home 页面
 						case  0:
+							if(main_item == null)
+								continue;
+							if(main_item.findViewById(R.id.homeTab) == null)
+								continue;
 							
-							if(main_item != null & main_item.findViewById(R.id.homeTab)!=null && main_item.findViewById(R.id.homeTab).findViewById(R.id.home_id) != null)
+							if( main_item.findViewById(R.id.homeTab).findViewById(R.id.home_id) != null)
 							{
 								
 								targetView = main_item.findViewById(R.id.homeTab);
