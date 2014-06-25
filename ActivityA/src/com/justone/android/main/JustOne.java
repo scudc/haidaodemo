@@ -15,11 +15,15 @@ public class JustOne extends Application{
     private Stack<Activity> activityStack = new Stack<Activity>();
     public static int localVersion = 0;// 本地安装版本
 
-	public static int serverVersion = 2;// 服务器版本
+	public static int serverVersion = 0;// 服务器版本
 
 	public static String downloadDir = "jj/";// 安装目录
+	
+	public static String download_href = ""; //下载地址
 
-
+	public static String versionDesc = ""; // 新版本描述
+	
+	public static String versionName = ""; //版本名称
 	public int getCurrentTabIndex() {
 		return currentTabIndex;
 	}
@@ -55,6 +59,7 @@ public class JustOne extends Application{
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
+       
     }  
   
 }  

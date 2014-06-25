@@ -227,6 +227,16 @@ public class DataOp {
 		
 	}
 	
+	
+	
+	public String  getUpdateVersionInfo()
+	{
+		String updateUrl = "http://haidaoteam.sinaapp.com/?datatype=json&type=version";
+		String data = handleGet(updateUrl);
+		return data;
+	}
+	
+	
 	/*
 	 * 传入ID获取 所需要json数据，数据参考文档
 	 * https://tower.im/projects/d504e737f90f402c88df69dd10385e85/docs/e477b9b4689d4e7fa5a003c81e987b4e

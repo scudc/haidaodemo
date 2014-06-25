@@ -179,7 +179,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		checkVersion(); 
+		
 		//初始化保存listview中view对象得数据结构
 		this.viewMap = new HashMap<String,ListViewAdapter>();
 		//初始化图片异步加载的类
@@ -380,13 +380,42 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	
 	 /***
 		 * 检查是否更新版本
+	 * @throws JSONException 
 		 */
-		public void checkVersion() {
+		public void checkVersion() throws JSONException {
+			
+			String versionInfo = this.dataOp.getUpdateVersionInfo();
+			JSONObject jsonOb = new JSONObject(versionInfo);
+			String viewData =  jsonOb.getString("data");
+			JSONArray jsonArray = new JSONArray(viewData);
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONArray tempJson = (JSONArray) jsonArray.opt(i);
+				Log.i("serverVersion",tempJson.optString(0) );
+				if(tempJson.optString(0).equals("version_id"))
+				{
+					this.justOne.serverVersion = tempJson.optInt(1);
+				}
+				if(tempJson.optString(0).equals("version_name"))
+					this.justOne.versionName = tempJson.optString(1);
+				if(tempJson.optString(0).equals("version_desc"))
+					this.justOne.versionDesc = tempJson.optString(1);
+				if(tempJson.optString(0).equals("download_href"))
+					this.justOne.download_href = tempJson.optString(1);
+				/*ArrayList<String> tempArray = new ArrayList<String>();
+				
+				tempJson.getJSONArray(index)
+				tempArray.add(String.valueOf(nameToIdMap(tempJson
+						.getString(0))));
+				tempArray.add(String.valueOf(tempJson.getString(1)));
+				tempArray.add(String.valueOf(tempJson.getString(2)));
+				tempResult.add(tempArray);*/
+			}
+			Log.i("serverVersion",String.valueOf(this.justOne.serverVersion));
 			if (this.justOne.localVersion < this.justOne.serverVersion) {
 				// 发现新版本，提示用户更新
 				AlertDialog.Builder alert = new AlertDialog.Builder(this);
 				alert.setTitle("软件升级")
-						.setMessage("发现新版本,建议立即更新使用.")
+						.setMessage(this.justOne.versionDesc)
 						.setPositiveButton("更新",new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
 											int which) {
@@ -398,6 +427,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 												getResources().getString(
 														R.string.app_name));
 										startService(updateIntent);
+										dialog.dismiss();
 									}
 								})
 						.setNegativeButton("取消",
@@ -575,8 +605,12 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 			}, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
 
 		} else {
-			finish();
-			System.exit(0);
+		    Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);
+
+            mHomeIntent.addCategory(Intent.CATEGORY_HOME);
+            mHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            this.startActivity(mHomeIntent);
 		}
 	}
 
@@ -818,6 +852,13 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		}).start();
 		
 		//viewMap.put("list", this.listAdapter);
+		
+		try {
+			checkVersion();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 	
 
 	}
