@@ -8,6 +8,10 @@
 	android:id="@+android:id/mainLayout"
     android:orientation="vertical"
     >
+        <include
+        android:id="@id/question_title"
+  
+        layout="@layout/one_title" />
 	<TabHost android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:id="@+id/tabhost"

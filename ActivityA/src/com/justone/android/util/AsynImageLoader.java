@@ -13,7 +13,7 @@ import java.util.Set;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+
 import android.widget.ImageView;
 
 

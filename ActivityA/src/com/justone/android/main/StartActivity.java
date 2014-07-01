@@ -16,11 +16,10 @@
 
 package com.justone.android.main;
 
-import org.json.JSONException;
+
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,10 +28,11 @@ import android.view.View;
 import android.widget.TextView;
 
 
-import com.justone.android.main.MainActivity.ViewHandler;
-import com.justone.android.service.UpdateService;
+
 import com.justone.android.util.StatusTracker;
 import com.justone.android.util.Utils;
+import com.umeng.analytics.MobclickAgent;
+
 
 /**
  * Example Activity to demonstrate the lifecycle callback methods.
@@ -56,6 +56,7 @@ public class StartActivity extends BaseActivity {
     	
         super.onCreate(savedInstanceState);
         
+        MobclickAgent.updateOnlineConfig( this );
         
         setContentView(R.layout.one_welcome);
         mActivityName = getString(R.string.activity_a);
@@ -151,6 +152,7 @@ public class StartActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
         mStatusTracker.setStatus(mActivityName, getString(R.string.on_resume));
         Utils.printStatus(mStatusView, mStatusAllView);
     }
@@ -158,6 +160,7 @@ public class StartActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPause(this);
         mStatusTracker.setStatus(mActivityName, getString(R.string.on_pause));
         Utils.printStatus(mStatusView, mStatusAllView);
     }

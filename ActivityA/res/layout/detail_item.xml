@@ -13,9 +13,7 @@
     android:layout_gravity="center_horizontal"
     android:orientation="vertical" >
 
-    <include
-  
-        layout="@layout/one_title" />
+
 <RelativeLayout
     android:id="@+id/one_details_page"
     android:layout_width="fill_parent"

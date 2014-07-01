@@ -74,6 +74,7 @@ import com.justone.android.util.AsynImageLoader;
 import com.justone.android.util.DataOp;
 import com.justone.android.util.StatusTracker;
 import com.justone.android.util.Utils;
+import com.umeng.analytics.MobclickAgent;
 
 
 
@@ -547,7 +548,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 				
 				if(type.equals("text"))
 				{
-				Log.i("setDataToView",tempArray.get(0));
+	
 				TextView textView = (TextView) targetView.findViewById(targetViewId);
 		  		textView.setText(content);
 		  		
@@ -873,7 +874,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	@Override
 	protected void onResume() {
 		super.onResume();
-
+		//MobclickAgent.onResume(this);
 		mStatusTracker.setStatus(mActivityName, getString(R.string.on_resume));
 		Utils.printStatus(mStatusView, mStatusAllView);
 	}
@@ -882,6 +883,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	protected void onPause() {
 
 		super.onPause();
+		//MobclickAgent.onPause(this);
 		context.push(super.getCurrentFocus());
 		mStatusTracker.setStatus(mActivityName, getString(R.string.on_pause));
 		Utils.printStatus(mStatusView, mStatusAllView);
@@ -1260,12 +1262,12 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	    	System.out.println(this.homeListView.getId());
 	    	int currentViewId = this.tabs.getCurrentView().getId();
 	    	*/
-	        if (e1.getX() - e2.getX() < -300) {
+	        if (e1.getX() - e2.getX() < -200) {
 	        	this.leftOrRight = 2;
 	        	this.isUpdate = true;
 	        	
 	        }  
-	        else if (e1.getX() - e2.getX() > 300) {
+	        else if (e1.getX() - e2.getX() > 200) {
 	        	this.leftOrRight = 1;
 	        	this.isUpdate = true;
 	        	

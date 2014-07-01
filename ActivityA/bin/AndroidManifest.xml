@@ -16,8 +16,8 @@ limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.justone.android.main"
-      android:versionCode="1"
-      android:versionName="0.0.1">
+      android:versionCode="2"
+      android:versionName="0.0.2">
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 	<uses-permission android:name="android.permission.GET_TASKS" />
@@ -37,7 +37,7 @@ limitations under the License.
                  android:icon="@drawable/ic_launcher_ui">
 
         <activity android:name="com.justone.android.main.StartActivity"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -58,8 +58,9 @@ limitations under the License.
   android:configChanges="keyboardHidden|orientation|screenSize"
   android:exported="true"
   android:screenOrientation="portrait" />
-        <activity android:name="com.justone.android.main.MainActivity" />
+        <activity android:name="com.justone.android.main.MainActivity"  android:screenOrientation="portrait"/>
   
-
+	<meta-data android:value="53b2b40b56240b88e91144da" android:name="UMENG_APPKEY"></meta-data>
+	<meta-data android:value="default" android:name="UMENG_CHANNEL"/>
     </application>
 </manifest> 

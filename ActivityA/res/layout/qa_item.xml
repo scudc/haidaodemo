@@ -9,10 +9,7 @@
 		          android:layout_gravity="center_horizontal"
 
 		          android:orientation="vertical" >
-			  <include
-
-  
-        layout="@layout/one_title" />
+	
    
     <RelativeLayout
         android:id="@+id/question_page_item_layout"
