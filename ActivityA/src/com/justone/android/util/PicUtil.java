@@ -12,8 +12,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.justone.android.main.JustOne;
+import com.justone.android.main.MainActivity;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -29,7 +34,12 @@ import android.graphics.Shader.TileMode;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.view.View.MeasureSpec;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 public class PicUtil {
 	private static final String TAG = "PicUtil";
@@ -343,5 +353,67 @@ public class PicUtil {
 
 		return bitmapWithReflection;
 	}
+	
+	
+	@SuppressLint("SdCardPath")
+	public static String getSDPath()  
+    {  
+        boolean hasSDCard = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);  
+        if(hasSDCard)  
+        {  
+            return Environment.getExternalStorageDirectory().toString() + "/haidaoteam";  
+        }  
+        else  
+            return "/data/data/com.justone.android.main/haidaoteam";  
+    }  
+      
+    public static Bitmap convertViewToBitmap(View view)  
+    {  
+        view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));  
+        //view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());  
+        view.buildDrawingCache();  
+        Bitmap bitmap = view.getDrawingCache();  
+  
+        return bitmap;  
+    }      
+  
+    // first SDCard is in the device, if yes, the pic will be stored in the SDCard, folder "HaHa_Picture"  
+    // second if SDCard not exist, the picture will be stored in /data/data/HaHa_Picture  
+    // file will be named by the customer  
+    public static String saveImage(String strFileName,ImageView m_ivMain )  
+    {  
+        Bitmap bitmap = convertViewToBitmap(m_ivMain);  
+        String strPath = getSDPath();  
+        Log.i("saveImage",strPath);
+        try  
+        {  
+            File destDir = new File(strPath);  
+            if (!destDir.exists())  
+            {  
+                Log.d("MagicMirror", "Dir not exist create it " + strPath);  
+                destDir.mkdirs();  
+                Log.d("MagicMirror", "Make dir success: " + strPath);  
+            }  
+              
+            File imageFile = new File(strPath + "/" + strFileName);  
+            imageFile.createNewFile();  
+            FileOutputStream fos = new FileOutputStream(imageFile);  
+            bitmap.compress(CompressFormat.JPEG, 50, fos);  
+            fos.flush();  
+            fos.close(); 
+            return strPath;
+        }  
+        catch (FileNotFoundException e)  
+        {  
+            // TODO Auto-generated catch block  
+            e.printStackTrace();  
+        }  
+        catch (IOException e)  
+        {  
+            // TODO Auto-generated catch block  
+            e.printStackTrace();  
+        }  
+        return null;
+    }  
 
 }

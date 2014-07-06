@@ -48,46 +48,32 @@
 
     <LinearLayout
         android:id="@+id/linearLayout1"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/oneDetailsPageSet"
-        android:orientation="vertical" >
-
-        <ImageView
-            android:id="@+id/oneDetailsPageSet_Line1"
-            android:layout_width="fill_parent"
-            android:layout_height="1.0dip"
-            android:layout_marginLeft="14.0dip"
-            android:layout_marginRight="14.0dip"
-            android:layout_marginTop="10.0dip"
-            android:background="@color/darkgray"
-            android:contentDescription="@null" />
+        android:orientation="vertical"
+        android:gravity="center" >
 
         <RelativeLayout
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="2.0dip"
             android:layout_marginTop="2.0dip"
-            android:background="@drawable/one_list_selector"
-            android:onClick="sineMicroBlogBindOnClick" >
+            android:layout_weight="20.60"
+            android:background="@drawable/one_list_selector" 
+            android:gravity="center">
 
             <ImageView
                 android:id="@+id/erweima"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/darkgray"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
                 android:contentDescription="@null"
-                android:src="@drawable/erweima" />
-        </RelativeLayout>
+                android:src="@drawable/erweima"
+                android:gravity="center" />
 
-        <ImageView
-            android:id="@+id/oneDetailsPage_Line3"
-            android:layout_width="fill_parent"
-            android:layout_height="1.0dip"
-            android:layout_marginLeft="14.0dip"
-            android:layout_marginRight="14.0dip"
-            android:background="@color/darkgray"
-            android:contentDescription="@null" />
+        </RelativeLayout>
     </LinearLayout>
 
     <TextView
@@ -100,7 +86,8 @@
         android:gravity="center_horizontal"
         android:text="@string/join_us"
         android:textColor="@color/black"
-        android:textSize="13.0sp"
-        android:textStyle="bold" />
+        android:textSize="15.0sp"
+        android:textStyle="bold"
+        android:textIsSelectable="true" />
 
 </RelativeLayout>

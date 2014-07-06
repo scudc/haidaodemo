@@ -127,10 +127,10 @@ limitations under the License.
     <string name="oneselfItem2">腾讯微博</string>
     <string name="oneselfItem3">人人</string>
         <string name="about_ours">关注我们</string>
-        <string name="join_us">清关注我们的微信公众账号：haidaohaizaobao</string>
+        <string name="join_us">请关注我们的微信公众账号：iRecords</string>
         
             <string name="go_grade">去评分</string>
-    <string name="about_copyright">版权</string>
+    <string name="about_copyright">版本信息</string>
     <string name="feedback">用户反馈</string>
     
 

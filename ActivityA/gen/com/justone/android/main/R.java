@@ -207,6 +207,7 @@ public final class R {
         public static final int copyright_layout=0x7f080024;
         public static final int copyright_text=0x7f080075;
         public static final int copyright_textview=0x7f080022;
+        public static final int currentVersion=0x7f08013b;
         public static final int date1_tView=0x7f0800a8;
         public static final int date_tView=0x7f0800a7;
         public static final int detailScrollView=0x7f080113;
@@ -382,6 +383,7 @@ public final class R {
         public static final int question_publish_time=0x7f0800bc;
         public static final int question_title=0x7f0800b8;
         public static final int recommendtitle=0x7f080060;
+        public static final int relativeLayout1=0x7f08013a;
         public static final int renn_linearLayout=0x7f080087;
         public static final int renn_microblog=0x7f0800eb;
         public static final int renn_text=0x7f080088;
@@ -411,6 +413,7 @@ public final class R {
         public static final int show_request_progress_bar=0x7f0800e6;
         public static final int showitem_line=0x7f0800df;
         public static final int showpage_title=0x7f0800ca;
+        public static final int showversion_item=0x7f080139;
         public static final int sina_text=0x7f08006f;
         public static final int sine_icon=0x7f0800f3;
         public static final int sine_microblog=0x7f080089;
@@ -485,6 +488,7 @@ public final class R {
         public static final int one_welcome_ad=0x7f03000c;
         public static final int qa_item=0x7f03000d;
         public static final int scrollview_item=0x7f03000e;
+        public static final int showversion_item=0x7f03000f;
     }
     public static final class string {
         public static final int about_copyright=0x7f050087;

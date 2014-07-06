@@ -186,6 +186,7 @@ int id copyRight 0x7f080072
 int id copyright_layout 0x7f080024
 int id copyright_text 0x7f080075
 int id copyright_textview 0x7f080022
+int id currentVersion 0x7f08013b
 int id date1_tView 0x7f0800a8
 int id date_tView 0x7f0800a7
 int id detailScrollView 0x7f080113
@@ -361,6 +362,7 @@ int id question_page_item_layout 0x7f0800ba
 int id question_publish_time 0x7f0800bc
 int id question_title 0x7f0800b8
 int id recommendtitle 0x7f080060
+int id relativeLayout1 0x7f08013a
 int id renn_linearLayout 0x7f080087
 int id renn_microblog 0x7f0800eb
 int id renn_text 0x7f080088
@@ -390,6 +392,7 @@ int id show_edittext_number 0x7f0800f7
 int id show_request_progress_bar 0x7f0800e6
 int id showitem_line 0x7f0800df
 int id showpage_title 0x7f0800ca
+int id showversion_item 0x7f080139
 int id sina_text 0x7f08006f
 int id sine_icon 0x7f0800f3
 int id sine_microblog 0x7f080089
@@ -462,6 +465,7 @@ int layout one_welcome 0x7f03000b
 int layout one_welcome_ad 0x7f03000c
 int layout qa_item 0x7f03000d
 int layout scrollview_item 0x7f03000e
+int layout showversion_item 0x7f03000f
 int string about_copyright 0x7f050087
 int string about_ours 0x7f050084
 int string aboutname 0x7f050089

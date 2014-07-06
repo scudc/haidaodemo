@@ -18,6 +18,8 @@ package com.justone.android.main;
 
 
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -40,7 +42,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
@@ -53,8 +58,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.MeasureSpec;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 
 import android.view.View.OnFocusChangeListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -72,6 +81,7 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 import com.justone.android.service.UpdateService;
 import com.justone.android.util.AsynImageLoader;
 import com.justone.android.util.DataOp;
+import com.justone.android.util.PicUtil;
 import com.justone.android.util.StatusTracker;
 import com.justone.android.util.Utils;
 import com.umeng.analytics.MobclickAgent;
@@ -131,10 +141,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	private ListViewAdapter listAdapter = null;
 	private ListViewAdapter homeAdapter = null;
 	private ListViewAdapter QAAdapter = null;
-	private ListViewAdapter collectAdapter = null;
 	private ListViewAdapter detailAdapter = null;
-	private ListViewAdapter loadingAdapter = null;
-	
 	//是否需要更新ui
 	private boolean isUpdate = false;
 	
@@ -379,11 +386,17 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 
 	}
 	
+
+	
 	 /***
 		 * 检查是否更新版本
 	 * @throws JSONException 
 		 */
 		public void checkVersion() throws JSONException {
+			
+			
+			if(!Utils.isWifi(this))
+				return;
 			
 			String versionInfo = this.dataOp.getUpdateVersionInfo();
 			JSONObject jsonOb = new JSONObject(versionInfo);
@@ -394,12 +407,12 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 				Log.i("serverVersion",tempJson.optString(0) );
 				if(tempJson.optString(0).equals("version_id"))
 				{
-					this.justOne.serverVersion = tempJson.optInt(1);
+					this.justOne.setServerVersion(tempJson.optInt(1));
 				}
 				if(tempJson.optString(0).equals("version_name"))
 					this.justOne.versionName = tempJson.optString(1);
 				if(tempJson.optString(0).equals("version_desc"))
-					this.justOne.versionDesc = tempJson.optString(1);
+					this.justOne.setVersionDesc(tempJson.optString(1));
 				if(tempJson.optString(0).equals("download_href"))
 					this.justOne.download_href = tempJson.optString(1);
 				/*ArrayList<String> tempArray = new ArrayList<String>();
@@ -411,12 +424,11 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 				tempArray.add(String.valueOf(tempJson.getString(2)));
 				tempResult.add(tempArray);*/
 			}
-			Log.i("serverVersion",String.valueOf(this.justOne.serverVersion));
-			if (this.justOne.localVersion < this.justOne.serverVersion) {
+			if (JustOne.getLocalVersion() < JustOne.getServerVersion()) {
 				// 发现新版本，提示用户更新
 				AlertDialog.Builder alert = new AlertDialog.Builder(this);
 				alert.setTitle("软件升级")
-						.setMessage(this.justOne.versionDesc)
+						.setMessage(JustOne.getVersionDesc())
 						.setPositiveButton("更新",new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
 											int which) {
@@ -443,6 +455,10 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 			}
 		}
 
+		
+		
+		
+	
 	/**
 	 * Handler示例，用于刷新时间
 	 * DateHelper是我自己写的日期格式化工具哦
@@ -606,12 +622,16 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 			}, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
 
 		} else {
-		    Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);
+		   /*Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);
 
             mHomeIntent.addCategory(Intent.CATEGORY_HOME);
             mHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                             | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             this.startActivity(mHomeIntent);
+            */
+			this.justOne.exit();
+			android.os.Process.killProcess(android.os.Process.myPid()) ;   //获取PID
+			System.exit(0);   //常规java、c#的标准退出法，返回值为0代表正常退出
 		}
 	}
 
@@ -635,12 +655,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 			@Override
 			public void run() {
 				
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+				
 				
 				
 				
@@ -654,6 +669,14 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 					String currentUrl = "";
 					do
 					{
+						
+						
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}	
 					if(currentTab != tabs.getCurrentTab())
 						isUpdate = true;
 					if(isUpdate && main_item!=null)
@@ -665,11 +688,12 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 						//home 页面
 						case  0:
 							if(main_item == null)
-								continue;
-							if(main_item.findViewById(R.id.homeTab) == null)
-								continue;
+								break;
+							targetView = main_item.findViewById(R.id.homeTab);
+							if(targetView == null)
+								break;
 							
-							if( main_item.findViewById(R.id.homeTab).findViewById(R.id.home_id) != null)
+							if( targetView.findViewById(R.id.home_id) != null)
 							{
 								
 								targetView = main_item.findViewById(R.id.homeTab);
@@ -717,6 +741,10 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 							break;
 						//一篇文章
 						case  1:
+							if(main_item == null)
+								break;
+							if(main_item.findViewById(R.id.tab2) == null)
+								break;
 							if(main_item.findViewById(R.id.tab2).findViewById(R.id.list_id) != null)
 							{
 								targetView = main_item.findViewById(R.id.tab2);
@@ -763,6 +791,10 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 							break;
 						//一篇问答
 						case 2:
+							if(main_item == null)
+								break;
+							if(main_item.findViewById(R.id.QAtab) == null)
+								break;
 							if(main_item.findViewById(R.id.QAtab).findViewById(R.id.QA_id) != null)
 							{
 								targetView = main_item.findViewById(R.id.QAtab);
@@ -956,6 +988,17 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	/* 微博点击事件监听 */
 	public void microBlogOnClick(View view) {
 		context.push(main_item);
+		final ImageView iw= (ImageView) bind_item.findViewById(R.id.erweima);
+		iw.setOnLongClickListener(new View.OnLongClickListener() {
+              
+              @Override
+              public boolean onLongClick(View view) {
+            	  String strFileName = "weixincode.jpg";
+                  String strPath = PicUtil.saveImage(strFileName,iw);
+                  Toast.makeText(view.getContext(), "图片"+strFileName+"已经下载到"+strPath, Toast.LENGTH_SHORT).show();
+                  return false;
+              }
+      });
 		setContentView(bind_item);
 	}
 
@@ -972,6 +1015,13 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		setContentView(microblog);
 	}
 
+	public void goToRank(View view)
+	{
+		Uri uri = Uri.parse("market://details?id="+getPackageName()); 
+		Intent intent = new Intent(Intent.ACTION_VIEW,uri); 
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
+		startActivity(intent);
+	}
 	/* return 事件监听 */
 	public void returnOnClick(View view) {
 		
@@ -980,6 +1030,29 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		Log.i("xxxxxx",view1.toString());
 		setContentView(view1);
 	}
+	
+	/*弹出版本提示框*/
+	public void versionOnclick(View view)
+	{
+		LayoutInflater inflater = getLayoutInflater();
+		
+		View layout = inflater.inflate(R.layout.showversion_item,
+				(ViewGroup)findViewById(R.id.showversion_item));
+		TextView tw = (TextView) layout.findViewById(R.id.currentVersion);
+		tw.setText("当前版本 : "+this.justOne.versionName);
+		final AlertDialog dialog = new AlertDialog.Builder(this).setView(layout)
+		.setNegativeButton("关闭窗口",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,
+							int which) {
+						dialog.dismiss();
+					}
+				}).show();
+		
+	
+	
+	}
+	
 
 	/* 分享功能 */
 	public void shareOnClick(View view) {
