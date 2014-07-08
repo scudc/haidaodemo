@@ -152,39 +152,7 @@ public class DataOp {
 
 	}
 	
-	private void setDataToView(View targetView,ArrayList<ArrayList<String>> dataList)
-	{
-		Iterator<ArrayList<String>> it = dataList.iterator();
-		Log.i("setDataToView",dataList.toString());
-		Log.i("setDataToView",targetView.toString());
-		while(it.hasNext())
-		{
-			ArrayList<String > tempArray = it.next();
-			int targetViewId = Integer.parseInt(tempArray.get(0));
-			String content = tempArray.get(1);
-			String type = tempArray.get(2);
-			
-			if(type.equals("text"))
-			{
-			TextView textView = (TextView) targetView.findViewById(targetViewId);
-	  		textView.setText(content);
-	  		
-			}else if (type.equals("image"))
-			{
-				ImageView imageView = (ImageView) targetView.findViewById(targetViewId);
-				 
-				asynImageLoader.showImageAsyn(imageView, content, R.drawable.one_image_dev);  
-				
-			}else if (type.equals("shareUrl"))
-			{
-				TextView textView = (TextView) targetView.findViewById(targetViewId);
-		  		textView.setText(content);
-			}
-			
-			//Log.i("setDataToView", content+"_"+type);
-		}
-		//Log.i("setDataToViewEnd", targetView.toString());
-	}
+	
 	public String loadDataAsyn(String path,ImageCallback callback){
 		
 		

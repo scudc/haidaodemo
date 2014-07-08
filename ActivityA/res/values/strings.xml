@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <resources>
-    <string name="app_name">Just One</string>
+    <string name="app_name">躁动</string>
 
     <string name="lifecycle_method_list">Lifecycle Method List</string>
     <string name="activity_status">Activity Status</string>

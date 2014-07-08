@@ -56,9 +56,24 @@
             android:layout_height="250dp"
             android:adjustViewBounds="true"
             android:contentDescription="@null"
-            android:src="@drawable/one_image_dev"
+            android:visibility="gone"
             
              />
+        
+              <FrameLayout
+	     	          android:id="@+id/homeloadingLayout"
+	     	          android:layout_width="fill_parent"
+	     	          android:layout_height="250dp"
+	     	          android:background="@color/welcomeBackground" >
+
+	          <ProgressBar
+	              android:id="@+id/homeprogressBar"
+	              style="@style/newProgressBar"
+	              android:layout_width="wrap_content"
+	              android:layout_height="wrap_content"
+	              android:layout_gravity="center"
+	               />
+	      </FrameLayout>
     </FrameLayout>
 
     <LinearLayout

@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:orientation="vertical" android:id="@+id/welcome_rlayout" android:background="@color/welcomeBackground" android:layout_width="fill_parent" android:layout_height="fill_parent"  android:onClick="startMainActivity"
+<FrameLayout android:orientation="vertical" android:id="@+id/welcome_rlayout" android:background="@color/welcomeBackground" android:layout_width="wrap_content" android:layout_height="wrap_content"  android:onClick="startMainActivity"
   xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView android:layout_gravity="center" android:id="@+id/welcome_image_view" android:layout_width="wrap_content" android:layout_height="wrap_content"  android:src="@drawable/welcome_image_ui" android:contentDescription="@null" />
+
+    <ImageView
+        android:id="@+id/welcome_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"
+        android:contentDescription="@null"
+        android:src="@drawable/welcome_image_ui" />
+
 </FrameLayout>

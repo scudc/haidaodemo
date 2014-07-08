@@ -155,7 +155,7 @@ public final class R {
     }
     public static final class id {
         public static final int ImageView01=0x7f080021;
-        public static final int QA_id=0x7f080137;
+        public static final int QA_id=0x7f080139;
         public static final int QAtab=0x7f08010e;
         public static final int aboutList_layout=0x7f08002d;
         public static final int about_one_layout=0x7f080016;
@@ -207,7 +207,7 @@ public final class R {
         public static final int copyright_layout=0x7f080024;
         public static final int copyright_text=0x7f080075;
         public static final int copyright_textview=0x7f080022;
-        public static final int currentVersion=0x7f08013b;
+        public static final int currentVersion=0x7f08013d;
         public static final int date1_tView=0x7f0800a8;
         public static final int date_tView=0x7f0800a7;
         public static final int detailScrollView=0x7f080113;
@@ -219,7 +219,7 @@ public final class R {
         public static final int down_line1=0x7f0800c2;
         public static final int emailClew_textView=0x7f08007c;
         public static final int email_editText1=0x7f08007b;
-        public static final int erweima=0x7f080132;
+        public static final int erweima=0x7f080134;
         public static final int fPageImage_iView=0x7f0800a3;
         public static final int fPage_tView=0x7f0800a2;
         public static final int feedbackClew_textView=0x7f080081;
@@ -256,18 +256,20 @@ public final class R {
         public static final int home_ViewPager=0x7f08009c;
         public static final int home_ad_view=0x7f080095;
         public static final int home_datetime=0x7f0800aa;
-        public static final int home_id=0x7f08012a;
+        public static final int home_id=0x7f08012c;
         public static final int home_page_item_linearlayout=0x7f0800a1;
-        public static final int home_share_url=0x7f080129;
+        public static final int home_share_url=0x7f08012b;
+        public static final int homeloadingLayout=0x7f080129;
         public static final int homepage_img=0x7f0800a0;
         public static final int homepage_title=0x7f08009b;
+        public static final int homeprogressBar=0x7f08012a;
         public static final int imageBelow_tView=0x7f0800a4;
         public static final int imageBelow_tView1=0x7f0800a5;
         public static final int imageClick_layout=0x7f0800d2;
         public static final int imageLoading=0x7f080127;
         public static final int imageView1=0x7f080128;
         public static final int imageset=0x7f08002c;
-        public static final int join_us=0x7f080133;
+        public static final int join_us=0x7f080135;
         public static final int laud_click_range=0x7f0800c7;
         public static final int laud_image=0x7f08004e;
         public static final int laud_layout=0x7f08004d;
@@ -277,13 +279,13 @@ public final class R {
         public static final int linearLayout01=0x7f08009e;
         public static final int linearLayout1=0x7f080029;
         public static final int linearlayout01=0x7f080051;
-        public static final int list_id=0x7f08012c;
-        public static final int list_share_url=0x7f08012d;
+        public static final int list_id=0x7f08012e;
+        public static final int list_share_url=0x7f08012f;
         public static final int loader_welcome_ad01=0x7f08003e;
         public static final int loader_welcome_ad02=0x7f08003f;
         public static final int loadfail_textview=0x7f08009a;
         public static final int loadingLayout=0x7f080110;
-        public static final int loadingScrollView=0x7f080135;
+        public static final int loadingScrollView=0x7f080137;
         public static final int loading_ad_url=0x7f080094;
         public static final int loading_fail_relativelayout=0x7f080099;
         public static final int loading_view=0x7f08010b;
@@ -323,10 +325,10 @@ public final class R {
         public static final int night_model_usebg=0x7f0800f2;
         public static final int noStow_textView=0x7f0800cc;
         public static final int no_network_image=0x7f080038;
-        public static final int notificationImage=0x7f08012e;
-        public static final int notificationPercent=0x7f080130;
-        public static final int notificationProgress=0x7f080131;
-        public static final int notificationTitle=0x7f08012f;
+        public static final int notificationImage=0x7f080130;
+        public static final int notificationPercent=0x7f080132;
+        public static final int notificationProgress=0x7f080133;
+        public static final int notificationTitle=0x7f080131;
         public static final int oneDetailsPageSet=0x7f08006c;
         public static final int oneDetailsPageSet_Line1=0x7f08006d;
         public static final int oneDetailsPage_Line1=0x7f08001b;
@@ -337,7 +339,7 @@ public final class R {
         public static final int oneDetailsPage_Line6=0x7f080061;
         public static final int oneDetailsPage_Line7=0x7f08005e;
         public static final int oneDetailsPage_arrowhead=0x7f08001e;
-        public static final int oneTitle=0x7f080134;
+        public static final int oneTitle=0x7f080136;
         public static final int one_content_article=0x7f0800d8;
         public static final int one_content_author=0x7f0800d7;
         public static final int one_content_author_novel=0x7f0800d9;
@@ -369,8 +371,8 @@ public final class R {
         public static final int one_work_name=0x7f080086;
         public static final int progressBar=0x7f080111;
         public static final int q_datetime=0x7f0800bd;
-        public static final int qaScrollView=0x7f080136;
-        public static final int qa_share_url=0x7f080138;
+        public static final int qaScrollView=0x7f080138;
+        public static final int qa_share_url=0x7f08013a;
         public static final int question_ViewPager=0x7f0800b9;
         public static final int question_answer_content=0x7f0800c6;
         public static final int question_answer_image=0x7f0800c4;
@@ -383,7 +385,7 @@ public final class R {
         public static final int question_publish_time=0x7f0800bc;
         public static final int question_title=0x7f0800b8;
         public static final int recommendtitle=0x7f080060;
-        public static final int relativeLayout1=0x7f08013a;
+        public static final int relativeLayout1=0x7f08013c;
         public static final int renn_linearLayout=0x7f080087;
         public static final int renn_microblog=0x7f0800eb;
         public static final int renn_text=0x7f080088;
@@ -398,7 +400,7 @@ public final class R {
         public static final int returnmicroblog=0x7f08002b;
         public static final int scrollView1=0x7f080042;
         public static final int scrollViewClick=0x7f0800d0;
-        public static final int scrollview=0x7f08012b;
+        public static final int scrollview=0x7f08012d;
         public static final int set_familiar3=0x7f08008b;
         public static final int set_tag_order=0x7f08008d;
         public static final int setitem=0x7f08006b;
@@ -413,7 +415,7 @@ public final class R {
         public static final int show_request_progress_bar=0x7f0800e6;
         public static final int showitem_line=0x7f0800df;
         public static final int showpage_title=0x7f0800ca;
-        public static final int showversion_item=0x7f080139;
+        public static final int showversion_item=0x7f08013b;
         public static final int sina_text=0x7f08006f;
         public static final int sine_icon=0x7f0800f3;
         public static final int sine_microblog=0x7f080089;

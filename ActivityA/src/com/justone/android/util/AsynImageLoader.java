@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 
+import android.view.View;
 import android.widget.ImageView;
 
 
@@ -46,14 +47,16 @@ public class AsynImageLoader {
 	 * @param url 图片的URL地址
 	 * @param resId 图片加载过程中显示的图片资源
 	 */
-	public void showImageAsyn(ImageView imageView, String url, int resId){
+	public void showImageAsyn(ImageView imageView, String url, View loadingView){
 		imageView.setTag(url);
-		Bitmap bitmap = loadImageAsyn(url, getImageCallback(imageView, resId));
+		Bitmap bitmap = loadImageAsyn(url, getImageCallback(imageView,loadingView));
 		
 		if(bitmap == null){
-			imageView.setImageResource(resId);
+			loadingView.setVisibility(View.VISIBLE);
 		}else{
 			imageView.setImageBitmap(bitmap);
+			imageView.setVisibility(View.VISIBLE);
+			loadingView.setVisibility(View.GONE);
 		}
 	}
 	
@@ -101,15 +104,19 @@ public class AsynImageLoader {
 	 * @param resId 图片加载完成前显示的图片资源ID
 	 * @return
 	 */
-	private ImageCallback getImageCallback(final ImageView imageView, final int resId){
+	private ImageCallback getImageCallback(final ImageView imageView,final View loadingView ){
 		return new ImageCallback() {
 			
 			@Override
 			public void loadImage(String path, Bitmap bitmap) {
 				if(path.equals(imageView.getTag().toString())){
 					imageView.setImageBitmap(bitmap);
+					imageView.setVisibility(View.VISIBLE);
+					loadingView.setVisibility(View.GONE);
 				}else{
-					imageView.setImageResource(resId);
+					//imageView.setImageResource(resId);
+					loadingView.setVisibility(View.VISIBLE);
+					
 				}
 			}
 		};

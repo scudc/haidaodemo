@@ -39,6 +39,7 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -177,6 +178,13 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 
 	//数据资源对象
 	private Resources res = null;
+	
+	//context 
+	private Context currentContext = null;
+	
+	//当前的最新id
+	private int currentId = 0;
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -187,7 +195,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		
+		currentContext = this;
 		//初始化保存listview中view对象得数据结构
 		this.viewMap = new HashMap<String,ListViewAdapter>();
 		//初始化图片异步加载的类
@@ -404,7 +412,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 			JSONArray jsonArray = new JSONArray(viewData);
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONArray tempJson = (JSONArray) jsonArray.opt(i);
-				Log.i("serverVersion",tempJson.optString(0) );
+			
 				if(tempJson.optString(0).equals("version_id"))
 				{
 					this.justOne.setServerVersion(tempJson.optInt(1));
@@ -481,6 +489,8 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 			
 			super.handleMessage(msg);
 			
+			
+			
 
 			switch(msg.what)
 			{
@@ -496,6 +506,14 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 					e.printStackTrace();
 				}
 				setLoadingView(1);
+				break;
+			//当消息等于2时，说明已经是最新
+			case 2:
+				Toast.makeText(currentContext,"已经是最新内容", Toast.LENGTH_SHORT).show();
+				break;
+			//当消息等于3时，说明已经是最后一个
+			case 3:
+				Toast.makeText(currentContext,"已经是最后一个", Toast.LENGTH_SHORT).show();
 				break;
 			}
 
@@ -572,7 +590,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 				{
 					ImageView imageView = (ImageView) targetView.findViewById(targetViewId);
 					
-					asynImageLoader.showImageAsyn(imageView, content, R.drawable.one_image_dev);  
+					asynImageLoader.showImageAsyn(imageView, content, findViewById(R.id.homeloadingLayout));  
 					
 					
 				}else if (type.equals("shareUrl"))
@@ -682,7 +700,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 					if(isUpdate && main_item!=null)
 					{
 					currentTab = tabs.getCurrentTab();
-					int currentId = 0;
+					
 					switch(currentTab)
 					{
 						//home 页面
@@ -811,14 +829,18 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		                			currentId = currentId -1 ;
 		                			leftOrRight = 0;
 		                			if(currentId<=0)
+		                			{
 		                				break;
+		                			}
 		                		}
 		                		else if(leftOrRight == 2)
 		                		{
 		                			currentId = currentId+ 1;
 		                			leftOrRight = 0;
 		                			if(currentId > maxId)
+		                			{
 		                				break;
+		                			}
 		                		}
 		                		}
 		                		
@@ -873,8 +895,11 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 					viewHandler.sendMessage(Message.obtain(viewHandler, 1, currentId, 1, targetView));
 					
 					}
-					}
+					
 				
+					
+					
+					}
 					
 					}while(true);
 							
@@ -1327,6 +1352,15 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,  
 	            float velocityY) {
 	    	
+	    	
+	    	
+	    	//if(currentId==0)
+			//	viewHandler.sendMessage(Message.obtain(viewHandler, 3));
+			
+			//if(currentId == maxId)
+			//{
+			//	viewHandler.sendMessage(Message.obtain(viewHandler, 2));
+			//}
 	    	/*System.out.println(this.tabs.getCurrentView().getLayoutDirection());
 	    	System.out.println(R.layout.home_item);
 	    	System.out.println(this.tabs.getCurrentView().getId());

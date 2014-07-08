@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/showversion_item"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/white" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dip"
+            android:src="@drawable/ic_launcher_ui" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        android:layout_marginBottom="10dip" >
+
+        <TextView
+            android:id="@+id/currentVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="当前版本：0.0.1" />
+
+    </RelativeLayout>
+    
+        <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dip"
+        android:layout_marginBottom="20dip" >
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="海盗团队出品" 
+            android:textColor="#000000"/>
+
+    </RelativeLayout>
+    
+      
+
+</LinearLayout>
