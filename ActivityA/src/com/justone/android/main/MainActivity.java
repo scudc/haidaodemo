@@ -183,7 +183,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	private Context currentContext = null;
 	
 	//当前的最新id
-	private int currentId = 0;
+	private int currentId = -1;
 	
 	/*
 	 * (non-Javadoc)
@@ -896,8 +896,6 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 					
 					}
 					
-				
-					
 					
 					}
 					
@@ -941,7 +939,11 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 
 		super.onPause();
 		//MobclickAgent.onPause(this);
-		context.push(super.getCurrentFocus());
+		
+		
+		//在去评分跳转出去之后，会出发这个函数，把当前的context写入上下文，但其实并不需要，这样会引起程序crash
+		
+		//context.push(super.getCurrentFocus());
 		mStatusTracker.setStatus(mActivityName, getString(R.string.on_pause));
 		Utils.printStatus(mStatusView, mStatusAllView);
 	}
@@ -1046,11 +1048,12 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		Intent intent = new Intent(Intent.ACTION_VIEW,uri); 
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
 		startActivity(intent);
+		Log.i("goToRank",String.valueOf(context.size()));
 	}
 	/* return 事件监听 */
 	public void returnOnClick(View view) {
 		
-
+		Log.i("returnOnClick",String.valueOf(context.size()));
 		View view1 = context.pop();
 		Log.i("xxxxxx",view1.toString());
 		setContentView(view1);
@@ -1354,13 +1357,11 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	    	
 	    	
 	    	
-	    	//if(currentId==0)
-			//	viewHandler.sendMessage(Message.obtain(viewHandler, 3));
+	    	
 			
-			//if(currentId == maxId)
-			//{
-			//	viewHandler.sendMessage(Message.obtain(viewHandler, 2));
-			//}
+			
+			
+			
 	    	/*System.out.println(this.tabs.getCurrentView().getLayoutDirection());
 	    	System.out.println(R.layout.home_item);
 	    	System.out.println(this.tabs.getCurrentView().getId());
@@ -1370,13 +1371,28 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	    	int currentViewId = this.tabs.getCurrentView().getId();
 	    	*/
 	        if (e1.getX() - e2.getX() < -200) {
-	        	this.leftOrRight = 2;
-	        	this.isUpdate = true;
+	        	
+	        
+	        	
+	        	if(currentId == maxId || currentId== 0)
+				{
+					viewHandler.sendMessage(Message.obtain(viewHandler, 2));
+				}else
+				{
+					this.leftOrRight = 2;
+		        	this.isUpdate = true;
+				}
 	        	
 	        }  
 	        else if (e1.getX() - e2.getX() > 200) {
-	        	this.leftOrRight = 1;
-	        	this.isUpdate = true;
+
+	        	if(currentId==1)
+					viewHandler.sendMessage(Message.obtain(viewHandler, 3));
+	        	else
+	        	{
+		        	this.leftOrRight = 1;
+		        	this.isUpdate = true;
+	        	}
 	        	
 	        }
 	        return true;  

@@ -2,8 +2,16 @@
 <RelativeLayout android:id="@+id/about_one_layout" android:background="@color/white" android:layout_width="fill_parent" android:layout_height="fill_parent"
   xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout android:id="@+id/about_one_layout_title" android:background="@drawable/one_title_bg" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentTop="true">
-        <LinearLayout android:id="@+id/returnShareSet" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_centerInParent="true">
-            <ImageView android:id="@+id/returnImage" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:layout_marginTop="8.0dip" android:layout_marginRight="30.0dip" android:layout_marginBottom="8.0dip" android:src="@drawable/return_button" android:contentDescription="@null" android:onClick="returnOnClick"/>
+
+        <LinearLayout
+            android:id="@+id/returnShareSet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:onClick="returnOnClick" >
+
+            <ImageView android:id="@+id/returnImage" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15.0dip" android:layout_marginTop="8.0dip" android:layout_marginRight="30.0dip" android:layout_marginBottom="8.0dip" android:src="@drawable/return_button" android:contentDescription="@null" />
         </LinearLayout>
         <TextView android:textSize="20.0sp" android:textStyle="bold" android:textColor="@color/one_textcolor" android:id="@+id/one_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/copyright" android:layout_centerInParent="true" />
     </RelativeLayout>

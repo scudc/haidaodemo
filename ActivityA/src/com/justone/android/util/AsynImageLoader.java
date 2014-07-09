@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -52,6 +53,7 @@ public class AsynImageLoader {
 		Bitmap bitmap = loadImageAsyn(url, getImageCallback(imageView,loadingView));
 		
 		if(bitmap == null){
+			Log.i("showImageAsyn","xzxxxxxx");
 			loadingView.setVisibility(View.VISIBLE);
 		}else{
 			imageView.setImageBitmap(bitmap);
@@ -70,21 +72,26 @@ public class AsynImageLoader {
 			// 如果该图片已经被释放，则将该path对应的键从Map中移除掉
 			if(bitmap == null){
 				caches.remove(path);
+				urlSet.remove(path);
 			}else{
 				// 如果图片未被释放，直接返回该图片
 				//Log.i(TAG, "return image in cache" + path);
 				return bitmap;
 			}
-		}else{
+		}
+		
 			if(urlSet.contains(path))
+			{
+				Log.i("urlSet","contain");
 				return null;
+			}
 			else
 				urlSet.add(path);
 			// 如果缓存中不常在该图片，则创建图片下载任务
 			Task task = new Task();
 			task.path = path;
 			task.callback = callback;
-			//Log.i(TAG, "new Task ," + path);
+			Log.i(TAG, "new Task ," + path);
 			if(!taskQueue.contains(task)){
 				taskQueue.add(task);
 				// 唤醒任务下载队列
@@ -92,8 +99,8 @@ public class AsynImageLoader {
 					runnable.notify();
 				}
 			}
-		}
 		
+		Log.i("xxxxxxx","null");
 		// 缓存中没有图片则返回null
 		return null;
 	}
@@ -115,6 +122,7 @@ public class AsynImageLoader {
 					loadingView.setVisibility(View.GONE);
 				}else{
 					//imageView.setImageResource(resId);
+					Log.i("getImageCallback","getImageCallback");
 					loadingView.setVisibility(View.VISIBLE);
 					
 				}
