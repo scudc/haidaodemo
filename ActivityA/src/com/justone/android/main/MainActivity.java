@@ -1191,8 +1191,8 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		{
 			oks.setImageUrl(imageUrl);
 			shareUrl = (String) ((TextView)this.findViewById(R.id.qa_share_url)).getText();
-			shareText = (String) ((TextView)this.findViewById(R.id.question_content)).getText() + "  " + shareUrl;
-			titleText = (String) ((TextView)this.findViewById(R.id.question_content)).getText();
+			shareText = (String) ((TextView)this.findViewById(R.id.question_title)).getText() + "  " + shareUrl;
+			titleText = (String) ((TextView)this.findViewById(R.id.question_title)).getText();
 			
 		}else if(tabs.getCurrentTabTag() == "list tab")
 		{

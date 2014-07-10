@@ -9,7 +9,7 @@
     android:orientation="vertical"
     >
         <include
-        android:id="@id/question_title"
+        android:id="@+id/main_title"
   
         layout="@layout/one_title" />
 	<TabHost android:layout_width="fill_parent"
