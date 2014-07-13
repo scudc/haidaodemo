@@ -29,6 +29,8 @@ limitations under the License.
     <color name="dark_yellow">#FF8A00</color>
 
     <color name="one_textcolor">#ff4c4d4e</color>
+    <color name="one_textcolor_red">#FF0000</color>
+    
     <color name="skyblue">#ff73dcff</color>
 
     <color name="darkgray">#ffc3c4c6</color>
@@ -45,4 +47,5 @@ limitations under the License.
     <drawable name="one_tab_ui">@drawable/one_tab_ui</drawable>
     <drawable name="qa_tab_ui">@drawable/qa_tab_ui</drawable>
     <drawable name="more_tab_ui">@drawable/more_tab_ui</drawable>
+    
 </resources>

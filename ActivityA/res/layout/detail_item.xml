@@ -14,12 +14,7 @@
     android:orientation="vertical" >
 
 
-<RelativeLayout
-    android:id="@+id/one_details_page"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@color/white" 
-     android:layout_marginTop="15.0dip">
+
     
 	<!--  
     <ImageView
@@ -41,25 +36,44 @@
         <ImageView android:id="@+id/oneDetailsPage_arrowhead" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="30.0dip" android:src="@drawable/one_details_page_arrowhead" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:contentDescription="@null" />
     </RelativeLayout>
      -->
-    
-    	<ImageView android:layout_gravity="center" android:id="@+id/oneDetailsPage_Line2" android:background="@color/darkgray" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip"  android:contentDescription="@null" />
-     
-    <RelativeLayout android:id="@+id/microblog_layout" android:background="@drawable/one_list_selector" android:layout_width="fill_parent" android:layout_height="45.0dip" android:layout_marginTop="2.0dip" android:layout_marginBottom="2.0dip" android:layout_below="@+id/oneDetailsPage_Line2" android:onClick="microBlogOnClick">
+
+    <RelativeLayout  android:background="@drawable/one_list_selector" android:layout_width="fill_parent" android:layout_height="45.0dip" android:layout_marginTop="2.0dip" android:layout_marginBottom="2.0dip"  android:onClick="microBlogOnClick">
         <ImageView android:id="@+id/microblog_icon" android:background="@android:color/transparent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="25.0dip" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/one_details_page_microblog" android:layout_alignParentLeft="true" android:layout_centerVertical="true" android:contentDescription="@null" />
-        <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/one_textcolor" android:id="@+id/microblog_textview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="13.0dip" android:text="@string/microblog" android:layout_toRightOf="@+id/microblog_icon" android:layout_centerVertical="true" />
+        <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/one_textcolor_red" android:id="@+id/microblog_textview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="13.0dip" android:text="@string/aboutString" android:layout_toRightOf="@+id/microblog_icon" android:layout_centerVertical="true" />
         <ImageView android:background="@android:color/transparent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="30.0dip" android:src="@drawable/one_details_page_arrowhead" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:contentDescription="@null" />
     </RelativeLayout>
-    <ImageView android:layout_gravity="center" android:id="@+id/oneDetailsPage_Line3" android:background="@color/darkgray" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:layout_below="@+id/microblog_layout" android:contentDescription="@null" />
-    <RelativeLayout android:id="@+id/copyright_layout" android:background="@drawable/one_list_selector" android:layout_width="fill_parent" android:layout_height="45.0dip" android:layout_marginTop="2.0dip" android:layout_marginBottom="2.0dip" android:layout_below="@+id/oneDetailsPage_Line3" android:onClick="aboutOneOnClick">
+    <ImageView android:layout_gravity="center" android:id="@+id/oneDetailsPage_Line3" android:background="@color/darkgray" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip"  android:contentDescription="@null" />
+    <RelativeLayout android:id="@+id/copyright_layout" android:background="@drawable/one_list_selector" android:layout_width="fill_parent" android:layout_height="45.0dip" android:layout_marginTop="2.0dip" android:layout_marginBottom="2.0dip"  android:onClick="versionOnclick">
         <ImageView android:id="@+id/version_icon" android:background="@android:color/transparent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="25.0dip" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/one_details_page_copyright" android:layout_alignParentLeft="true" android:layout_centerVertical="true" android:contentDescription="@null" />
-        <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/one_textcolor" android:id="@+id/copyright_textview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="13.0dip" android:text="@string/copyright" android:layout_toRightOf="@+id/version_icon" android:layout_centerVertical="true" />
+        <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/one_textcolor" android:id="@+id/copyright_textview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="13.0dip" android:text="@string/about_copyright" android:layout_toRightOf="@+id/version_icon" android:layout_centerVertical="true" />
+        <ImageView android:background="@android:color/transparent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="30.0dip" android:src="@drawable/one_details_page_arrowhead" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:contentDescription="@null" />
+    </RelativeLayout>
+    <ImageView android:id="@+id/oneDetailsPage_Line5" android:background="@color/darkgray" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip"  android:contentDescription="@null" />
+	
+    <RelativeLayout  android:background="@drawable/one_list_selector" android:layout_width="fill_parent" android:layout_height="45.0dip" android:layout_marginTop="2.0dip" android:layout_marginBottom="2.0dip"  android:onClick="feedbackOnClick">
+        <ImageView android:id="@+id/version_icon" android:background="@android:color/transparent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="25.0dip" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/one_details_page_microblog" android:layout_alignParentLeft="true" android:layout_centerVertical="true" android:contentDescription="@null" />
+        <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/one_textcolor_red" android:id="@+id/copyright_textview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="13.0dip" android:text="@string/feedback" android:layout_toRightOf="@+id/version_icon" android:layout_centerVertical="true" />
         <ImageView android:background="@android:color/transparent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="30.0dip" android:src="@drawable/one_details_page_arrowhead" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:contentDescription="@null" />
     </RelativeLayout>
     <ImageView android:id="@+id/oneDetailsPage_Line5" android:background="@color/darkgray" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:layout_below="@+id/copyright_layout" android:contentDescription="@null" />
+	
+	<RelativeLayout  android:background="@drawable/one_list_selector" android:layout_width="fill_parent" android:layout_height="45.0dip" android:layout_marginTop="2.0dip" android:layout_marginBottom="2.0dip"  android:onClick="microBlogOnClick">
+        <ImageView android:id="@+id/version_icon" android:background="@android:color/transparent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="25.0dip" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/one_details_page_copyright" android:layout_alignParentLeft="true" android:layout_centerVertical="true" android:contentDescription="@null" />
+        <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/one_textcolor" android:id="@+id/copyright_textview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="13.0dip" android:text="@string/microblog" android:layout_toRightOf="@+id/version_icon" android:layout_centerVertical="true" />
+        <ImageView android:background="@android:color/transparent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="30.0dip" android:src="@drawable/one_details_page_arrowhead" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:contentDescription="@null" />
+    </RelativeLayout>
+    <ImageView android:id="@+id/oneDetailsPage_Line5" android:background="@color/darkgray" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:layout_below="@+id/copyright_layout" android:contentDescription="@null" />
+	
+	  <RelativeLayout android:id="@+id/go_grade_layout" android:background="@drawable/one_list_selector" android:layout_width="fill_parent" android:layout_height="45.0dip" android:layout_marginTop="2.0dip" android:layout_marginBottom="2.0dip" android:layout_below="@+id/oneDetailsPage_Line1" android:onClick="goToRank">
+        <ImageView android:id="@+id/version_icon" android:background="@android:color/transparent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="25.0dip" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/one_details_page_microblog" android:layout_alignParentLeft="true" android:layout_centerVertical="true" android:contentDescription="@null" />
+         <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/one_textcolor" android:id="@+id/copyright_textview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="13.0dip" android:text="@string/go_grade" android:layout_toRightOf="@+id/version_icon" android:layout_centerVertical="true" />
+        
 
+        <ImageView android:id="@+id/oneDetailsPage_arrowhead" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="30.0dip" android:src="@drawable/one_details_page_arrowhead" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:contentDescription="@null" />
+    </RelativeLayout>
+    <ImageView android:layout_gravity="center" android:id="@+id/oneDetailsPage_Line2" android:background="@color/darkgray" android:layout_width="fill_parent" android:layout_height="1.0dip" android:layout_marginLeft="16.0dip" android:layout_marginRight="16.0dip" android:layout_below="@+id/go_grade_layout" android:contentDescription="@null" />
+   
 
-
-</RelativeLayout>
 </LinearLayout>
 
 	    </ScrollView>

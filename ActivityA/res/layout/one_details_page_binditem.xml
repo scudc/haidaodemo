@@ -9,7 +9,8 @@
         android:id="@+id/oneDetailsPageSet"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/one_title_bg" >
+        android:background="@drawable/one_title_bg"
+        android:onClick="returnOnClick" >
 
         <TextView
             android:id="@+id/title"
@@ -41,7 +42,7 @@
                 android:layout_marginRight="30.0dip"
                 android:layout_marginTop="8.0dip"
                 android:contentDescription="@null"
-                android:onClick="returnOnClick"
+                
                 android:src="@drawable/return_button" />
         </LinearLayout>
     </RelativeLayout>

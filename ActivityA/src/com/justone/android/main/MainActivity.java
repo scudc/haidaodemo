@@ -57,6 +57,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 
 import android.view.View.OnFocusChangeListener;
@@ -1053,9 +1054,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	/* return ÊÂ¼þ¼àÌý */
 	public void returnOnClick(View view) {
 		
-		Log.i("returnOnClick",String.valueOf(context.size()));
 		View view1 = context.pop();
-		Log.i("xxxxxx",view1.toString());
 		setContentView(view1);
 	}
 	
@@ -1102,6 +1101,16 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 			final AlertDialog dialog = new AlertDialog.Builder(this).setView(layout)
 			.show();
 			
+			
+			
+			
+		    layout.setOnTouchListener(new OnTouchListener() {
+
+	            public boolean onTouch(View v, MotionEvent event) {
+	            	dialog.dismiss();
+	                return true;
+	            }
+	        });
 			dialog.getWindow().setLayout(650, 650);
 		} 
 		Editor editor = preferences.edit(); 
@@ -1296,7 +1305,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
         
     }
 	public void feedbackOnClick(View view) {
-		context.push(about_one);
+		context.push(this.main_item);
 
 		setContentView(feedback);
 	}	
