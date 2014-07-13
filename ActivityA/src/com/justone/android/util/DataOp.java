@@ -3,20 +3,12 @@
  */
 package com.justone.android.util;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.lang.ref.SoftReference;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.http.HttpResponse;
@@ -35,23 +27,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-import com.justone.android.main.ListViewAdapter;
-import com.justone.android.main.MainActivity;
-import com.justone.android.main.R;
-import com.justone.android.util.AsynImageLoader.ImageCallback;
-import com.justone.android.util.AsynImageLoader.Task;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 /**
  * @author hobodong

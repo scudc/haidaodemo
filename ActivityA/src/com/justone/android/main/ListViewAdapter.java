@@ -3,28 +3,13 @@ package com.justone.android.main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-
-import com.justone.android.util.AsynImageLoader;
-import com.justone.android.util.DataOp;
-
-
-import android.app.Activity;
 import android.content.Context;
 
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.ScrollView;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import android.util.Log;  
+import android.widget.ScrollView;  
 
 public class ListViewAdapter extends BaseAdapter {
 

@@ -23,7 +23,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 /***
  * ¸üÐÂ°æ±¾

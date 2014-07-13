@@ -138,11 +138,11 @@ limitations under the License.
         <string name="aboutname">关注</string>
         <string name="qa_people_like_num">1900</string>
         <string name="contactus">联系我们</string>
-        <string name="feedback_content">感谢你使用JUST ONE·互联网日记，你可以在此反馈应用改进的意见和建议</string>
+        <string name="feedback_content">感谢你使用躁 动·互联网日记，你可以在此反馈应用改进的意见和建议</string>
         <string name="feedback_email">Email:</string>
         <string name="feedback_phone">电话:</string>
         <string name="feedback_text">反馈内容:</string>
         <string name="feedback_null"></string>
         <string name="feedback_submit">提交</string>
-        <string name="share">Just One (互联网日记)</string>
+        <string name="share">躁动 (互联网日记)</string>
 </resources>

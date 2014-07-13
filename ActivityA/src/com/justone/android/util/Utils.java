@@ -39,7 +39,8 @@ public class Utils {
   public static void printStatus(final TextView viewMethods, final TextView viewStatus) {
       Handler handler = new Handler();
       handler.postDelayed(new Runnable() {
-        public void run() {
+        @Override
+		public void run() {
           // Get the stack of Activity lifecycle methods called and print to TextView
           StringBuilder sbMethods = new StringBuilder();
           List<String> listMethods = mStatusTracker.getMethodList();

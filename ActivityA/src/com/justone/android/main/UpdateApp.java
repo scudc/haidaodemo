@@ -2,13 +2,10 @@ package com.justone.android.main;
 
 import java.io.InputStream;
 
-import org.xmlpull.v1.XmlPullParser;
-
 import com.justone.android.entity.UpdataInfo;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.util.Xml;
 
 public class UpdateApp extends BaseActivity{
 	

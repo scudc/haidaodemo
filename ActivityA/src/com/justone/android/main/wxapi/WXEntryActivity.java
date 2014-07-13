@@ -24,6 +24,7 @@ public class WXEntryActivity extends WechatHandlerActivity {
 	 * 鍦ㄥ井淇″鎴风涓殑鑱婂ぉ椤甸潰鏈夆�娣诲姞宸ュ叿鈥濓紝鍙互灏嗘湰搴旂敤鐨勫浘鏍囨坊鍔犲埌鍏朵腑
 	 * 姝ゅ悗鐐瑰嚮鍥炬爣锛屼笅闈㈢殑浠ｇ爜浼氳鎵ц銆侱emo浠呬粎鍙槸鎵撳紑鑷繁鑰屽凡锛屼絾浣犲彲
 	 * 鍋氱偣鍏朵粬鐨勪簨鎯咃紝鍖呮嫭鏍规湰涓嶆墦寮�换浣曢〉闈�	 */
+	@Override
 	public void onGetMessageFromWXReq(WXMediaMessage msg) {
 		Intent iLaunchMyself = getPackageManager().getLaunchIntentForPackage(getPackageName());
 		startActivity(iLaunchMyself);
@@ -36,6 +37,7 @@ public class WXEntryActivity extends WechatHandlerActivity {
 	 * 鍥炶皟銆�	 * <p>
 	 * 鏈珼emo鍙槸灏嗕俊鎭睍绀哄嚭鏉ワ紝浣嗕綘鍙仛鐐瑰叾浠栫殑浜嬫儏锛岃�涓嶄粎浠呭彧鏄疶oast
 	 */
+	@Override
 	public void onShowMessageFromWXReq(WXMediaMessage msg) {
 		if (msg != null && msg.mediaObject != null
 				&& (msg.mediaObject instanceof WXAppExtendObject)) {

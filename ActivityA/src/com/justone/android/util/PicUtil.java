@@ -12,9 +12,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.justone.android.main.JustOne;
-import com.justone.android.main.MainActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -39,7 +36,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class PicUtil {
 	private static final String TAG = "PicUtil";

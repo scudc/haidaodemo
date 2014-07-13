@@ -18,8 +18,6 @@ package com.justone.android.main;
 
 
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -42,11 +40,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
@@ -59,12 +57,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.MeasureSpec;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import android.view.View.OnFocusChangeListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -85,7 +80,6 @@ import com.justone.android.util.DataOp;
 import com.justone.android.util.PicUtil;
 import com.justone.android.util.StatusTracker;
 import com.justone.android.util.Utils;
-import com.umeng.analytics.MobclickAgent;
 
 
 
@@ -391,6 +385,9 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		Utils.printStatus(mStatusView, mStatusAllView);
 		detector = new GestureDetector(this);  
 		viewMap.put("home", this.homeAdapter);
+		
+		
+		userFirstTips();
 
 	}
 	
@@ -415,14 +412,14 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 			
 				if(tempJson.optString(0).equals("version_id"))
 				{
-					this.justOne.setServerVersion(tempJson.optInt(1));
+					JustOne.setServerVersion(tempJson.optInt(1));
 				}
 				if(tempJson.optString(0).equals("version_name"))
-					this.justOne.versionName = tempJson.optString(1);
+					JustOne.versionName = tempJson.optString(1);
 				if(tempJson.optString(0).equals("version_desc"))
-					this.justOne.setVersionDesc(tempJson.optString(1));
+					JustOne.setVersionDesc(tempJson.optString(1));
 				if(tempJson.optString(0).equals("download_href"))
-					this.justOne.download_href = tempJson.optString(1);
+					JustOne.download_href = tempJson.optString(1);
 				/*ArrayList<String> tempArray = new ArrayList<String>();
 				
 				tempJson.getJSONArray(index)
@@ -438,6 +435,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 				alert.setTitle("软件升级")
 						.setMessage(JustOne.getVersionDesc())
 						.setPositiveButton("更新",new DialogInterface.OnClickListener() {
+									@Override
 									public void onClick(DialogInterface dialog,
 											int which) {
 										Intent updateIntent = new Intent(
@@ -453,6 +451,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 								})
 						.setNegativeButton("取消",
 								new DialogInterface.OnClickListener() {
+									@Override
 									public void onClick(DialogInterface dialog,
 											int which) {
 										dialog.dismiss();
@@ -616,6 +615,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 
 	}
 
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
 		// TODO Auto-generated method stub  
@@ -1067,10 +1067,11 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		View layout = inflater.inflate(R.layout.showversion_item,
 				(ViewGroup)findViewById(R.id.showversion_item));
 		TextView tw = (TextView) layout.findViewById(R.id.currentVersion);
-		tw.setText("当前版本 : "+this.justOne.versionName);
+		tw.setText("当前版本 : "+JustOne.versionName);
 		final AlertDialog dialog = new AlertDialog.Builder(this).setView(layout)
 		.setNegativeButton("关闭窗口",
 				new DialogInterface.OnClickListener() {
+					@Override
 					public void onClick(DialogInterface dialog,
 							int which) {
 						dialog.dismiss();
@@ -1078,6 +1079,38 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 				}).show();
 		
 	
+	
+	}
+	
+	
+	
+	
+	/*弹出用户指引提示框*/
+	public void userFirstTips()
+	{
+		SharedPreferences preferences = getSharedPreferences("count",MODE_WORLD_READABLE); 
+		int count = preferences.getInt("count", 0); 
+
+		//判断程序与第几次运行，如果是第一次运行则跳转到引导页面 
+		if (count == 0) { 
+		
+			LayoutInflater inflater = getLayoutInflater();
+			
+			View layout = inflater.inflate(R.layout.first_tips,
+					(ViewGroup)findViewById(R.id.first_tips));
+			
+			final AlertDialog dialog = new AlertDialog.Builder(this).setView(layout)
+			.show();
+			
+			dialog.getWindow().setLayout(650, 650);
+		} 
+		Editor editor = preferences.edit(); 
+		//存入数据 
+		editor.putInt("count", ++count); 
+		//提交修改 
+		editor.commit();
+		
+		
 	
 	}
 	
