@@ -96,8 +96,8 @@ public class StartActivity extends BaseActivity {
 			
 			super.handleMessage(msg);
 
-			Intent intent = new Intent(StartActivity.this, MainActivity.class);
-	        //Intent intent = new Intent(StartActivity.this, ActivityC.class);
+			Intent intent = new Intent(StartActivity.this, IndexActivity.class);
+	        
 	        startActivity(intent);
 
 
@@ -188,7 +188,7 @@ public class StartActivity extends BaseActivity {
     
     public void startMainActivity(View v)
     {
-    	Intent intent = new Intent(StartActivity.this, MainActivity.class);
+    	Intent intent = new Intent(StartActivity.this, IndexActivity.class);
         //Intent intent = new Intent(StartActivity.this, ActivityC.class);
         startActivity(intent);
 

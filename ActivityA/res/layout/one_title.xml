@@ -1,7 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout android:id="@id/alllayout_title" android:background="@drawable/one_title_bg" android:layout_width="fill_parent" android:layout_height="wrap_content"
   xmlns:android="http://schemas.android.com/apk/res/android">
     
+    <RelativeLayout android:id="@+id/returnBackToIndex_layout" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_centerVertical="true" android:onClick='showOnekeyshare'>
+        <TextView android:id="@+id/returnBackToIndex" android:background="@drawable/return_button" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="30.0dip" android:layout_marginTop="15.0dip"  android:layout_centerInParent="true" android:contentDescription="@null" />
+    </RelativeLayout>
     <TextView
         android:id="@+id/oneTitle"
         android:layout_width="wrap_content"

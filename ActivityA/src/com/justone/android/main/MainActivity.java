@@ -23,8 +23,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 
@@ -87,7 +85,7 @@ import com.justone.android.util.Utils;
 /**
  * Example Activity to demonstrate the lifecycle callback methods.
  */
-@SuppressLint({ "NewApi", "HandlerLeak", "ResourceAsColor" })
+@SuppressLint({ "NewApi", "HandlerLeak", "ResourceAsColor", "WorldReadableFiles" })
 public class MainActivity extends BaseActivity implements OnGestureListener   {
 
 
@@ -98,7 +96,6 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	private StatusTracker mStatusTracker = StatusTracker.getInstance();
 
 	private ListView mListView;
-	private ListView mListView1;
 	private ListView homeListView;
 	private ListView qaListView;
 	private ListView detailView;
@@ -141,14 +138,11 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	//是否需要更新ui
 	private boolean isUpdate = false;
 	
-	//是否需要set main_item 	切换回主界面
-	private boolean isNeedSetToMain = false;
-	
 	//判断是否id增加还是减小的字段  1为左 2 为右 0为不变化
 	private int leftOrRight = 0;
 	
 	//当前最大的id
-	private int maxId = 1;
+	private int maxId = JustOne.getMaxId();
 
 	
 	final ViewHandler viewHandler = new ViewHandler();
@@ -166,10 +160,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	private EditText feedback_text_et = null;
 	
 	
-	/** 
-	 * 双击退出函数 
-	 */  
-	private static Boolean isExit = false;  
+	
 
 	//数据资源对象
 	private Resources res = null;
@@ -178,7 +169,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	private Context currentContext = null;
 	
 	//当前的最新id
-	private int currentId = -1;
+	private int currentId = JustOne.getCurrentId();
 	
 	/*
 	 * (non-Javadoc)
@@ -194,7 +185,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		//初始化保存listview中view对象得数据结构
 		this.viewMap = new HashMap<String,ListViewAdapter>();
 		//初始化图片异步加载的类
-		this.asynImageLoader = new AsynImageLoader(); 
+		this.asynImageLoader = JustOne.getAsynImageLoader();
 		this.dataOp = new DataOp(asynImageLoader);
 	
 		//初始化资源对象
@@ -323,14 +314,14 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 
 		qaListView.setAdapter(QAAdapter);
 
-		detailView = (ListView) findViewById(R.id.tab3);
+		//detailView = (ListView) findViewById(R.id.tab3);
 
 		//ArrayList<ArrayList<String>> detail_data = loadData("detail",data);
-		detailAdapter = new ListViewAdapter(this,
-				mList, mGist,
-				R.id.detailScrollView, R.layout.detail_item);
+		//detailAdapter = new ListViewAdapter(this,
+		//		mList, mGist,
+		//		R.id.detailScrollView, R.layout.detail_item);
 
-		detailView.setAdapter(detailAdapter);
+		//detailView.setAdapter(detailAdapter);
 		
 		
 		/*//设这loading 界面的list view 适配器
@@ -360,8 +351,8 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		/*
 		tabs.addTab(tabs.newTabSpec("second tab").setIndicator("收藏", null)
 				.setContent(R.id.tab1));*/
-		tabs.addTab(tabs.newTabSpec("second tab").setIndicator("",this.res.getDrawable(R.drawable.more_tab_selector))
-				.setContent(R.id.tab3));
+		//tabs.addTab(tabs.newTabSpec("second tab").setIndicator("",this.res.getDrawable(R.drawable.more_tab_selector))
+		//		.setContent(R.id.tab3));
 	
 		tabs.setCurrentTab(0);
 		for (int i = 0; i < tabWidget.getChildCount(); i++) {
@@ -386,6 +377,19 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		Utils.printStatus(mStatusView, mStatusAllView);
 		detector = new GestureDetector(this);  
 		viewMap.put("home", this.homeAdapter);
+		
+		
+		//设置返回码按钮的监听函数
+		View returnBackToIndex = main_item.findViewById(R.id.returnBackToIndex_layout);
+		returnBackToIndex.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				MainActivity.this.finish();
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		
 		userFirstTips();
@@ -555,14 +559,6 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 
 		}
 	
-		//从返回的数据获取id
-		private int getDataId(String data) throws JSONException
-		{
-			JSONObject jsonOb = new JSONObject(data);
-			String id =  jsonOb.getString("id");
-			return Integer.parseInt(id);
-		}
-		
 		private int nameToIdMap(String name)
 		{
 				return this.getResources().getIdentifier(name, "id", this.getPackageName());
@@ -622,37 +618,13 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		// TODO Auto-generated method stub  
 	    if(keyCode == KeyEvent.KEYCODE_BACK)  
 	       {    
-	           exitBy2Click();      //调用双击退出函数  
+	           //exitBy2Click();      //调用双击退出函数  
+	    		this.finish();
 	       }  
 	    return false; 
 	}
 	
-	private void exitBy2Click() {
-		Timer tExit = null;
-		if (isExit == false) {
-			isExit = true; // 准备退出
-			Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-			tExit = new Timer();
-			tExit.schedule(new TimerTask() {
-				@Override
-				public void run() {
-					isExit = false; // 取消退出
-				}
-			}, 2000); // 如果2秒钟内没有按下返回键，则启动定时器取消掉刚才执行的任务
-
-		} else {
-		   /*Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);
-
-            mHomeIntent.addCategory(Intent.CATEGORY_HOME);
-            mHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                            | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-            this.startActivity(mHomeIntent);
-            */
-			this.justOne.exit();
-			android.os.Process.killProcess(android.os.Process.myPid()) ;   //获取PID
-			System.exit(0);   //常规java、c#的标准退出法，返回值为0代表正常退出
-		}
-	}
+	
 
 	@Override
 	protected void onStart() {
@@ -720,8 +692,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		                		id = (String) idView.getText();
 		                		if(id == "")
 		                			id = "0";
-		                		currentId = Integer.parseInt(id);
-	
+		                		
 		                		if(currentId != 0)
 		                		{
 		                		if(leftOrRight == 1)
@@ -752,6 +723,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		                		else
 		                			currentUrl = url + "home&id="+currentId;
 
+		                		
 								/*synchronized (this){
 								Thread.yield();}
 								System.out.println("wait.................");*/
@@ -771,8 +743,6 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		                		id = (String) idView.getText();
 		                		if(id == "")
 		                			id = "0";
-
-		                		currentId = Integer.parseInt(id);
 		 
 		                		if(currentId != 0)
 		                		{
@@ -821,8 +791,6 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		                		id = (String) idView.getText();
 		                		if(id == "")
 		                			id = "0";
-		                		currentId = Integer.parseInt(id);
-		                	
 		                		if(currentId != 0)
 		                		{
 		                		if(leftOrRight == 1)
@@ -877,12 +845,8 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 						
 						if(isNew)
 						{
-							try {
-								maxId= getDataId(data);
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+							//maxId= getDataId(data);
+							maxId = JustOne.getMaxId();
 							isNew = false;
 						}
 					} catch (JSONException e) {
@@ -1013,73 +977,6 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		setContentView(details_page_setitem);
 	}
 
-	/* 微博点击事件监听 */
-	public void microBlogOnClick(View view) {
-		context.push(main_item);
-		final ImageView iw= (ImageView) bind_item.findViewById(R.id.erweima);
-		iw.setOnLongClickListener(new View.OnLongClickListener() {
-              
-              @Override
-              public boolean onLongClick(View view) {
-            	  String strFileName = "weixincode.jpg";
-                  String strPath = PicUtil.saveImage(strFileName,iw);
-                  Toast.makeText(view.getContext(), "图片"+strFileName+"已经下载到"+strPath, Toast.LENGTH_SHORT).show();
-                  return false;
-              }
-      });
-		setContentView(bind_item);
-	}
-
-	/* 关于一篇的事件监听 */
-	public void aboutOneOnClick(View view) {
-		context.push(main_item);
-
-		setContentView(about_one);
-	}
-
-	/* 关于关注新浪微博的事件监听 */
-	public void sineMicroBlogBindOnClick(View view) {
-		context.push(bind_item);
-		setContentView(microblog);
-	}
-
-	public void goToRank(View view)
-	{
-		Uri uri = Uri.parse("market://details?id="+getPackageName()); 
-		Intent intent = new Intent(Intent.ACTION_VIEW,uri); 
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
-		startActivity(intent);
-		Log.i("goToRank",String.valueOf(context.size()));
-	}
-	/* return 事件监听 */
-	public void returnOnClick(View view) {
-		
-		View view1 = context.pop();
-		setContentView(view1);
-	}
-	
-	/*弹出版本提示框*/
-	public void versionOnclick(View view)
-	{
-		LayoutInflater inflater = getLayoutInflater();
-		
-		View layout = inflater.inflate(R.layout.showversion_item,
-				(ViewGroup)findViewById(R.id.showversion_item));
-		TextView tw = (TextView) layout.findViewById(R.id.currentVersion);
-		tw.setText("当前版本 : "+JustOne.versionName);
-		final AlertDialog dialog = new AlertDialog.Builder(this).setView(layout)
-		.setNegativeButton("关闭窗口",
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog,
-							int which) {
-						dialog.dismiss();
-					}
-				}).show();
-		
-	
-	
-	}
 	
 	
 	
@@ -1087,6 +984,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	/*弹出用户指引提示框*/
 	public void userFirstTips()
 	{
+		@SuppressWarnings("deprecation")
 		SharedPreferences preferences = getSharedPreferences("count",MODE_WORLD_READABLE); 
 		int count = preferences.getInt("count", 0); 
 

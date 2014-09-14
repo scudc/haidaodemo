@@ -1,0 +1,20 @@
+<RelativeLayout android:id="@+id/aboutOne_title" android:background="@drawable/one_title_bg" android:layout_width="fill_parent" android:layout_height="wrap_content"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <RelativeLayout android:id="@+id/aboutOnereturnBackToIndex" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_centerVertical="true" android:onClick='showOnekeyshare'>
+        <TextView  android:background="@drawable/return_button" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="30.0dip" android:layout_marginTop="15.0dip"  android:layout_centerInParent="true" android:contentDescription="@null" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/oneTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/imageClick_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30.0dip"
+        android:layout_marginTop="5.0dip"
+        android:background="@drawable/justone_title_ui"
+        android:contentDescription="@null"
+         />
+
+   
+</RelativeLayout>

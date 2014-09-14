@@ -13,7 +13,10 @@
     android:layout_gravity="center_horizontal"
     android:orientation="vertical" >
 
-
+   <include
+        android:id="@+id/main_title"
+  
+        layout="@layout/aboutone_title" />   
 
     
 	<!--  

@@ -58,8 +58,9 @@ limitations under the License.
   android:configChanges="keyboardHidden|orientation|screenSize"
   android:exported="true"
   android:screenOrientation="portrait" />
+		<activity android:name="com.justone.android.main.IndexActivity"  android:screenOrientation="portrait"/>
         <activity android:name="com.justone.android.main.MainActivity"  android:screenOrientation="portrait"/>
-  
+  		<activity android:name="com.justone.android.main.AboutOneActivity"  android:screenOrientation="portrait"/>
 	<meta-data android:value="53b2b40b56240b88e91144da" android:name="UMENG_APPKEY"></meta-data>
 	<meta-data android:value="default" android:name="UMENG_CHANNEL"/>
     </application>

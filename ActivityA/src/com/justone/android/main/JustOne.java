@@ -1,6 +1,8 @@
 package com.justone.android.main;
 import java.util.Stack;
 
+import com.justone.android.util.AsynImageLoader;
+
 import cn.sharesdk.framework.ShareSDK;
 
 import android.app.Application;  
@@ -14,7 +16,7 @@ public class JustOne extends Application{
 	private int currentTabIndex = 0;
     private Stack<Activity> activityStack = new Stack<Activity>();
     private static int localVersion = 0;// 本地安装版本
-
+    
 	private static int serverVersion = 0;// 服务器版本
 
 	public static String downloadDir = "jj/";// 安装目录
@@ -24,6 +26,36 @@ public class JustOne extends Application{
 	private static String versionDesc = ""; // 新版本描述
 	
 	public static String versionName = ""; //版本名称
+	
+	//图片异步加载的全局对象
+	private static AsynImageLoader asynImageLoader = null;
+	
+	//全卷的id，用来表示当前主题的id
+	private static int currentId;
+	
+	public static int getCurrentId() {
+		return currentId;
+	}
+
+	public static void setCurrentId(int currentId) {
+		JustOne.currentId = currentId;
+	}
+
+	public static int getMaxId() {
+		return maxId;
+	}
+
+	public static void setMaxId(int maxId) {
+		JustOne.maxId = maxId;
+	}
+
+	//全局的最大的id，用来标识是否已经是最新的内容
+	private static int maxId;
+	
+	public static AsynImageLoader getAsynImageLoader() {
+		return asynImageLoader;
+	}
+
 	public int getCurrentTabIndex() {
 		return currentTabIndex;
 	}
@@ -60,6 +92,7 @@ public class JustOne extends Application{
 			e.printStackTrace();
 		}
        
+       JustOne.asynImageLoader = new AsynImageLoader(); 
     }
 
 	public static int getServerVersion() {
@@ -84,6 +117,8 @@ public class JustOne extends Application{
 
 	public static void setVersionDesc(String versionDesc) {
 		JustOne.versionDesc = versionDesc;
-	}  
+	}
+
+	 
   
 }  
