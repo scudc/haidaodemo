@@ -186,7 +186,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 		this.viewMap = new HashMap<String,ListViewAdapter>();
 		//初始化图片异步加载的类
 		this.asynImageLoader = JustOne.getAsynImageLoader();
-		this.dataOp = new DataOp(asynImageLoader);
+		this.dataOp = JustOne.getDataOp();
 	
 		//初始化资源对象
 		this.res = getResources(); // Resource object to get Drawables  
@@ -841,7 +841,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 					try {
 						viewHandler.sendMessage(Message.obtain(viewHandler, 0, currentId, 1, targetView));
 						
-						data = dataOp.getDataAsyn(currentUrl, about_one, main_item,homeListView);
+						data = dataOp.getDataAsyn(currentUrl);
 						
 						if(isNew)
 						{

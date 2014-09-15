@@ -2,6 +2,7 @@ package com.justone.android.main;
 import java.util.Stack;
 
 import com.justone.android.util.AsynImageLoader;
+import com.justone.android.util.DataOp;
 
 import cn.sharesdk.framework.ShareSDK;
 
@@ -33,6 +34,8 @@ public class JustOne extends Application{
 	//全卷的id，用来表示当前主题的id
 	private static int currentId;
 	
+	private static DataOp dataOp = null;
+	
 	public static int getCurrentId() {
 		return currentId;
 	}
@@ -52,6 +55,16 @@ public class JustOne extends Application{
 	//全局的最大的id，用来标识是否已经是最新的内容
 	private static int maxId;
 	
+	//全局的最小的id，用来标识是否已经是最新的内容
+	private static int minId;
+	public static int getMinId() {
+		return minId;
+	}
+
+	public static void setMinId(int minId) {
+		JustOne.minId = minId;
+	}
+
 	public static AsynImageLoader getAsynImageLoader() {
 		return asynImageLoader;
 	}
@@ -93,7 +106,16 @@ public class JustOne extends Application{
 		}
        
        JustOne.asynImageLoader = new AsynImageLoader(); 
+       this.dataOp = new DataOp(asynImageLoader);
     }
+
+	public static DataOp getDataOp() {
+		return dataOp;
+	}
+
+	public void setDataOp(DataOp dataOp) {
+		this.dataOp = dataOp;
+	}
 
 	public static int getServerVersion() {
 		return serverVersion;

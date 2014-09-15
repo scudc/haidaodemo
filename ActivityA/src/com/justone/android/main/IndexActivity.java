@@ -2,8 +2,11 @@ package com.justone.android.main;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import org.json.JSONException;
 
 import com.justone.android.bean.IndexBean;
 
@@ -49,6 +52,11 @@ public class IndexActivity extends Activity implements IXListViewListener {
 	
 	private ArrayList<IndexBean> indexBeanList;
 	
+	//刷新数据的url
+	private String refreshUrl = "http://haidaoteam.sinaapp.com/?datatype=json&type=index";
+	
+	//获取更多数据的url
+	private String moreUrl = "http://haidaoteam.sinaapp.com/?datatype=json&type=index&more=true&id=";
 	/** 
 	 * 双击退出函数 
 	 */  
@@ -80,6 +88,7 @@ public class IndexActivity extends Activity implements IXListViewListener {
 			
 		};
 		
+		
 		//设置更多button的按钮事件
 		Button moreButton = (Button) this.findViewById(R.id.indexMoreButton);
 		moreButton.setOnClickListener(new OnClickListener(){  
@@ -90,35 +99,54 @@ public class IndexActivity extends Activity implements IXListViewListener {
 		    }
 		});
 		
+		
 		//启动加载数据的线程
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				
-				//获取最近的10条记录
-				for(int i =0;i<5;i++)
-				{
-					IndexBean indexBean = new IndexBean();
-					indexBean.setImageUrl("xxx");
-					indexBean.setIndexId(String.valueOf(i+1));
-					indexBean.setIndexTitle("锤子老罗");
-					Message message = new Message();
-					message.obj = indexBean;
-				
-					mHandler.sendMessage(message);  
+				int maxId = 0;
+				int minId = 1;
+				try {
+					String data = JustOne.getDataOp().getDataAsyn(refreshUrl);
+					 ArrayList<HashMap<String, String>> dataList = JustOne.getDataOp().resolveData(data,"data");
+					 for(int i =0;i<dataList.size();i++)
+					 {
+						 
+						 IndexBean indexBean = new IndexBean();
+						 HashMap<String,String> tempMap = dataList.get(i);
+						 indexBean.setImageUrl(tempMap.get("imageView1"));
+						 indexBean.setIndexId(String.valueOf(tempMap.get("id")));
+					     indexBean.setIndexTitle(tempMap.get("imageBelow_tView"));
+						 Message message = new Message();
+						 message.obj = indexBean;
+						
+						 mHandler.sendMessage(message);  
+						 
+						 if(Integer.parseInt(tempMap.get("id")) > maxId)
+							 maxId = Integer.parseInt(tempMap.get("id"));
+						 if(Integer.parseInt(tempMap.get("id")) < minId)
+							 minId = Integer.parseInt(tempMap.get("id"));
+					 }
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+		
+				JustOne.setMaxId(maxId);
 				
-				JustOne.setMaxId(18);
-				
-				
+				JustOne.setMinId(minId);
 				// TODO Auto-generated method stub
 				
 			}
 			
 			
 		}).start();
-
+		
     }  
  
  
@@ -187,9 +215,9 @@ public class IndexActivity extends Activity implements IXListViewListener {
         	{
         		Log.i("loading","loading");
         	}
-        	JustOne.getAsynImageLoader().showImageAsyn(holder.indexImageView, "http://haidaoteam-cdn.stor.sinaapp.com/1387808504418.jpg",loadingView );  
+        	JustOne.getAsynImageLoader().showImageAsyn(holder.indexImageView, (mList.get(getCount() - position - 1)).getImageUrl(),loadingView );  
         	holder.indexTextView.setText("VOL. "+ (mList.get(getCount() - position - 1).getIndexId()+" "+(mList.get(getCount() - position - 1)).getIndexTitle()));
-        	holder.indexImageView.setTag(17);
+        	holder.indexImageView.setTag(Integer.parseInt((mList.get(getCount() - position - 1).getIndexId())));
         	holder.indexImageView.setOnClickListener(new View.OnClickListener() {
 				
 				@Override

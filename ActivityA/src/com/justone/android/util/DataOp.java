@@ -5,6 +5,8 @@ package com.justone.android.util;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +27,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.justone.android.main.JustOne;
 
 
 import android.app.Activity;
@@ -78,7 +82,7 @@ public class DataOp {
 	 * @throws JSONException 
 	 * @throws InterruptedException 
 	 */
-	public String getDataAsyn(String url,View loadingView,final View targetView,final ListView homeListView) throws JSONException, InterruptedException{
+	public String getDataAsyn(String url) throws JSONException, InterruptedException{
 		
 		//ac.setContentView(loadingView);
 		
@@ -133,6 +137,40 @@ public class DataOp {
 		
 
 	}
+	
+	//°Ñdata×Ö·û´®×ª»»³É Ç¶Ì×map
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public ArrayList<HashMap<String, String>> resolveData(String data,String viewName) throws JSONException {
+					JSONObject jsonOb = new JSONObject(data);
+					ArrayList<HashMap<String, String>> tempResult = new ArrayList<HashMap<String,String>>();
+					try {
+						String viewData =  jsonOb.getString(viewName);
+						JSONArray jsonArray = new JSONArray(viewData);
+						
+
+						for (int i = 0; i < jsonArray.length(); i++) {
+							HashMap<String, String> tempJson = new HashMap<String, String>();
+							JSONObject tempJsonObject = jsonArray.getJSONObject(i);
+							tempJson.put("imageBelow_tView", tempJsonObject.getString("imageBelow_tView"));
+							tempJson.put("imageView1", tempJsonObject.getString("imageView1"));
+							tempJson.put("id", tempJsonObject.getString("id"));
+							tempResult.add(tempJson);
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+					Collections.sort(tempResult,new Comparator(){
+			            
+
+						@Override
+						public int compare(Object arg0, Object arg1) {
+							// TODO Auto-generated method stub
+							return Integer.parseInt(((HashMap<String, String>)arg0).get("id")) >= Integer.parseInt(((HashMap<String, String>)arg0).get("id")) ? 0 : 1;
+						}
+			        });
+					return tempResult;
+
+		}
 	
 	
 	public String loadDataAsyn(String path,ImageCallback callback){
