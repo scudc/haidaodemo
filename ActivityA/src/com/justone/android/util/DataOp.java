@@ -125,6 +125,8 @@ public class DataOp {
 				"],'list':[['list_share_url','http://caodan.org/516-photo.html','shareUrl'],['content_publish_time','October 27,2012','text'],['one_content_title','春风拂醉的晚上','text'],['one_content_author','hobo','text'],['one_content_article','听说近期有些游戏公司打算上市了，后面后面还跟着优酷、遨游等。主要原因是去年基金公司们都在准备阿里的上市，结果硬是上不去。搞的基金公司没办法了，先弄几个小的吧。。','text'],['one_content_author_novel','王相龙 科幻小说家','text']]}";
 		*/
 		String data = handleGet(url);
+		//Log.i("getDataAsyn",data+"xxxx");
+		//Log.i("getDataAsynUrl",url);
 	    //ac.setContentView(targetView);
 		//System.out.println(url);
 		//System.out.println(data);
@@ -292,7 +294,7 @@ public class DataOp {
 				} else {
 					result = response.getStatusLine().toString();
 				}
-			} catch (Exception e) { }
+			} catch (Exception e) { e.printStackTrace();}
 			return result;
 		}
 	 

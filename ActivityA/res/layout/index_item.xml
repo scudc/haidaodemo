@@ -20,7 +20,7 @@
         </FrameLayout>
     <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="250dp"
         android:background="#000000" >
 
         

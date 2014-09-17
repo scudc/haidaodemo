@@ -68,7 +68,7 @@ public class IndexActivity extends Activity implements IXListViewListener {
         
         this.indexBeanList = new ArrayList<IndexBean>();
         setContentView(R.layout.index);  
-        geneItems();
+        //geneItems();
         listView = (XListView) findViewById(R.id.index_list);
         listView.setPullLoadEnable(true);
         mAdapter = new ListAdapter(this.indexBeanList);
@@ -80,7 +80,13 @@ public class IndexActivity extends Activity implements IXListViewListener {
 			 	@Override  
 	            public void handleMessage(Message msg) {  
 	                super.handleMessage(msg);  
-	                indexBeanList.add((IndexBean) msg.obj);  
+	                if(msg.what == 3) //是否需要onload
+	                {
+	                	onLoad();
+	                	return ;
+	                }
+	                indexBeanList.add(0,(IndexBean) msg.obj);
+	                Log.i("xxxx",indexBeanList.toString());
 	                Log.v("@@@@@@", "this is get message");  
 	                mAdapter.refresh(indexBeanList);  
 //	              mAdapter.notifyDataSetChanged();  
@@ -106,41 +112,7 @@ public class IndexActivity extends Activity implements IXListViewListener {
 			@Override
 			public void run() {
 				
-				int maxId = 0;
-				int minId = 1;
-				try {
-					String data = JustOne.getDataOp().getDataAsyn(refreshUrl);
-					 ArrayList<HashMap<String, String>> dataList = JustOne.getDataOp().resolveData(data,"data");
-					 for(int i =0;i<dataList.size();i++)
-					 {
-						 
-						 IndexBean indexBean = new IndexBean();
-						 HashMap<String,String> tempMap = dataList.get(i);
-						 indexBean.setImageUrl(tempMap.get("imageView1"));
-						 indexBean.setIndexId(String.valueOf(tempMap.get("id")));
-					     indexBean.setIndexTitle(tempMap.get("imageBelow_tView"));
-						 Message message = new Message();
-						 message.obj = indexBean;
-						
-						 mHandler.sendMessage(message);  
-						 
-						 if(Integer.parseInt(tempMap.get("id")) > maxId)
-							 maxId = Integer.parseInt(tempMap.get("id"));
-						 if(Integer.parseInt(tempMap.get("id")) < minId)
-							 minId = Integer.parseInt(tempMap.get("id"));
-					 }
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		
-				JustOne.setMaxId(maxId);
-				
-				JustOne.setMinId(minId);
-				// TODO Auto-generated method stub
+				refreshHelper(refreshUrl,0);
 				
 			}
 			
@@ -151,14 +123,9 @@ public class IndexActivity extends Activity implements IXListViewListener {
  
  
  
-    private void geneItems() {
-		for (int i = 0; i != 5; ++i) {
-			LayoutInflater inflater = LayoutInflater.from(IndexActivity.this);  
-            View view = inflater.inflate(R.layout.index_item, null);  
-			items.add(view);
-		}
-	}
+
     private void onLoad() {
+    	
     	listView.stopRefresh();
     	listView.stopLoadMore();
     	listView.setRefreshTime("刚刚");
@@ -244,48 +211,114 @@ public class IndexActivity extends Activity implements IXListViewListener {
 
     @Override
 	public void onRefresh() {
+    	//启动加载数据的线程
+    			new Thread(new Runnable() {
+
+    				@Override
+    				public void run() {
+    					
+    					refreshHelper(refreshUrl,1);
+    					
+    					Message message = new Message();
+    					 message.what = 3;
+    					 mHandler.sendMessage(message);  
+    					 //onLoad();	
+    					
+    				}
+    				
+    				
+    			}).start();
+    	
+    	/*
 		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
 				
-				//获取最近的10条记录
-				for(int i =0;i<5;i++)
-				{
-					IndexBean indexBean = new IndexBean();
-					indexBean.setImageUrl("xxx");
-					indexBean.setIndexId(String.valueOf(i+1));
-					indexBean.setIndexTitle("锤子老罗");
-					Message message = new Message();
-					message.obj = indexBean;
-					mHandler.sendMessage(message);  
-				}
+				
+				//listView.removeAllViews();
+				refreshHelper(refreshUrl,1);
+		
 				 onLoad();
+				 Log.i("onRefresh","onRefresh");
 	
 			}
 			
 			
-		}, 2000);
+		}, 2000)*/;
+		
 	}
 
+    //flag用来标识是否是不是刷新，1为刷新
+    private void refreshHelper(String url,int flag)
+    {
+    	int maxId = 0;
+		int minId = Integer.MAX_VALUE;
+		try {
+			String data = JustOne.getDataOp().getDataAsyn(url);
+			Log.i("refreshHelper",url);
+			
+			Log.i("refreshxxxxr",data);
+			
+			
+			 ArrayList<HashMap<String, String>> dataList = JustOne.getDataOp().resolveData(data,"data");
+			 for(int i =0;i<dataList.size();i++)
+			 {
+				 
+				 IndexBean indexBean = new IndexBean();
+				 HashMap<String,String> tempMap = dataList.get(i);
+				 indexBean.setImageUrl(tempMap.get("imageView1"));
+				 indexBean.setIndexId(String.valueOf(tempMap.get("id")));
+			     indexBean.setIndexTitle(tempMap.get("imageBelow_tView"));
+				 Message message = new Message();
+				 message.obj = indexBean;
+				 message.what = 1;
+				 mHandler.sendMessage(message);  
+				 
+				 
+				 
+				 if(Integer.parseInt(tempMap.get("id")) > maxId)
+					 maxId = Integer.parseInt(tempMap.get("id"));
+				 if(Integer.parseInt(tempMap.get("id")) < minId)
+					 minId = Integer.parseInt(tempMap.get("id"));
+			 }
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		JustOne.setMaxId(maxId);
+		
+		JustOne.setMinId(minId);
+		// TODO Auto-generated method stub
+    }
 	@Override
 	public void onLoadMore() {
+		/*
 		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				for(int i =0;i<5;i++)
-				{
-					IndexBean indexBean = new IndexBean();
-					indexBean.setImageUrl("xxx");
-					indexBean.setIndexId(String.valueOf(i+1));
-					indexBean.setIndexTitle("锤子老罗");
-					Message message = new Message();
-					message.obj = indexBean;
-					
-					mHandler.sendMessage(message);  
-				}
+				refreshHelper(moreUrl+JustOne.getMinId(),0);
                   onLoad();
 			}
-		}, 2000);
+		}, 2000);*/
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				
+				refreshHelper(moreUrl+JustOne.getMinId(),0);
+				Message message = new Message();
+				 message.what = 3;
+				 mHandler.sendMessage(message);  
+                //onLoad();
+				
+			}
+			
+			
+		}).start();
 	}
 	
 	private void exitBy2Click() {
