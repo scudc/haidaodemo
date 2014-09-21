@@ -48,19 +48,22 @@ public class AsynImageLoader {
 	 * @param url 图片的URL地址
 	 * @param resId 图片加载过程中显示的图片资源
 	 */
-	public void showImageAsyn(ImageView imageView, String url, View loadingView){
+	public void showImageAsyn(ImageView imageView, String url, View loadingView,Message message,Handler handler){
 		imageView.setTag(url);
-		Bitmap bitmap = loadImageAsyn(url, getImageCallback(imageView,loadingView));
+		Bitmap bitmap = loadImageAsyn(url, getImageCallback(imageView,loadingView,message,handler));
 		
 		if(bitmap == null){
-			Log.i("showImageAsyn","xzxxxxxx");
+			Log.i("showImageAsyn","loading");
 			loadingView.setVisibility(View.VISIBLE);
 		}else{
 			imageView.setImageBitmap(bitmap);
+			Log.i("showImageAsyn","view");
 			imageView.setVisibility(View.VISIBLE);
 			loadingView.setVisibility(View.GONE);
 		}
 	}
+	
+	
 	
 	public Bitmap loadImageAsyn(String path, ImageCallback callback){
 		// 判断缓存中是否已经存在该图片
@@ -111,7 +114,7 @@ public class AsynImageLoader {
 	 * @param resId 图片加载完成前显示的图片资源ID
 	 * @return
 	 */
-	private ImageCallback getImageCallback(final ImageView imageView,final View loadingView ){
+	private ImageCallback getImageCallback(final ImageView imageView,final View loadingView, final Message message,final Handler handler){
 		return new ImageCallback() {
 			
 			@Override
@@ -127,6 +130,14 @@ public class AsynImageLoader {
 					
 				}
 			}
+
+			@Override
+			public void sendMessageToHandler() {
+				// TODO Auto-generated method stub
+				if(message != null && handler != null)
+					handler.sendMessage(message);
+				
+			}
 		};
 	}
 	
@@ -138,6 +149,7 @@ public class AsynImageLoader {
 			Task task = (Task)msg.obj;
 			// 调用callback对象的loadImage方法，并将图片路径和图片回传给adapter
 			task.callback.loadImage(task.path, task.bitmap);
+			task.callback.sendMessageToHandler();
 		}
 		
 	};
@@ -186,6 +198,7 @@ public class AsynImageLoader {
 	//回调接口
 	public interface ImageCallback{
 		void loadImage(String path, Bitmap bitmap);
+		void sendMessageToHandler();
 	}
 	
 	class Task{

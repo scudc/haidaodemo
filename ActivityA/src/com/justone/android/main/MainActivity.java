@@ -586,7 +586,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 				{
 					ImageView imageView = (ImageView) targetView.findViewById(targetViewId);
 					
-					asynImageLoader.showImageAsyn(imageView, content, findViewById(R.id.homeloadingLayout));  
+					asynImageLoader.showImageAsyn(imageView, content, findViewById(R.id.homeloadingLayout),null,null);  
 					
 					
 				}else if (type.equals("shareUrl"))

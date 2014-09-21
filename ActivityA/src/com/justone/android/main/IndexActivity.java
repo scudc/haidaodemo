@@ -83,8 +83,10 @@ public class IndexActivity extends Activity implements IXListViewListener {
 	                if(msg.what == 3) //ÊÇ·ñÐèÒªonload
 	                {
 	                	onLoad();
+	                	mAdapter.notifyDataSetChanged();
 	                	return ;
 	                }
+	                
 	                indexBeanList.add(0,(IndexBean) msg.obj);
 	                Log.i("xxxx",indexBeanList.toString());
 	                Log.v("@@@@@@", "this is get message");  
@@ -113,6 +115,7 @@ public class IndexActivity extends Activity implements IXListViewListener {
 			public void run() {
 				
 				refreshHelper(refreshUrl,0);
+				onLoad();
 				
 			}
 			
@@ -182,7 +185,9 @@ public class IndexActivity extends Activity implements IXListViewListener {
         	{
         		Log.i("loading","loading");
         	}
-        	JustOne.getAsynImageLoader().showImageAsyn(holder.indexImageView, (mList.get(getCount() - position - 1)).getImageUrl(),loadingView );  
+        	Message message = new Message();
+			message.what = 3;
+        	JustOne.getAsynImageLoader().showImageAsyn(holder.indexImageView, (mList.get(getCount() - position - 1)).getImageUrl(),loadingView,message,mHandler );  
         	holder.indexTextView.setText("VOL. "+ (mList.get(getCount() - position - 1).getIndexId()+" "+(mList.get(getCount() - position - 1)).getIndexTitle()));
         	holder.indexImageView.setTag(Integer.parseInt((mList.get(getCount() - position - 1).getIndexId())));
         	holder.indexImageView.setOnClickListener(new View.OnClickListener() {
