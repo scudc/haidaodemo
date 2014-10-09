@@ -6,7 +6,48 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:background="@color/white" >
+       
+    <RelativeLayout
+        android:id="@+id/oneDetailsPageSet"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/one_title_bg"
+        android:onClick="returnOnClick" >
 
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="18.0dip"
+            android:layout_marginTop="20.0dip"
+            android:src="@drawable/one_title"
+            android:text="@string/about_ours"
+            android:textColor="@color/one_textcolor"
+            android:textSize="20.0sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/returnShareSet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true" >
+
+            <ImageView
+                android:id="@+id/imageset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center"
+                android:layout_marginBottom="8.0dip"
+                android:layout_marginLeft="11.0dip"
+                android:layout_marginRight="30.0dip"
+                android:layout_marginTop="8.0dip"
+                android:contentDescription="@null"
+                
+                android:src="@drawable/return_button" />
+        </LinearLayout>
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="wrap_content"

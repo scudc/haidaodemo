@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import com.justone.android.util.PicUtil;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,12 +16,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+@SuppressLint("NewApi")
 public class AboutOneActivity extends Activity {
 	
 	 /* 一个保存view 切换的堆栈 */
@@ -33,7 +37,12 @@ public class AboutOneActivity extends Activity {
 	private View about_one;
 	private View microblog;
 	private View feedback;
+	private View versionInfoView;
 	
+	
+	private EditText feedback_email_et = null;
+	private EditText feedback_phone_et = null;
+	private EditText feedback_text_et = null;
 	
 	 public void onCreate(Bundle savedInstanceState) {  
 	        super.onCreate(savedInstanceState);  
@@ -48,6 +57,12 @@ public class AboutOneActivity extends Activity {
 
 			feedback = inflater.inflate(R.layout.feedback, null);
 			
+	
+			
+			versionInfoView = inflater.inflate(R.layout.showversion_item,
+					(ViewGroup)findViewById(R.id.showversion_item));
+			TextView tw = (TextView) versionInfoView.findViewById(R.id.currentVersion);
+			tw.setText("当前版本 : "+JustOne.versionName);
 			 this.main_item = inflater.inflate(R.layout.detail_item, null);
 		     setContentView(main_item); 
 			
@@ -56,9 +71,73 @@ public class AboutOneActivity extends Activity {
 	        {
 	        	@Override  
 			    public void onClick(View v) {  
-			    	AboutOneActivity.this.finish();
+	        		//returnOnClick(v);
+	        		AboutOneActivity.this.finish();
 			    }
 	        });
+	        
+	    	feedback.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener(){
+
+				@Override
+				public void onViewAttachedToWindow(View v) {
+					// TODO Auto-generated method stub
+					System.out.println("here!!!");
+					feedback_email_et = (EditText)findViewById(R.id.feedback_email_content);
+					feedback_email_et.setOnFocusChangeListener(new OnFocusChangeListener(){
+			
+						@Override
+						public void onFocusChange(View arg0, boolean hasfocus) {
+							// TODO Auto-generated method stub
+							if (hasfocus)
+							{
+								if (feedback_email_et.getText().toString().equalsIgnoreCase("input"))
+								{
+									feedback_email_et.setText("");
+									//feedback_email_et.setTextColor(0x333333);
+								}
+							}
+						}
+					});
+			    	feedback_phone_et = (EditText)findViewById(R.id.feedback_phone_content);
+			    	feedback_phone_et.setOnFocusChangeListener(new OnFocusChangeListener(){
+
+						@Override
+						public void onFocusChange(View arg0, boolean hasfocus) {
+							// TODO Auto-generated method stub
+							if (hasfocus)
+							{
+								if (feedback_phone_et.getText().toString().equalsIgnoreCase("input"))
+								{
+									feedback_phone_et.setText("");
+									//feedback_phone_et.setTextColor(0x333333);
+								}
+							}
+						}
+					});
+			    	feedback_text_et = (EditText)findViewById(R.id.feedback_text_content);
+			    	feedback_text_et.setOnFocusChangeListener(new OnFocusChangeListener()
+			    	{
+
+						@Override
+						public void onFocusChange(View arg0, boolean hasfocus) {
+							// TODO Auto-generated method stub
+							if (hasfocus)
+							{
+								if (feedback_text_et.getText().toString().equalsIgnoreCase("input"))
+								{
+									feedback_text_et.setText("");
+									//feedback_text_et.setTextColor(0x333333);
+								}
+							}
+						}
+					});
+				}
+
+				@Override
+				public void onViewDetachedFromWindow(View v) {
+					// TODO Auto-generated method stub
+				}
+			});
 				
 	}
 	 
@@ -78,7 +157,37 @@ public class AboutOneActivity extends Activity {
 	      });
 			setContentView(bind_item);
 		}
+		public void feedbackOnClick(View view) {
+			context.push(this.main_item);
 
+			setContentView(feedback);
+		}	
+
+	    public void feedbackSubmitOnClick(View view)
+	    {
+	    	feedback_email_et = (EditText)findViewById(R.id.feedback_email_content);
+	    	feedback_phone_et = (EditText)findViewById(R.id.feedback_phone_content);
+	    	feedback_text_et = (EditText)findViewById(R.id.feedback_text_content);
+	    	String email = feedback_email_et.getText().toString();
+	    	String phone = feedback_phone_et.getText().toString();
+	    	String text = feedback_text_et.getText().toString();
+	    	String result = JustOne.getDataOp().postData(email, phone, text);
+	    	System.out.println(result);
+	    	
+	    	feedback_email_et = (EditText)findViewById(R.id.feedback_email_content);
+			feedback_phone_et = (EditText)findViewById(R.id.feedback_phone_content);
+			feedback_text_et = (EditText)findViewById(R.id.feedback_text_content);
+			feedback_email_et.setText(R.string.feedback_null);
+			feedback_phone_et.setText(R.string.feedback_null);
+			feedback_text_et.setText(R.string.feedback_null);
+			//feedback_email_et.setTextColor(R.color.darkgray);
+			//feedback_phone_et.setTextColor(R.color.darkgray);
+			//feedback_text_et.setTextColor(R.color.darkgray);
+			
+			
+	    	setContentView(context.pop());
+	    }
+			
 		/* 关于一篇的事件监听 */
 		public void aboutOneOnClick(View view) {
 			context.push(main_item);
@@ -104,19 +213,17 @@ public class AboutOneActivity extends Activity {
 		public void returnOnClick(View view) {
 			
 			View view1 = context.pop();
+			Log.i("returnOnClick",view1.toString());
 			setContentView(view1);
 		}
 		
 		/*弹出版本提示框*/
 		public void versionOnclick(View view)
 		{
-			LayoutInflater inflater = getLayoutInflater();
-			
-			View layout = inflater.inflate(R.layout.showversion_item,
-					(ViewGroup)findViewById(R.id.showversion_item));
-			TextView tw = (TextView) layout.findViewById(R.id.currentVersion);
-			tw.setText("当前版本 : "+JustOne.versionName);
-			
+
+			context.push(main_item);
+			Log.i("version info",main_item.toString());
+			setContentView(versionInfoView);
 		
 		
 		}

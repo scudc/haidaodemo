@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"      
     android:orientation="horizontal"      
     android:layout_width="fill_parent"      
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:background="#ffffff">
 
            <FrameLayout
             android:id="@+id/indexImageLoading"
@@ -21,7 +22,7 @@
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="250dp"
-        android:background="#000000" >
+        android:background="#ffffff" >
 
         
         <ImageView
@@ -36,16 +37,16 @@
             android:id="@+id/index_image_view" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/index_title_view"
+            android:layout_width="fill_parent"
             android:layout_height="40dp"
-            android:layout_marginLeft="10dip"
-            android:layout_marginTop="10dip"
-            android:background="@color/dimgray"
-            android:gravity="center"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:background="#99ffffff"
+            android:gravity="center_vertical|left"
             android:text="VOL.123  青年马云"
             android:textColor="#000000"
-            android:textSize="18dip"
-           	android:id="@+id/index_title_view" />
+            android:textSize="18dip" />
 
     </FrameLayout>
     

@@ -101,6 +101,7 @@ public class JustOne extends Application{
 			PackageInfo packageInfo = getApplicationContext()
 					.getPackageManager().getPackageInfo(getPackageName(), 0);
 			setLocalVersion(packageInfo.versionCode);
+			this.versionName = packageInfo.versionName;
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}

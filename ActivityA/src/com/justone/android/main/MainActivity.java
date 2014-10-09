@@ -155,9 +155,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 	//获取数据的url
 	private String url = "http://haidaoteam.sinaapp.com/?datatype=json&type=";
 
-	private EditText feedback_email_et = null;
-	private EditText feedback_phone_et = null;
-	private EditText feedback_text_et = null;
+	
 	
 	
 	
@@ -217,68 +215,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
 
 		initData();
 
-		feedback.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener(){
-
-			@Override
-			public void onViewAttachedToWindow(View v) {
-				// TODO Auto-generated method stub
-				System.out.println("here!!!");
-				feedback_email_et = (EditText)findViewById(R.id.feedback_email_content);
-				feedback_email_et.setOnFocusChangeListener(new OnFocusChangeListener(){
-		
-					@Override
-					public void onFocusChange(View arg0, boolean hasfocus) {
-						// TODO Auto-generated method stub
-						if (hasfocus)
-						{
-							if (feedback_email_et.getText().toString().equalsIgnoreCase("input"))
-							{
-								feedback_email_et.setText("");
-								//feedback_email_et.setTextColor(0x333333);
-							}
-						}
-					}
-				});
-		    	feedback_phone_et = (EditText)findViewById(R.id.feedback_phone_content);
-		    	feedback_phone_et.setOnFocusChangeListener(new OnFocusChangeListener(){
-
-					@Override
-					public void onFocusChange(View arg0, boolean hasfocus) {
-						// TODO Auto-generated method stub
-						if (hasfocus)
-						{
-							if (feedback_phone_et.getText().toString().equalsIgnoreCase("input"))
-							{
-								feedback_phone_et.setText("");
-								//feedback_phone_et.setTextColor(0x333333);
-							}
-						}
-					}
-				});
-		    	feedback_text_et = (EditText)findViewById(R.id.feedback_text_content);
-		    	feedback_text_et.setOnFocusChangeListener(new OnFocusChangeListener()
-		    	{
-
-					@Override
-					public void onFocusChange(View arg0, boolean hasfocus) {
-						// TODO Auto-generated method stub
-						if (hasfocus)
-						{
-							if (feedback_text_et.getText().toString().equalsIgnoreCase("input"))
-							{
-								feedback_text_et.setText("");
-								//feedback_text_et.setTextColor(0x333333);
-							}
-						}
-					}
-				});
-			}
-
-			@Override
-			public void onViewDetachedFromWindow(View v) {
-				// TODO Auto-generated method stub
-			}
-		});
+	
 		
 
 		
@@ -1202,37 +1139,7 @@ public class MainActivity extends BaseActivity implements OnGestureListener   {
         
         
     }
-	public void feedbackOnClick(View view) {
-		context.push(this.main_item);
-
-		setContentView(feedback);
-	}	
-
-    public void feedbackSubmitOnClick(View view)
-    {
-    	feedback_email_et = (EditText)findViewById(R.id.feedback_email_content);
-    	feedback_phone_et = (EditText)findViewById(R.id.feedback_phone_content);
-    	feedback_text_et = (EditText)findViewById(R.id.feedback_text_content);
-    	String email = feedback_email_et.getText().toString();
-    	String phone = feedback_phone_et.getText().toString();
-    	String text = feedback_text_et.getText().toString();
-    	String result = dataOp.postData(email, phone, text);
-    	System.out.println(result);
-    	
-    	feedback_email_et = (EditText)findViewById(R.id.feedback_email_content);
-		feedback_phone_et = (EditText)findViewById(R.id.feedback_phone_content);
-		feedback_text_et = (EditText)findViewById(R.id.feedback_text_content);
-		feedback_email_et.setText(R.string.feedback_null);
-		feedback_phone_et.setText(R.string.feedback_null);
-		feedback_text_et.setText(R.string.feedback_null);
-		//feedback_email_et.setTextColor(R.color.darkgray);
-		//feedback_phone_et.setTextColor(R.color.darkgray);
-		//feedback_text_et.setTextColor(R.color.darkgray);
-		
-		
-    	setContentView(context.pop());
-    }
-		
+	
 
 
 		@Override
