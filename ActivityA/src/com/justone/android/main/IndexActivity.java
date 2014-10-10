@@ -188,7 +188,7 @@ public class IndexActivity extends Activity implements IXListViewListener {
         	Message message = new Message();
 			message.what = 3;
         	JustOne.getAsynImageLoader().showImageAsyn(holder.indexImageView, (mList.get(getCount() - position - 1)).getImageUrl(),loadingView,message,mHandler );  
-        	holder.indexTextView.setText("VOL. "+ (mList.get(getCount() - position - 1).getIndexId()+" "+(mList.get(getCount() - position - 1)).getIndexTitle()));
+        	holder.indexTextView.setText("VOL."+ (mList.get(getCount() - position - 1).getIndexId()+" "+(mList.get(getCount() - position - 1)).getIndexTitle()));
         	holder.indexImageView.setTag(Integer.parseInt((mList.get(getCount() - position - 1).getIndexId())));
         	holder.indexImageView.setOnClickListener(new View.OnClickListener() {
 				
