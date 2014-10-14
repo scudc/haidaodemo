@@ -16,8 +16,8 @@ limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.justone.android.main"
-      android:versionCode="8"
-      android:versionName="0.0.5.3">
+      android:versionCode="9"
+      android:versionName="0.1.0.1">
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 	<uses-permission android:name="android.permission.GET_TASKS" />

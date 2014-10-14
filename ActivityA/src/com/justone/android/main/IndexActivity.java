@@ -131,7 +131,7 @@ public class IndexActivity extends Activity implements IXListViewListener {
     	
     	listView.stopRefresh();
     	listView.stopLoadMore();
-    	listView.setRefreshTime("먼먼");
+    	//listView.setRefreshTime("먼먼");
 	}
     public void onScrollStateChanged(AbsListView view, int scrollState) {  
     }  

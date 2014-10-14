@@ -38,6 +38,7 @@ public class AboutOneActivity extends Activity {
 	private View microblog;
 	private View feedback;
 	private View versionInfoView;
+	private View aboutZaoDongView;
 	
 	
 	private EditText feedback_email_et = null;
@@ -53,6 +54,7 @@ public class AboutOneActivity extends Activity {
 			//details_page_setitem = inflater.inflate(R.layout.one_details_page_setitem, null);
 			bind_item = inflater.inflate(R.layout.one_details_page_binditem, null);
 			about_one = inflater.inflate(R.layout.about_one, null);
+			aboutZaoDongView = inflater.inflate(R.layout.aboutzaodong, null);
 			//microblog = inflater.inflate(R.layout.one_details_page_microblog, null);
 
 			feedback = inflater.inflate(R.layout.feedback, null);
@@ -157,6 +159,27 @@ public class AboutOneActivity extends Activity {
 	      });
 			setContentView(bind_item);
 		}
+		
+		/*关于躁动的监听函数 */
+		public void aboutZaoDongClick(View view) {
+			context.push(main_item);
+			final ImageView iw= (ImageView) aboutZaoDongView.findViewById(R.id.aboutzaodong);
+			iw.setOnLongClickListener(new View.OnLongClickListener() {
+	              
+	              @Override
+	              public boolean onLongClick(View view) {
+	            	  String strFileName = "aboutzaodong.jpg";
+	                  String strPath = PicUtil.saveImage(strFileName,iw);
+	                  Toast.makeText(view.getContext(), "图片"+strFileName+"已经下载到"+strPath, Toast.LENGTH_SHORT).show();
+	                  return false;
+	              }
+	      });
+			setContentView(aboutZaoDongView);
+		}
+		
+		
+		
+		
 		public void feedbackOnClick(View view) {
 			context.push(this.main_item);
 

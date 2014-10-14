@@ -40,7 +40,7 @@
     </RelativeLayout>
      -->
 
-    <RelativeLayout  android:background="@drawable/one_list_selector" android:layout_width="fill_parent" android:layout_height="45.0dip" android:layout_marginTop="2.0dip" android:layout_marginBottom="2.0dip"  android:onClick="microBlogOnClick">
+    <RelativeLayout  android:background="@drawable/one_list_selector" android:layout_width="fill_parent" android:layout_height="45.0dip" android:layout_marginTop="2.0dip" android:layout_marginBottom="2.0dip"  android:onClick="aboutZaoDongClick" android:visibility="gone">
         <ImageView android:id="@+id/microblog_icon" android:background="@android:color/transparent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="25.0dip" android:layout_marginTop="10.0dip" android:layout_marginBottom="10.0dip" android:src="@drawable/one_details_page_microblog" android:layout_alignParentLeft="true" android:layout_centerVertical="true" android:contentDescription="@null" />
         <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/one_textcolor_red" android:id="@+id/microblog_textview" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="13.0dip" android:text="@string/aboutString" android:layout_toRightOf="@+id/microblog_icon" android:layout_centerVertical="true" />
         <ImageView android:background="@android:color/transparent" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="30.0dip" android:src="@drawable/one_details_page_arrowhead" android:layout_alignParentRight="true" android:layout_centerVertical="true" android:contentDescription="@null" />

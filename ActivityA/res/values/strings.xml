@@ -128,7 +128,14 @@ limitations under the License.
     <string name="oneselfItem2">腾讯微博</string>
     <string name="oneselfItem3">人人</string>
         <string name="about_ours">关注我们</string>
-        <string name="join_us">请关注我们的微信公众账号：iRecords</string>
+        <string name="join_us">
+            躁动（iRecords）——互联网日记。 \n一款面向互联网爱好者的产品， 记录互联网大事的图片， 标记互联网浪潮的文章，铭刻互联网巅峰的精彩问答。海盗团队不求用户量，只求能为互联网人群做出一些有意义的事，能够给一些人带来启迪。
+	\n
+            请关注我们的微信公众账号：iRecords</string>
+        <string name="about_zaodong">       躁动(iRecords)——互联网日记。                                 是一款面向互联网爱好者的产品，
+            	记录互联网大事的图片，标记互联网浪潮的文章，铭刻互联网巅峰的精彩问答。海盗团队不求用户量，只求能为互联网人群做出一些有意义的事，能够给一些人带来启迪。
+            	(上图为：1986年8月25日，中科院吴为民发出中国第一封电子邮件，在互联网上走了6天才到达瑞士。)
+</string>
         
             <string name="go_grade">去评分</string>
     <string name="about_copyright">版本信息</string>
